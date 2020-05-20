@@ -1,0 +1,6 @@
+export default {
+    DISCONNECTED: 'DISCONNECTED',
+    CONNECTING: 'CONNECTING',
+    OPEN: 'OPEN',
+    CLOSED: 'CLOSED'
+}

@@ -1,0 +1,4 @@
+export default {
+    STATE_CHANGED: 'STATE_CHANGED',
+    KODI_MESSAGE: 'KODI_MESSAGE'
+}

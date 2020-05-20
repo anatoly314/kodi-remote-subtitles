@@ -1,74 +1,66 @@
 <template>
   <div>
+    Hello World
     <br>
-    <button @click="togglePollingTime">togglePollingTime</button>
+    status: {{status}}
     <br>
-    <input type="file" @change="onFileChange">
+    current play time: {{currentPlayTime.format("H:mm:ss:SSS")}}
+    <br>
+    current play time in ms: {{currentPlayTimeInMilliseconds}}
+
+    <br>
+    <button @click="connectKodi">Connect</button>
+    <button @click="disconnectKodi">Close Connection</button>
+    <br>
+    <button @click="togglePlayPause">Toggle Play/Pause</button>
+    <button @click="backButton">Back</button>
+    <button @click="getCurrentTime">Get current time</button>
+    <button @click="togglePollingGetCurrentTime">Toggle polling current time</button>
+    <br>
+    <button @click="changeToDeltaSeconds(5)">+5</button>
+    <button @click="changeToDeltaSeconds(-5)">-5</button>
+    <hr>
+    Add original subtitles: <input type="file" @change="addOriginalSubtitles">
     <br>
     <SubtitlesTable></SubtitlesTable>
-
   </div>
 </template>
 
 <script>
-// import moment from 'moment';
-import { mapActions } from 'vuex';
+  import { mapActions, mapGetters } from 'vuex';
+  import SubtitlesTable from "./SubtitlesTable";
 
-// eslint-disable-next-line no-unused-vars
-import { parse, stringify, stringifyVtt, resync, toMS, toSrtTime, toVttTime } from 'subtitle';
-import SubtitlesTable from "./SubtitlesTable";
-export default {
-  name: 'Home',
-  data() {
-    return {
-      interval: null
+  export default {
+    name: 'HelloWorld',
+    data() {
+      return {
+      }
+    },
+    computed: {
+      ...mapGetters('socket', [
+        'status',
+        'currentPlayTime',
+        'currentPlayTimeInMilliseconds'
+      ])
+    },
+    methods: {
+      ...mapActions('socket', [
+        'connectKodi',
+        'disconnectKodi',
+        'togglePlayPause',
+        'getCurrentTime',
+        'backButton',
+        'changeToDeltaSeconds',
+        'togglePollingGetCurrentTime'
+      ]),
+      ...mapActions('subtitles', [
+        'addOriginalSubtitles'
+      ])
+    },
+    components: {
+      SubtitlesTable
     }
-  },
-  computed: {
-  },
-  methods: {
-    ...mapActions('subtitles', [
-      'addOriginalSubtitles'
-    ]),
-    onFileChange(e) {
-      const files = e.target.files || e.dataTransfer.files;
-      if (!files.length) {
-        return;
-      }
-      const file = files[0];
-
-      const reader = new FileReader();
-      const self = this;
-      reader.onload = (e) => {
-        const result = e.target.result;
-        const base64 = result.split(",")[1];
-        const string = atob(base64);
-        const subtitles = parse(string);
-        self.addOriginalSubtitles(subtitles);
-      };
-      reader.readAsDataURL(file);
-    },
-    startPollingTime () {
-      this.interval = setInterval(this.getCurrentTime, 400);
-    },
-    stopPollingTime () {
-      if (this.interval) {
-        clearInterval(this.interval);
-        this.interval = null;
-      }
-    },
-    togglePollingTime () {
-      if (this.interval) {
-        this.stopPollingTime();
-      } else {
-        this.startPollingTime();
-      }
-    }
-  },
-  components: {
-    SubtitlesTable
   }
-}
 </script>
 
 <style scoped>

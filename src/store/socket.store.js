@@ -3,6 +3,8 @@ import moment from "moment";
 import SOCKET_STATUS from "../enums/socket.status";
 import kodiRequests from './kodi.requests';
 
+const KODI_URL = 'ws://192.168.1.8:9090/jsonrpc';
+
 export default {
     namespaced: true,
     state: {
@@ -36,6 +38,10 @@ export default {
             const currentPlayTime = moment.utc(stringTime, "H:mm:ss:SSS");
             commit('SET_CURRENT_PLAY_TIME', currentPlayTime);
         },
+        togglePollingGetCurrentTime({state}) {
+            const request = kodiRequests.CURRENT_TIME;
+            state.worker.togglePollingGetCurrentTime(request);
+        },
         getCurrentTime: function({ dispatch }) {
             const request = kodiRequests.CURRENT_TIME;
             dispatch('sendMessage', request);
@@ -63,12 +69,11 @@ export default {
         },
         sendMessage: function({ state }, message) {
             if (state.socket.status === SOCKET_STATUS.OPEN && state.worker) {
-                state.worker.send(JSON.stringify(message));
+                state.worker.send(message);
             }
         },
         connectKodi: function ({state}) {
-            console.log('connect')
-            state.worker.connect('ws://192.168.1.8:9090/jsonrpc');
+            state.worker.connect(KODI_URL);
         },
         disconnectKodi: function ({state}) {
             state.worker.disconnect();

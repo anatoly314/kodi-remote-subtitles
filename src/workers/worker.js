@@ -2,6 +2,7 @@ import WebSocketExtended from './websocket.extended';
 import WORKER_MESSAGES from '../enums/worker.messages';
 
 let socket;
+let pollingInterval;
 
 function _initListeners () {
     socket.onstate = function () {
@@ -14,8 +15,19 @@ function _initListeners () {
     }
 }
 
+export function togglePollingGetCurrentTime(message) {
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+        pollingInterval = null;
+    } else {
+        pollingInterval = setInterval(() => {
+            send(message);
+        }, 200);
+    }
+}
+
 export function send(message) {
-    socket.send(message);
+    socket.send(JSON.stringify(message));
 }
 
 

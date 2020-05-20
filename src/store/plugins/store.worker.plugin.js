@@ -13,11 +13,9 @@ function _processKodiMessages(store, message) {
 }
 
 export default function createWorkerPlugin (worker) {
-    console.log(SOCKET_STATUS);
     return store => {
         store.commit('socket/INIT_WORKER', worker);
         worker.onmessage = e => {
-            console.log('plugin message', e.data);
             const messageType = e.data[0];
             const messageValue = e.data[1];
 

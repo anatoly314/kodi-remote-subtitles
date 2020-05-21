@@ -18,14 +18,27 @@
     // eslint-disable-next-line no-unused-vars
     import { parse, stringify, stringifyVtt, resync, toMS, toSrtTime, toVttTime } from 'subtitle';
 
+    const SEARCH_STATUS = Object.freeze({
+        FORWARD: 'FORWARD',
+        BACKWARD: 'BACKWARD',
+        FOUND: 'FOUND'
+    })
+
     export default {
         name: 'App',
         data() {
             return {
                 columnDefs: null,
                 defaultColDef: null,
-                rowData: null
+                rowData: null,
+                shownSubtitleIndex: -1
             }
+        },
+        watch: {
+            currentPlayTimeInMilliseconds() {
+              // console.log(oldValue, newValue);
+              this.scrollTo(this.currentSubtitleIndex);
+          }
         },
         computed: {
           ...mapGetters('subtitles', [
@@ -35,14 +48,46 @@
                 'status',
                 'currentPlayTime',
                 'currentPlayTimeInMilliseconds'
-            ])
+            ]),
+            currentSubtitleIndex () {
+              if (!this.originalSubtitles) {
+                  return this.shownSubtitleIndex;
+              }
+              const self = this;
+              function getSearchDirection() {
+                  if(self.shownSubtitleIndex === -1) { //We at the beginning of subtitles
+                      return SEARCH_STATUS.FORWARD;
+                  } else if (self.currentPlayTimeInMilliseconds > self.originalSubtitles[self.shownSubtitleIndex].start){
+                      return SEARCH_STATUS.FORWARD;
+                  } else if (self.currentPlayTimeInMilliseconds < self.originalSubtitles[self.shownSubtitleIndex].start){
+                      return SEARCH_STATUS.BACKWARD;
+                  }
+              }
+
+              let searching = true;
+              const searchStatus = getSearchDirection();
+              let currentSubtitleIndex = this.shownSubtitleIndex + 1;
+              if (searchStatus === SEARCH_STATUS.FORWARD) {
+                  while (searching) {
+                      const currentSubStart = this.originalSubtitles[currentSubtitleIndex].start;
+                      const currentSubEnd = this.originalSubtitles[currentSubtitleIndex].end;
+                      if (currentSubStart >= this.currentPlayTimeInMilliseconds && this.currentPlayTimeInMilliseconds <= currentSubEnd){
+                          searching = false;
+                      } else {
+                          currentSubtitleIndex++;
+                      }
+                  }
+              }
+              return currentSubtitleIndex;
+            }
         },
         methods: {
-          scrollTo () {
-              const index = 200;
+          scrollTo (index) {
               this.$refs.table.gridOptions.api.ensureIndexVisible(index, 'middle');
               const rowNode = this.$refs.table.gridOptions.api.getRowNode(index);
-              rowNode.setSelected(true);
+              if (rowNode){
+                  rowNode.setSelected(true);
+              }
           }
         },
         components: {
@@ -85,10 +130,4 @@
     }
 </script>
 <style scoped>
-    /*div /deep/ .ag-root, div /deep/ .ag-cell-focus {*/
-    /*    -webkit-user-select: text;*/
-    /*    -moz-user-select: text;*/
-    /*    -ms-user-select: text;*/
-    /*    user-select: text;*/
-    /*}*/
 </style>

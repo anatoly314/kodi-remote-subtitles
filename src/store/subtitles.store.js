@@ -3,7 +3,7 @@ import { parse } from "subtitle";
 export default {
     namespaced: true,
     state: {
-        originalSubtitles: ''
+        originalSubtitles: null
     },
     getters: {
         originalSubtitles: status => status.originalSubtitles,

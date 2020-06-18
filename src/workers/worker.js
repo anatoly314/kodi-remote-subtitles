@@ -1,8 +1,7 @@
-import WebSocketExtended from './websocket.extended';
+import WebSocketExtended from '../websockets/websocket.extended';
 import WORKER_MESSAGES from '../enums/worker.messages';
 
 let socket;
-let pollingInterval;
 
 function _initListeners () {
     socket.onstate = function () {
@@ -12,17 +11,6 @@ function _initListeners () {
 
     socket.onmessage = function (message) {
         postMessage([WORKER_MESSAGES.KODI_MESSAGE, message.data])
-    }
-}
-
-export function togglePollingGetCurrentTime(message) {
-    if (pollingInterval) {
-        clearInterval(pollingInterval);
-        pollingInterval = null;
-    } else {
-        pollingInterval = setInterval(() => {
-            send(message);
-        }, 200);
     }
 }
 

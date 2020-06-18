@@ -1,4 +1,31 @@
 export default {
+    PING: {
+        jsonrpc: '2.0',
+        method: 'JSONRPC.Ping',
+        id: 'PING'
+    },
+    CURRENT_SPEED: {
+        "jsonrpc": "2.0",
+        "method": "Player.GetProperties",
+        "params": {
+            "playerid": 1,
+            "properties": [
+                "speed"
+            ]
+        },
+        "id": "CURRENT_SPEED"
+    },
+    CURRENT_MOVIE_DETAILS: {
+        "jsonrpc": "2.0",
+        "id": "CURRENT_MOVIE_DETAILS",
+        "method": "Player.GetItem",
+        "params": {
+            "playerid": 1,
+            "properties": [
+                "art"
+            ]
+        }
+    },
     CURRENT_TIME: {
         jsonrpc: '2.0',
         method: 'Player.GetProperties',

@@ -18,12 +18,6 @@
     // eslint-disable-next-line no-unused-vars
     import { parse, stringify, stringifyVtt, resync, toMS, toSrtTime, toVttTime } from 'subtitle';
 
-    const SEARCH_STATUS = Object.freeze({
-        FORWARD: 'FORWARD',
-        BACKWARD: 'BACKWARD',
-        FOUND: 'FOUND'
-    })
-
     export default {
         name: 'App',
         data() {
@@ -53,31 +47,18 @@
               if (!this.originalSubtitles) {
                   return this.shownSubtitleIndex;
               }
-              const self = this;
-              function getSearchDirection() {
-                  if(self.shownSubtitleIndex === -1) { //We at the beginning of subtitles
-                      return SEARCH_STATUS.FORWARD;
-                  } else if (self.currentPlayTimeInMilliseconds > self.originalSubtitles[self.shownSubtitleIndex].start){
-                      return SEARCH_STATUS.FORWARD;
-                  } else if (self.currentPlayTimeInMilliseconds < self.originalSubtitles[self.shownSubtitleIndex].start){
-                      return SEARCH_STATUS.BACKWARD;
-                  }
-              }
 
               let searching = true;
-              const searchStatus = getSearchDirection();
-              let currentSubtitleIndex = this.shownSubtitleIndex + 1;
-              if (searchStatus === SEARCH_STATUS.FORWARD) {
-                  while (searching) {
-                      const currentSubStart = this.originalSubtitles[currentSubtitleIndex].start;
-                      const currentSubEnd = this.originalSubtitles[currentSubtitleIndex].end;
-                      if (currentSubStart >= this.currentPlayTimeInMilliseconds && this.currentPlayTimeInMilliseconds <= currentSubEnd){
-                          searching = false;
-                      } else {
-                          currentSubtitleIndex++;
-                      }
-                  }
-              }
+              let currentSubtitleIndex = this.shownSubtitleIndex === -1 ? 0 : this.shownSubtitleIndex;
+                while (searching) {
+                    const currentSubStart = this.originalSubtitles[currentSubtitleIndex].start;
+                    const currentSubEnd = this.originalSubtitles[currentSubtitleIndex].end;
+                    if (currentSubStart >= this.currentPlayTimeInMilliseconds && this.currentPlayTimeInMilliseconds <= currentSubEnd){
+                        searching = false;
+                    } else {
+                        currentSubtitleIndex++;
+                    }
+                }
               return currentSubtitleIndex;
             }
         },

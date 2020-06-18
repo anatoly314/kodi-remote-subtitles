@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import SOCKET_STATUS from "../enums/socket.status";
-import kodiRequests from './kodi.requests';
+import kodiRequests from '../websockets/kodi.requests';
 
 const KODI_URL = 'ws://192.168.1.8:9090/jsonrpc';
 

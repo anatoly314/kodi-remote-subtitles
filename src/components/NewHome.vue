@@ -99,6 +99,7 @@
                     this.kodi.lastSyncedPlayingTimeMs = (timeInMs + requestDuration); // TODO add coef (requestDuration/2 ???)
                     this.kodi.resyncRequested = false;
                     console.log('current time', time, timeInMs, requestDuration);
+                    this.setCurrentTime();
                 } else if (messageId && messageId === KODI_REQUESTS.PING.id) {
                     const requestDuration = performance.now() - this.networkLatency.pingRequestStart;
                     console.log('pong', message, requestDuration);
@@ -159,26 +160,14 @@
              * Timers
              */
             resyncLoop () {
-                if (this.kodi.lastSyncedPlayingTimeMs) {
-                    const msSinceLastSync = performance.now() - this.kodi.lastSyncedTimestampMs;
-                    this.kodi.currentPlayingTimeMs = this.kodi.lastSyncedPlayingTimeMs + msSinceLastSync;
-                }
-                this.animationFrameId = requestAnimationFrame(this.resyncLoop);
-            },
-            setCurrentTime () {
-                console.log('test');
-                if (this.kodi.lastSyncedTimestampMs && this.kodi.lastSyncedPlayingTimeMs) {
-                    const msSinceLastSync = performance.now() - this.kodi.lastSyncedTimestampMs;
-                    this.kodi.currentPlayingTimeMs = this.kodi.lastSyncedPlayingTimeMs + msSinceLastSync;
-                    this.kodi.msSinceLastSync = msSinceLastSync;
-                }
+                this.setCurrentTime();
                 if (this.kodi.msSinceLastSync > this.timer.resyncRate * 1000 && !this.kodi.resyncRequested) {
                     this.requestCurrentPlayTime();
                 }
-                this.timer.animationFrameId = requestAnimationFrame(this.setCurrentTime);
+                this.timer.animationFrameId = requestAnimationFrame(this.resyncLoop);
             },
             start() {
-                this.timer.animationFrameId = requestAnimationFrame(this.setCurrentTime);
+                this.timer.animationFrameId = requestAnimationFrame(this.resyncLoop);
                 this.requestCurrentPlayTime();
             },
             stop(){
@@ -188,6 +177,13 @@
             /**
              * Helpers
              */
+            setCurrentTime () {
+                if (this.kodi.lastSyncedTimestampMs && this.kodi.lastSyncedPlayingTimeMs) {
+                    const msSinceLastSync = performance.now() - this.kodi.lastSyncedTimestampMs;
+                    this.kodi.currentPlayingTimeMs = this.kodi.lastSyncedPlayingTimeMs + msSinceLastSync;
+                    this.kodi.msSinceLastSync = msSinceLastSync;
+                }
+            },
             resetKodiTimers() {
                 this.kodi.lastSyncedPlayingTimeMs = null;
                 this.kodi.currentPlayingTimeMs = null;

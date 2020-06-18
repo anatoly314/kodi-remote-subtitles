@@ -11,6 +11,7 @@
         </div>
         {{isPlaying}}
         <br>
+        <h1>currentPlayingTime: {{currentPlayingTime}}</h1>
         <div>currentPlayingTimeMs: {{kodi.currentPlayingTimeMs}}</div>
         <div>msSinceLastSync: {{kodi.msSinceLastSync}}</div>
         <div>lastSyncedTimestampMs: {{kodi.lastSyncedTimestampMs}}</div>
@@ -21,6 +22,8 @@
 </template>
 
 <script>
+    import moment from "moment";
+
     const KODI_URL = 'ws://192.168.1.8:9090/jsonrpc';
     import KODI_METHODS from '../enums/kodi.methods';
     import SOCKET_STATUS from '../enums/socket.status';
@@ -32,6 +35,7 @@
         name: 'NewHome',
         data() {
             return {
+                continuousTimeTracking: false,
                 networkLatency: {
                     pingRequestStart: 0,
                     currentPlayTimeRequestStart: 0
@@ -51,7 +55,9 @@
         },
         watch: {
             isPlaying (value) {
-                if (value) {
+                if (!this.continuousTimeTracking) {
+                    return;
+                } else if (value) {
                     this.start();
                 } else {
                     this.stop();
@@ -61,7 +67,16 @@
         computed: {
             ...mapGetters('kodi', [
                 'isPlaying'
-            ])
+            ]),
+            currentPlayingTime () {
+                if (this.kodi.currentPlayingTimeMs) {
+                    const timeZero = moment.utc().startOf('day');
+                    const currentPlayTime = timeZero.add('milliseconds', this.kodi.currentPlayingTimeMs).format( "H:mm:ss:SSS");
+                    return currentPlayTime;
+                } else {
+                    return 0;
+                }
+            }
         },
         mounted() {
         },
@@ -77,11 +92,11 @@
                 const messageId = message.id;
                 const method = message.method;
                 if (messageId && messageId === KODI_REQUESTS.CURRENT_TIME.id) {
-                    const requestDuration = performance.now() - this.networkLatency.currentPlayTimeRequestStart;
                     const time = message.result.time;
                     this.kodi.lastSyncedTimestampMs = performance.now();
                     const timeInMs = this.kodiTimeToMs(time);
-                    this.kodi.lastSyncedPlayingTimeMs = timeInMs; // TODO add coef (requestDuration/2 ???)
+                    const requestDuration = performance.now() - this.networkLatency.currentPlayTimeRequestStart;
+                    this.kodi.lastSyncedPlayingTimeMs = (timeInMs + requestDuration); // TODO add coef (requestDuration/2 ???)
                     this.kodi.resyncRequested = false;
                     console.log('current time', time, timeInMs, requestDuration);
                 } else if (messageId && messageId === KODI_REQUESTS.PING.id) {

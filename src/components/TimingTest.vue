@@ -8,6 +8,7 @@
             <button @click="REQUEST_CURRENT_SPEED">CURRENT_SPEED</button>
             <button @click="TOGGLE_PLAY_PAUSE">TOGGLE_PLAY_PAUSE</button>
             <button @click="INPUT_BACK">INPUT_BACK</button>
+            <button @click="REQUEST_CURRENT_MOVIE_DETAILS">REQUEST_CURRENT_MOVIE_DETAILS</button>
         </div>
         <div>
             connectionState: {{connectionState}}

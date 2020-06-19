@@ -1,5 +1,3 @@
-import moment from "moment";
-
 import SOCKET_STATE from '../enums/socket.states';
 import {
     connect,
@@ -18,17 +16,13 @@ export default {
         url: 'ws://192.168.1.8:9090/jsonrpc',
         isPlaying: false,
         connectionState: SOCKET_STATE.CLOSED,
-        currentPlayTime: moment.utc().startOf('day')
+        currentPlayTimeInMilliseconds: 0
     },
     getters: {
         connectionState: state => state.connectionState,
         isPlaying: state => state.isPlaying,
         currentPlayTime: state => state.currentPlayTime,
-        currentPlayTimeInMilliseconds: state => {
-            const startOfTheDay = state.currentPlayTime.clone().startOf('day');
-            const diffMilliseconds = state.currentPlayTime.diff(startOfTheDay, 'milliseconds');
-            return diffMilliseconds;
-        }
+        currentPlayTimeInMilliseconds: state => state.currentPlayTimeInMilliseconds
     },
     actions: {
         async PING () {
@@ -68,7 +62,6 @@ export default {
             }
         },
         ON_MESSAGE ({ commit }, message) {
-            // const messageId = message.id;
             const method = message.method;
             if (method && method === KODI_METHODS["Player.OnPause"]) {
                 commit('SET_PLAYING_STATUS', false);

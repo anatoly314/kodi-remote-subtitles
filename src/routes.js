@@ -1,12 +1,12 @@
 import Home from "./components/Home";
-import NewHome from "./components/NewHome";
+// import NewHome from "./components/NewHome";
 import HelloWorld from "./components/HelloWorld";
 import TimingTest from "./components/TimingTest";
 
 export const routes = [
     {
         path: '',
-        component: NewHome
+        component: TimingTest
     },
     {
         path: '/home',

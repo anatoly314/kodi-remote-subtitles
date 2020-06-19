@@ -1,27 +1,36 @@
 <template>
     <div>
-        Timing
-        {{currentTime}}
-        <button @click="start">Start</button>
-        <button @click="stop">Stop</button>
+        <div>
+            New Home
+            <button @click="CONNECT">CONNECT</button>
+            <button @click="DISCONNECT">DISCONNECT</button>
+            <button @click="PING">PING</button>
+<!--            <button @click="disconnect">Disconnect</button>-->
+<!--            <button @click="togglePlayPause">togglePlayPause</button>-->
+<!--            <button @click="inputBack">inputBack</button>-->
+<!--            <button @click="ping">ping</button>-->
+<!--            <button @click="requestCurrentPlayTime">requestCurrentPlayTime</button>-->
+        </div>
+<!--        {{isPlaying}}-->
+        <br>
+<!--        <h1>currentPlayingTime: {{currentPlayingTime}}</h1>-->
+<!--        <div>currentPlayingTimeMs: {{kodi.currentPlayingTimeMs}}</div>-->
+<!--        <div>msSinceLastSync: {{kodi.msSinceLastSync}}</div>-->
+<!--        <div>lastSyncedTimestampMs: {{kodi.lastSyncedTimestampMs}}</div>-->
+<!--        <div>lastSyncedPlayingTimeMs: {{kodi.lastSyncedPlayingTimeMs}}</div>-->
     </div>
+
 
 </template>
 
 <script>
 
+    import { mapActions } from 'vuex';
+
     export default {
         name: 'App',
         data() {
             return {
-                animationFrameId: null,
-                resyncRate: 60, //seconds
-                kodi: {
-                    lastSyncedPlayingTimeMs : null,   // playing time received from KODI
-                    lastSyncedTimestampMs: null, // when this time was received (performance.now)
-                    currentPlayingTimeMs: null // current playing time
-                }
-
             }
         },
         watch: {
@@ -29,26 +38,27 @@
         computed: {
         },
         mounted() {
-            const t1 = performance.now();
-            console.log(t1);
+
         },
         methods: {
-            resyncLoop () {
-                if (this.kodi.lastSyncedPlayingTimeMs) {
-                    const msSinceLastSync = performance.now() - this.kodi.lastSyncedTimestampMs;
-                    this.kodi.currentPlayingTimeMs = this.kodi.lastSyncedPlayingTimeMs + msSinceLastSync;
-                }
-                this.animationFrameId = requestAnimationFrame(this.resyncLoop);
+            ...mapActions('kodi', [
+                'CONNECT',
+                'DISCONNECT',
+                'PING'
+            ]),
+            /**
+             * Callbacks
+             */
+            onKodiMessage (message) {
+                console.log('message', message);
             },
-            setCurrentTime () {
-                this.currentTime = Date.now();
-                this.animationFrameId = requestAnimationFrame(this.setCurrentTime);
+            onConnectionStateChange (state) {
+                console.log('state', state);
             },
-            start() {
-                this.animationFrameId = requestAnimationFrame(this.setCurrentTime);
-            },
-            stop(){
-                cancelAnimationFrame(this.animationFrameId);
+            /**
+             * Kodi actions
+             */
+            connect () {
             }
         },
         components: {

@@ -19,7 +19,7 @@ function _initListeners () {
         const messageId = message.id;
         if (delayedResponseBag[messageId]) {    // user initiated action
             const duration = performance.now() - delayedResponseBag[messageId].started;
-            message.duration = duration;
+            message.__duration = duration;
             delayedResponseBag[messageId].resolve(message);
         } else if (kodiMessageCallback) {       // player initiated action
             kodiMessageCallback(message);
@@ -49,10 +49,9 @@ export function disconnect() {
  * Kodi commands
  */
 
-export function ping () {
-    const request = KODI_REQUESTS.PING;
+export function sendAsyncRequest (request) {
     const delayedResponse = new Promise((resolve, reject) => {
-      delayedResponseBag[KODI_REQUESTS.PING.id] = {
+      delayedResponseBag[request.id] = {
           resolve: resolve,
           reject: reject,
           started: performance.now()
@@ -62,26 +61,14 @@ export function ping () {
     return delayedResponse;
 }
 
-export function currentSpeed () {
+export const ping = sendAsyncRequest.bind(null, KODI_REQUESTS.PING);
+export const requestCurrentSpeed = sendAsyncRequest.bind(null, KODI_REQUESTS.CURRENT_SPEED);
+export const requestCurrentMovieDetails = sendAsyncRequest.bind(null, KODI_REQUESTS.CURRENT_MOVIE_DETAILS);
+export const requestCurrentTime = sendAsyncRequest.bind(null, KODI_REQUESTS.CURRENT_TIME);
+export const inputBack = sendAsyncRequest.bind(null, KODI_REQUESTS.INPUT_BACK);
+export const togglePlayPause = sendAsyncRequest.bind(null, KODI_REQUESTS.TOGGLE_PLAY_PAUSE);
 
-}
-
-export function currentMovieDetails () {
-
-}
-
-export function currentTime () {
-
-}
 
 export function changeToDeltaMs () {
-
-}
-
-export function inputBack () {
-
-}
-
-export function togglePlayPause () {
 
 }

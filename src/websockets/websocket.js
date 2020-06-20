@@ -1,10 +1,27 @@
 import WebSocketExtended from './websocket.extended';
 import KODI_REQUESTS from './kodi.requests';
 
+const RESPONSE_TIMEOUT = 5000; //ms
+let timeoutIntervalId;
+let delayedResponseBag = {};
+
 let socket;
 let kodiMessageCallback;
 let kodiConnectionStateCallback;
-let delayedResponseBag = {};
+
+function _delayedResponseBagTimeoutMonitor() {
+    const keys = Object.keys(delayedResponseBag);
+    keys.forEach(key => {
+        const now = performance.now();
+        const strated = delayedResponseBag[key].started;
+        if (now - strated > RESPONSE_TIMEOUT) {
+            const reject = delayedResponseBag[key].reject;
+            const error = Error(`Timeout of ${RESPONSE_TIMEOUT}ms for request ${key} expired`);
+            reject(error);
+            delete delayedResponseBag[key];
+        }
+    });
+}
 
 function _initListeners () {
     socket.onstate = function () {
@@ -21,6 +38,7 @@ function _initListeners () {
             const duration = performance.now() - delayedResponseBag[messageId].started;
             message.__duration = duration;
             delayedResponseBag[messageId].resolve(message);
+            delete delayedResponseBag[messageId];
         } else if (kodiMessageCallback) {       // player initiated action
             kodiMessageCallback(message);
         }
@@ -39,9 +57,11 @@ export function connect(url, messageCallback, connectionStateCallback) {
     }
     socket = new WebSocketExtended(url);
     _initListeners();
+    timeoutIntervalId = setInterval(_delayedResponseBagTimeoutMonitor, RESPONSE_TIMEOUT);
 }
 
 export function disconnect() {
+    clearInterval(timeoutIntervalId);
     socket.close();
 }
 
@@ -67,8 +87,6 @@ export const requestCurrentMovieDetails = sendAsyncRequest.bind(null, KODI_REQUE
 export const requestCurrentTime = sendAsyncRequest.bind(null, KODI_REQUESTS.CURRENT_TIME);
 export const inputBack = sendAsyncRequest.bind(null, KODI_REQUESTS.INPUT_BACK);
 export const togglePlayPause = sendAsyncRequest.bind(null, KODI_REQUESTS.TOGGLE_PLAY_PAUSE);
-
-
 export function changeToDeltaMs () {
 
 }

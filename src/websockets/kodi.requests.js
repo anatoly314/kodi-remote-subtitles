@@ -61,5 +61,14 @@ export default {
             playerid: 1
         },
         id: 'TOGGLE_PLAY_PAUSE'
+    },
+    TOGGLE_SUBTITLES: {
+        jsonrpc: "2.0",
+        method: "Player.SetSubtitle",
+        params: {
+            playerid: 1,
+            subtitle: null,
+        },
+        id: "SET_SUBTITLE"
     }
 }

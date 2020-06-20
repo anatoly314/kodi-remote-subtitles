@@ -87,6 +87,17 @@ export const requestCurrentMovieDetails = sendAsyncRequest.bind(null, KODI_REQUE
 export const requestCurrentTime = sendAsyncRequest.bind(null, KODI_REQUESTS.CURRENT_TIME);
 export const inputBack = sendAsyncRequest.bind(null, KODI_REQUESTS.INPUT_BACK);
 export const togglePlayPause = sendAsyncRequest.bind(null, KODI_REQUESTS.TOGGLE_PLAY_PAUSE);
-export function changeToDeltaMs () {
-
+export function setPlayingToTime (hours, minutes, seconds, milliseconds) {
+    const request = KODI_REQUESTS.CHANGE_TO_DELTA_MS;
+    request.params.value.hours = hours;
+    request.params.value.minutes = minutes;
+    request.params.value.seconds = seconds;
+    request.params.value.milliseconds = milliseconds;
+    return sendAsyncRequest(request);
 }
+export function toggleSubtitles (isSubtitleOn) {
+    const request = KODI_REQUESTS.TOGGLE_SUBTITLES;
+    request.params.subtitle = isSubtitleOn ? "on" : "off"
+    return sendAsyncRequest(request);
+}
+

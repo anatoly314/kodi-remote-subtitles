@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import SOCKET_STATE from '../enums/socket.states';
 import {
     connect,
@@ -6,7 +8,9 @@ import {
     requestCurrentSpeed,
     requestCurrentMovieDetails,
     requestCurrentTime,
-    inputBack, togglePlayPause
+    inputBack, togglePlayPause,
+    toggleSubtitles,
+    setPlayingToTime
 } from '../websockets/websocket';
 import KODI_METHODS from "../enums/kodi.methods";
 
@@ -28,6 +32,14 @@ export default {
         /**
          * BASIC KODI ACTIONS
          */
+        CONNECT ({ state, dispatch }) {
+            const onMessage = dispatch.bind(null, 'ON_MESSAGE');
+            const onConnectionChange = dispatch.bind(null, 'ON_CONNECTION_STATE_CHANGES');
+            connect(state.url, onMessage, onConnectionChange);
+        },
+        DISCONNECT () {
+            disconnect();
+        },
         async PING () {
             const response = await ping();
             console.log(response);
@@ -40,6 +52,16 @@ export default {
         async REQUEST_CURRENT_MOVIE_DETAILS () {
             const response = await requestCurrentMovieDetails();
             console.log(response);
+        },
+        async CHANGE_TO_DELTA_MS ({ state, dispatch }, deltaSeconds) {
+            await dispatch('SYNC_PLAYING_TIME');
+            const currentPlayingTime = moment.duration(state.currentPlayTimeInMilliseconds, 'milliseconds');
+            const newPlayingTime = currentPlayingTime.clone().add(deltaSeconds, 'seconds');
+            const hours = newPlayingTime.hours();
+            const minutes = newPlayingTime.minutes();
+            const seconds = newPlayingTime.seconds();
+            const milliseconds = newPlayingTime.milliseconds();
+            await setPlayingToTime(hours, minutes, seconds, milliseconds);
         },
         async REQUEST_CURRENT_TIME () {
             const response = await requestCurrentTime();
@@ -56,13 +78,29 @@ export default {
         TOGGLE_PLAY_PAUSE () {
             togglePlayPause();
         },
-        CONNECT ({ state, dispatch }) {
-            const onMessage = dispatch.bind(null, 'ON_MESSAGE');
-            const onConnectionChange = dispatch.bind(null, 'ON_CONNECTION_STATE_CHANGES');
-            connect(state.url, onMessage, onConnectionChange);
+        /**
+         * COMPOSED KODI ACTIONS
+         */
+        async MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES ({dispatch}, deltaSeconds) {
+          await dispatch('TURN_SUBTITLES_ON');
+          await dispatch('CHANGE_TO_DELTA_MS', -deltaSeconds);
         },
-        DISCONNECT () {
-            disconnect();
+        async SYNC_PLAYING_STATUS ({ dispatch, commit, state }) {
+            if (state.connectionState !== SOCKET_STATE.OPEN) {
+                commit('SET_PLAYING_STATUS', false);
+                return;
+            }
+
+            const playingSpeed = await dispatch('REQUEST_CURRENT_SPEED');
+            if (playingSpeed === 0) {
+                commit('SET_PLAYING_STATUS', false);
+            } else {
+                commit('SET_PLAYING_STATUS', true);
+            }
+        },
+        async SYNC_PLAYING_TIME({ dispatch, commit }) {
+            const currentPlayingTimeMs = await dispatch('REQUEST_CURRENT_TIME');
+            commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs)
         },
         /**
          * KODI CALLBACKS
@@ -89,25 +127,11 @@ export default {
                 dispatch('SYNC_PLAYING_TIME');
             }
         },
-        /**
-         * COMPOSED KODI ACTIONS
-         */
-        async SYNC_PLAYING_STATUS ({ dispatch, commit, state }) {
-            if (state.connectionState !== SOCKET_STATE.OPEN) {
-                commit('SET_PLAYING_STATUS', false);
-                return;
-            }
-
-            const playingSpeed = await dispatch('REQUEST_CURRENT_SPEED');
-            if (playingSpeed === 0) {
-              commit('SET_PLAYING_STATUS', false);
-            } else {
-              commit('SET_PLAYING_STATUS', true);
-            }
+        async TURN_SUBTITLES_ON () {
+            await toggleSubtitles(true);
         },
-        async SYNC_PLAYING_TIME({ dispatch, commit }) {
-            const currentPlayingTimeMs = await dispatch('REQUEST_CURRENT_TIME');
-            commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs)
+        async TURN_SUBTITLES_OFF () {
+            await toggleSubtitles(false);
         }
     },
     mutations:{

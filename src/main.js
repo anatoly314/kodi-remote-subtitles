@@ -7,10 +7,15 @@ import { routes } from './routes';
 import store from './store'
 import vuetify from './vuetify';
 
-
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(Vuex);
+
+Vue.use({
+  install: (Vue) => {
+    Vue.prototype.$bus = new Vue();
+  }
+});
 
 
 const router = new VueRouter({

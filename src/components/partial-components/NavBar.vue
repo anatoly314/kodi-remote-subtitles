@@ -1,18 +1,22 @@
 <template>
     <div>
-        <v-card
-                color="grey lighten-4"
-                flat
-                height="200px"
-                tile
+        <v-app-bar
+                dense
         >
-            <v-toolbar dense>
-                <v-app-bar-nav-icon @click.stop="drawer = !drawer">
-                </v-app-bar-nav-icon>
+            <v-btn icon  @click.stop="drawer = !drawer">
+                <v-icon>fa-bars</v-icon>
+            </v-btn>
 
-                <v-toolbar-title>Kodi Remote Subtitles</v-toolbar-title>
-            </v-toolbar>
-        </v-card>
+            <v-toolbar-title>
+                Kodi Remote Subtitles
+            </v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <v-btn icon @click="openSettings">
+                <v-icon :color="isConnected ? 'primary' : 'red'">fa-cog</v-icon>
+            </v-btn>
+        </v-app-bar>
 
         <v-navigation-drawer
                 v-model="drawer"
@@ -47,8 +51,12 @@
 
 <script>
 
+    import { ENV_CHECKER } from "../../mixins/helpers";
+    import SOCKET_STATES from "../../enums/socket.states";
+    import { mapGetters } from 'vuex';
     export default {
         name: 'NavBar',
+        mixins: [ ENV_CHECKER ],
         data () {
           return {
               drawer: null,
@@ -70,6 +78,19 @@
                   },
               ]
           }
+        },
+        computed: {
+            ...mapGetters('kodi', [
+                'connectionState'
+            ]),
+            isConnected () {
+                return this.connectionState === SOCKET_STATES.OPEN;
+            }
+        },
+        methods: {
+            openSettings () {
+                this.$bus.$emit('settings-modal:open');
+            }
         },
         components: {
         }

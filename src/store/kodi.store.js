@@ -17,12 +17,13 @@ import KODI_METHODS from "../enums/kodi.methods";
 export default {
     namespaced: true,
     state: {
-        url: 'ws://192.168.1.8:9090/jsonrpc',
+        kodiIpPort: null,
         isPlaying: false,
         connectionState: SOCKET_STATE.CLOSED,
         currentPlayTimeInMilliseconds: 0
     },
     getters: {
+        getKodiIpPort: state => state.kodiIpPort,
         connectionState: state => state.connectionState,
         isPlaying: state => state.isPlaying,
         currentPlayTime: state => state.currentPlayTime,
@@ -33,9 +34,10 @@ export default {
          * BASIC KODI ACTIONS
          */
         CONNECT ({ state, dispatch }) {
+            const url = `ws://${state.kodiIpPort}/jsonrpc`;
             const onMessage = dispatch.bind(null, 'ON_MESSAGE');
             const onConnectionChange = dispatch.bind(null, 'ON_CONNECTION_STATE_CHANGES');
-            connect(state.url, onMessage, onConnectionChange);
+            connect(url, onMessage, onConnectionChange);
         },
         DISCONNECT () {
             disconnect();
@@ -143,6 +145,9 @@ export default {
         },
         SET_CONNECTION_STATE(state, value) {
             state.connectionState = value;
+        },
+        SET_KODI_IP_PORT(state, value) {
+            state.kodiIpPort = value;
         }
     }
 }

@@ -18,6 +18,7 @@
             <button @click="TURN_SUBTITLES_OFF">TURN_SUBTITLES_OFF</button>
             <button @click="MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES(15)">Composed backward</button>
 
+
         </div>
         <div>
             connectionState: {{connectionState}}
@@ -43,6 +44,9 @@
             }
         },
         watch: {
+            connectionState (state) {
+                console.log('state', state);
+            }
         },
         computed: {
             ...mapGetters('kodi', [
@@ -52,9 +56,9 @@
             ])
         },
         mounted() {
-            document.addEventListener("visibilitychange", () => {
-                console.log('Changed', this.connectionState);
-            });
+            // document.addEventListener("visibilitychange", () => {
+            //     console.log('Changed', this.connectionState);
+            // });
         },
         methods: {
             ...mapActions('kodi', [
@@ -70,13 +74,12 @@
                 'TURN_SUBTITLES_OFF',
                 'CHANGE_TO_DELTA_MS',
                 'MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES'
-            ])
+            ]),
+            pageVisible () {
+                // console.log('pageVisible', this.connectionState);
+            }
         },
         components: {
-        },
-        beforeMount() {
-        },
-        beforeDestroy() {
         }
     }
 </script>

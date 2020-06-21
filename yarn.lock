@@ -1581,13 +1581,6 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.9.1.tgz#7e33d8f7d449b3f673cd72deb9abdc552dbe528e"
   integrity sha512-wMHVg2EOHaMRxbzgFJ9gtjOOCrI80OHLG14rxi28XwOW8ux6IiEbRCGGGqCtdAIg4FQCbW20k9RsT4y3gJlFug==
 
-axios@^0.19.2:
-  version "0.19.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.19.2.tgz#3ea36c5d8818d0d5f8a8a97a6d36b86cdc00cb27"
-  integrity sha512-fjgm5MvRHLhx+osE2xoekY70AhARk3a6hkN+3Io1jc00jtquGvxYlKlsFUhmUET0V5te6CcZI7lcv2Ym61mjHA==
-  dependencies:
-    follow-redirects "1.5.10"
-
 babel-eslint@^10.1.0:
   version "10.1.0"
   resolved "https://registry.yarnpkg.com/babel-eslint/-/babel-eslint-10.1.0.tgz#6968e568a910b78fb3779cdd8b6ac2f479943232"
@@ -2689,13 +2682,6 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   dependencies:
     ms "2.0.0"
 
-debug@=3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
-  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
-  dependencies:
-    ms "2.0.0"
-
 debug@^3.0.0, debug@^3.1.1, debug@^3.2.5:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
@@ -3603,13 +3589,6 @@ flush-write-stream@^1.0.0:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
-
-follow-redirects@1.5.10:
-  version "1.5.10"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
-  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
-  dependencies:
-    debug "=3.1.0"
 
 follow-redirects@^1.0.0:
   version "1.11.0"
@@ -6908,11 +6887,6 @@ simple-swizzle@^0.2.2:
   dependencies:
     is-arrayish "^0.3.1"
 
-simple-web-worker@1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/simple-web-worker/-/simple-web-worker-1.2.0.tgz#2deffd0998976b824b141a27ce504d31d0d99108"
-  integrity sha1-Le/9CZiXa4JLFBonzlBNMdDZkQg=
-
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
@@ -7874,10 +7848,10 @@ vue-loader@^15.9.1:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-native-websocket@^2.0.14:
-  version "2.0.14"
-  resolved "https://registry.yarnpkg.com/vue-native-websocket/-/vue-native-websocket-2.0.14.tgz#fddb56f9f93d2ecc861486ee3c8f29506ea2a168"
-  integrity sha512-oK8+xG1gmqRs4JngHGwEc4zWoRjsdMB20Sz8pemkh4lW2Vr2676/cDRtd30aGnO2xF7Oxf003wS5JO0kypUsCw==
+vue-page-visibility-awesome@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vue-page-visibility-awesome/-/vue-page-visibility-awesome-1.0.3.tgz#2506830101e95c39aca11cd758e60588492fd2f9"
+  integrity sha512-+q4fvzBrcK6A0BJMugRtFeZC92CcqJgB4d7+iP5qBsp/6HyI/gwV02PpBMmlgWO0i1vcy8FiEaczuyvGDuRfmQ==
 
 vue-property-decorator@^8.4.2:
   version "8.4.2"
@@ -7911,13 +7885,6 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
-
-vue-worker@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/vue-worker/-/vue-worker-1.2.1.tgz#deae14b98a9d89daabb20e7fc6190642849b6d93"
-  integrity sha1-3q4UuYqdidqrsg5/xhkGQoSbbZM=
-  dependencies:
-    simple-web-worker "1.2.0"
 
 vue@^2.6.11:
   version "2.6.11"
@@ -8132,13 +8099,6 @@ worker-farm@^1.7.0:
   integrity sha512-rvw3QTZc8lAxyVrqcSGVm5yP/IJ2UcB3U0graE3LCFoZ0Yn2x4EoVSqJKdB/T5M+FLcRPjz4TDacRf3OCfNUzw==
   dependencies:
     errno "~0.1.7"
-
-workerize-loader@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/workerize-loader/-/workerize-loader-1.2.1.tgz#9edec2720440dcb34be2e1941e10f7c929c54261"
-  integrity sha512-EYfLPfIh5DngHj+KR67/e2SlburVgnTJb4lpTd66/CCtEEqEWPW9BU9UThEbkUA4HFTDwQZv9FfYhLTVqKGKPg==
-  dependencies:
-    loader-utils "^1.2.3"
 
 wrap-ansi@^5.1.0:
   version "5.1.0"

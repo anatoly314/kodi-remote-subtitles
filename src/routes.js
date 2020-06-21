@@ -1,23 +1,28 @@
 import Home from "./components/Home";
-// import NewHome from "./components/NewHome";
-import HelloWorld from "./components/HelloWorld";
-import TimingTest from "./components/TimingTest";
+import Advanced from "./components/Advanced";
+import Basic from "./components/Basic";
+import Settings from "./components/Settings";
+import Template from "./components/Template";
 
 export const routes = [
     {
         path: '',
-        component: TimingTest
-    },
-    {
-        path: '/home',
         component: Home
     },
     {
-        path: '/world',
-        component: HelloWorld
+        path: '/basic',
+        component: Basic
     },
     {
-        path: '/time',
-        component: TimingTest
+        path: '/advanced',
+        component: Advanced
+    },
+    {
+        path: '/settings',
+        component: Settings
+    },
+    {
+        path: '/template',
+        component: Template
     }
 ];

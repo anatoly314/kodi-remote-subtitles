@@ -15,6 +15,7 @@
     <button @click="togglePlayPause">Toggle Play/Pause</button>
     <button @click="backButton">Back</button>
     <button @click="getCurrentTime">Get current time</button>
+    <button @click="togglePollingGetCurrentTime">Toggle polling current time</button>
     <br>
     <button @click="changeToDeltaSeconds(5)">+5</button>
     <button @click="changeToDeltaSeconds(-5)">-5</button>
@@ -27,38 +28,39 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
-  import SubtitlesTable from "./SubtitlesTable";
+  import SubtitlesTable from "./partial-components/SubtitlesTable";
 
   export default {
-  name: 'HelloWorld',
-  data() {
-    return {
-    }
-  },
-  computed: {
-    ...mapGetters('socket', [
+    name: 'HelloWorld',
+    data() {
+      return {
+      }
+    },
+    computed: {
+      ...mapGetters('socket', [
         'status',
         'currentPlayTime',
         'currentPlayTimeInMilliseconds'
-    ])
-  },
-  methods: {
-    ...mapActions('socket', [
-      'connectKodi',
-      'disconnectKodi',
-      'togglePlayPause',
-      'getCurrentTime',
-      'backButton',
-      'changeToDeltaSeconds'
-    ]),
-    ...mapActions('subtitles', [
-      'addOriginalSubtitles'
-    ])
-  },
-  components: {
-    SubtitlesTable
+      ])
+    },
+    methods: {
+      ...mapActions('socket', [
+        'connectKodi',
+        'disconnectKodi',
+        'togglePlayPause',
+        'getCurrentTime',
+        'backButton',
+        'changeToDeltaSeconds',
+        'togglePollingGetCurrentTime'
+      ]),
+      ...mapActions('subtitles', [
+        'addOriginalSubtitles'
+      ])
+    },
+    components: {
+      SubtitlesTable
+    }
   }
-}
 </script>
 
 <style scoped>

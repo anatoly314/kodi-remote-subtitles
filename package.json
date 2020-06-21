@@ -17,7 +17,7 @@
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.1.6",
     "vuex": "^3.4.0",
-    "vue-page-visibility-awesome": "^1.0.3"
+    "buefy": "^0.8.20"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",

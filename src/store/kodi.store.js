@@ -10,7 +10,8 @@ import {
     requestCurrentTime,
     inputBack, togglePlayPause,
     toggleSubtitles,
-    setPlayingToTime
+    setPlayingToTime,
+    isSubtitlesPlaying
 } from '../websockets/websocket';
 import KODI_METHODS from "../enums/kodi.methods";
 
@@ -80,9 +81,28 @@ export default {
         TOGGLE_PLAY_PAUSE () {
             togglePlayPause();
         },
+        async TURN_SUBTITLES_ON () {
+            await toggleSubtitles(true);
+        },
+        async TURN_SUBTITLES_OFF () {
+            await toggleSubtitles(false);
+        },
+        async IS_SUBTITLES_PLAYING () {
+            const response = await isSubtitlesPlaying();
+            const result = response.result.subtitleenabled;
+            return result;
+        },
         /**
          * COMPOSED KODI ACTIONS
          */
+        async TOGGLE_SUBTITLES ({ dispatch }) {
+            const isSubtitlesPlaying = await dispatch('IS_SUBTITLES_PLAYING');
+            if (isSubtitlesPlaying) {
+                await dispatch('TURN_SUBTITLES_OFF');
+            } else {
+                await dispatch('TURN_SUBTITLES_ON');
+            }
+        },
         async MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES ({dispatch}, deltaSeconds) {
           await dispatch('TURN_SUBTITLES_ON');
           await dispatch('CHANGE_TO_DELTA_MS', -deltaSeconds);
@@ -128,12 +148,6 @@ export default {
             if (connectionState === SOCKET_STATE.OPEN) {
                 dispatch('SYNC_PLAYING_TIME');
             }
-        },
-        async TURN_SUBTITLES_ON () {
-            await toggleSubtitles(true);
-        },
-        async TURN_SUBTITLES_OFF () {
-            await toggleSubtitles(false);
         }
     },
     mutations:{

@@ -70,5 +70,16 @@ export default {
             subtitle: null,
         },
         id: "SET_SUBTITLE"
+    },
+    IS_SUBTITLES_PLAYING: {
+        jsonrpc: "2.0",
+        method: "Player.GetProperties",
+        params: {
+            playerid: 1,
+            properties: [
+                "subtitleenabled"
+            ]
+        },
+        id: "IS_SUBTITLES_PLAYING"
     }
 }

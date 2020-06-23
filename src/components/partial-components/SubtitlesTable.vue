@@ -37,30 +37,7 @@
         computed: {
           ...mapGetters('subtitles', [
               'originalSubtitles'
-          ]),
-            ...mapGetters('socket', [
-                'status',
-                'currentPlayTime',
-                'currentPlayTimeInMilliseconds'
-            ]),
-            currentSubtitleIndex () {
-              if (!this.originalSubtitles) {
-                  return this.shownSubtitleIndex;
-              }
-
-              let searching = true;
-              let currentSubtitleIndex = this.shownSubtitleIndex === -1 ? 0 : this.shownSubtitleIndex;
-                while (searching) {
-                    const currentSubStart = this.originalSubtitles[currentSubtitleIndex].start;
-                    const currentSubEnd = this.originalSubtitles[currentSubtitleIndex].end;
-                    if (currentSubStart >= this.currentPlayTimeInMilliseconds && this.currentPlayTimeInMilliseconds <= currentSubEnd){
-                        searching = false;
-                    } else {
-                        currentSubtitleIndex++;
-                    }
-                }
-              return currentSubtitleIndex;
-            }
+          ])
         },
         methods: {
           scrollTo (index) {

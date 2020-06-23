@@ -1,10 +1,15 @@
 <template>
   <div>
     Home
+    <br>
+    Add original subtitles: <input type="file" @click="addOriginalSubtitles">
+    {{originalSubtitles}}
   </div>
 </template>
 
 <script>
+  import {mapActions, mapGetters} from "vuex";
+
   export default {
     name: 'Home',
     data() {
@@ -12,8 +17,14 @@
       }
     },
     computed: {
+      ...mapGetters('subtitles', [
+        "originalSubtitles"
+      ])
     },
     methods: {
+      ...mapActions('subtitles', [
+        "addOriginalSubtitles"
+      ])
     },
     components: {
     }

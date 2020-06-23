@@ -2,7 +2,16 @@
   <v-app id="app">
     <NavBar/>
     <SettingsDialog/>
-    <router-view class="page" />
+
+    <v-main>
+      <v-container fluid>
+        <router-view/>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      Footer
+    </v-footer>
   </v-app>
 </template>
 
@@ -12,7 +21,9 @@ import SettingsDialog from "./components/SettingsDialog";
 export default {
   name: 'App',
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     NavBar,
+    // eslint-disable-next-line vue/no-unused-components
     SettingsDialog
   }
 }

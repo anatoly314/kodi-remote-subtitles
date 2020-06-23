@@ -53,20 +53,23 @@
             AgGridVue
         },
         beforeMount() {
-            this.columnDefs = [{
+            this.columnDefs = [
+                {
                     headerName: 'Start',
                     field: 'start',
                     cellRenderer: function (params) {
-                        return `${params.value} / ${toSrtTime(params.value)}`;
+                        return `${toSrtTime(params.value)}`;
 
                     }
-                }, {
+                },
+                {
                     headerName: 'End',
                     field: 'end',
                     cellRenderer: function (params) {
-                        return `${params.value} / ${toSrtTime(params.value)}`;
+                        return `${toSrtTime(params.value)}`;
                     }
-                }, {
+                },
+                {
                     headerName: 'Text',
                     autoHeight: true,
                     field: 'text',

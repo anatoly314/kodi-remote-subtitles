@@ -1,6 +1,7 @@
 <template>
     <div style="height: 100%;">
         <v-virtual-scroll
+                ref="virtualScroll"
                 :items="originalSubtitles"
                 :item-height="50"
                 height="300"
@@ -32,6 +33,7 @@
         </v-virtual-scroll>
 
         Add original subtitles: <input type="file" @change="addOriginalSubtitles">
+        <button @click="scrollTo">Scroll To</button>
 
 
     </div>
@@ -59,7 +61,10 @@
         methods: {
             ...mapActions('subtitles', [
                 'addOriginalSubtitles'
-            ])
+            ]),
+            scrollTo () {
+                console.log(this.$refs.virtualScroll);
+            }
         },
         components: {
         }

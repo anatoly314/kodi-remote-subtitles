@@ -49,7 +49,7 @@
         },
         methods: {
             scrollTo () {
-                console.log(this.$refs.scroller);
+                console.log(this.$refs.scroller.scrollToItem(1000));
             }
         },
         components: {

@@ -1,8 +1,6 @@
 <template>
     <div>
-        <v-app-bar
-                dense
-        >
+        <v-app-bar app dense>
             <v-btn icon  @click.stop="drawer = !drawer">
                 <v-icon>fa-bars</v-icon>
             </v-btn>
@@ -18,12 +16,9 @@
             </v-btn>
         </v-app-bar>
 
-        <v-navigation-drawer
-                v-model="drawer"
-                absolute
-                bottom
-                temporary
-        >
+        <v-navigation-drawer app
+                             temporary
+                             v-model="drawer">
             <v-list
                     dense
                     nav
@@ -44,7 +39,6 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
-
         </v-navigation-drawer>
     </div>
 </template>

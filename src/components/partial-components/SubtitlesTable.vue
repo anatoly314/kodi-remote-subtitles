@@ -91,6 +91,7 @@
                     }
                 }, {
                     headerName: 'Text',
+                    autoHeight: true,
                     field: 'text',
                     cellStyle: {
                         'white-space': 'normal',

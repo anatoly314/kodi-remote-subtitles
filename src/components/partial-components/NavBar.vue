@@ -62,9 +62,14 @@
               drawer: null,
               items: [
                   {
-                      title: 'advanced',
-                      icon: 'mdi-view-dashboard',
-                      to: 'advanced'
+                      title: '',
+                      icon: 'mdi-help-box',
+                      to: 'home'
+                  },
+                  {
+                      title: 'home',
+                      icon: 'mdi-help-box',
+                      to: 'home'
                   },
                   {
                       title: 'basic',
@@ -72,9 +77,19 @@
                       to: 'basic'
                   },
                   {
-                      title: 'home',
+                      title: 'advanced table',
+                      icon: 'mdi-view-dashboard',
+                      to: 'advanced-table'
+                  },
+                  {
+                      title: 'advanced list',
+                      icon: 'mdi-view-dashboard',
+                      to: 'advanced-list'
+                  },
+                  {
+                      title: 'dynamic scroller demo',
                       icon: 'mdi-help-box',
-                      to: 'home'
+                      to: 'scroller-demo'
                   },
               ]
           }

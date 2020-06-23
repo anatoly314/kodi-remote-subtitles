@@ -2,7 +2,7 @@
   <v-app id="app">
     <NavBar/>
     <SettingsDialog/>
-    <router-view></router-view>
+    <router-view class="page" />
   </v-app>
 </template>
 
@@ -19,8 +19,23 @@ export default {
 </script>
 
 <style lang="css">
+  @import '../node_modules/vue-virtual-scroller/dist/vue-virtual-scroller.css';
   @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900');
   @import url('https://use.fontawesome.com/releases/v5.0.13/css/all.css');
   @import "../node_modules/ag-grid-community/dist/styles/ag-grid.css";
   @import "../node_modules/ag-grid-community/dist/styles/ag-theme-alpine.css";
+
+  html,
+  body,
+  #app {
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  /*#app,*/
+  /*.page {*/
+  /*  display: flex;*/
+  /*  flex-direction: column;*/
+  /*  align-items: stretch;*/
+  /*}*/
 </style>

@@ -1,8 +1,11 @@
-import Home from "./components/Home";
-import Advanced from "./components/Advanced";
+// import Home from "./components/Home";
+import AdvancedTable from "./components/AdvancedTable";
+import AdvancedList from "./components/AdvancedList";
 import Basic from "./components/Basic";
+import Home from "./components/Home";
 import Settings from "./components/Settings";
 import Template from "./components/Template";
+import DynamicScrollerDemo from "./components/DynamicScrollerDemo";
 
 export const routes = [
     {
@@ -10,12 +13,20 @@ export const routes = [
         component: Home
     },
     {
+        path: '/scroller-demo',
+        component: DynamicScrollerDemo
+    },
+    {
         path: '/basic',
         component: Basic
     },
     {
-        path: '/advanced',
-        component: Advanced
+        path: '/advanced-table',
+        component: AdvancedTable
+    },
+    {
+        path: '/advanced-list',
+        component: AdvancedList
     },
     {
         path: '/settings',

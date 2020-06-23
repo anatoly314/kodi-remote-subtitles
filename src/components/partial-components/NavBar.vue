@@ -67,11 +67,6 @@
                       to: 'home'
                   },
                   {
-                      title: 'home',
-                      icon: 'mdi-help-box',
-                      to: 'home'
-                  },
-                  {
                       title: 'basic',
                       icon: 'mdi-image',
                       to: 'basic'
@@ -87,10 +82,15 @@
                       to: 'advanced-list'
                   },
                   {
+                      title: 'vuetify-virtual-list',
+                      icon: 'mdi-help-box',
+                      to: 'vuetify-virtual-list'
+                  },
+                  {
                       title: 'dynamic scroller demo',
                       icon: 'mdi-help-box',
                       to: 'scroller-demo'
-                  },
+                  }
               ]
           }
         },

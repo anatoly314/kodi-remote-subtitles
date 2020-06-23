@@ -1,10 +1,8 @@
-// import Home from "./components/Home";
 import AdvancedTable from "./components/AdvancedTable";
 import AdvancedList from "./components/AdvancedList";
+import VuetifyVirtualList from "./components/VuetifyVirtualList";
 import Basic from "./components/Basic";
 import Home from "./components/Home";
-import Settings from "./components/Settings";
-import Template from "./components/Template";
 import DynamicScrollerDemo from "./components/DynamicScrollerDemo";
 
 export const routes = [
@@ -29,11 +27,8 @@ export const routes = [
         component: AdvancedList
     },
     {
-        path: '/settings',
-        component: Settings
-    },
-    {
-        path: '/template',
-        component: Template
+        path: '/vuetify-virtual-list',
+        component: VuetifyVirtualList
     }
+
 ];

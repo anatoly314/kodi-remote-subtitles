@@ -1,5 +1,6 @@
 <template>
     <div>
+        <button @click="scrollTo">Scroll TO</button>
         <div class="dynamic-scroller-demo">
             <DynamicScroller
                     ref="scroller"
@@ -47,6 +48,9 @@
             ])
         },
         methods: {
+            scrollTo () {
+                console.log(this.$refs.scroller);
+            }
         },
         components: {
             DynamicScroller,

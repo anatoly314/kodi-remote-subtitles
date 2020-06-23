@@ -4,7 +4,7 @@
     <SettingsDialog/>
 
     <v-main>
-      <v-container fluid>
+      <v-container fluid class="router-container">
         <router-view/>
       </v-container>
     </v-main>
@@ -21,9 +21,7 @@ import SettingsDialog from "./components/SettingsDialog";
 export default {
   name: 'App',
   components: {
-    // eslint-disable-next-line vue/no-unused-components
     NavBar,
-    // eslint-disable-next-line vue/no-unused-components
     SettingsDialog
   }
 }
@@ -42,11 +40,8 @@ export default {
     box-sizing: border-box;
     height: 100%;
   }
-
-  /*#app,*/
-  /*.page {*/
-  /*  display: flex;*/
-  /*  flex-direction: column;*/
-  /*  align-items: stretch;*/
-  /*}*/
+  .router-container{
+    height: 100%;
+    padding: 6px !important;
+  }
 </style>

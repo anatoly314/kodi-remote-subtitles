@@ -27,7 +27,6 @@ export default {
         getKodiIpPort: state => state.kodiIpPort,
         connectionState: state => state.connectionState,
         isPlaying: state => state.isPlaying,
-        currentPlayTime: state => state.currentPlayTime,
         currentPlayTimeInMilliseconds: state => state.currentPlayTimeInMilliseconds
     },
     actions: {
@@ -75,11 +74,11 @@ export default {
             const currentTimeInMs = (((hours * 60 * 60) + (minutes * 60) + seconds) * 1000) + milliseconds;
             return currentTimeInMs;
         },
-        INPUT_BACK () {
-            inputBack();
+        async INPUT_BACK () {
+            await inputBack();
         },
-        TOGGLE_PLAY_PAUSE () {
-            togglePlayPause();
+        async TOGGLE_PLAY_PAUSE () {
+            await togglePlayPause();
         },
         async TURN_SUBTITLES_ON () {
             await toggleSubtitles(true);
@@ -122,7 +121,8 @@ export default {
         },
         async SYNC_PLAYING_TIME({ dispatch, commit }) {
             const currentPlayingTimeMs = await dispatch('REQUEST_CURRENT_TIME');
-            commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs)
+            commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs);
+            return currentPlayingTimeMs;
         },
         /**
          * KODI CALLBACKS

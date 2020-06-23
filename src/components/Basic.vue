@@ -6,12 +6,21 @@
                         :align="'start'"
                         :justify="'center'"
                 >
-                    <v-btn class="mx-2"
-                           dark large color="primary"
-                           title
-                           @click="CHANGE_TO_DELTA_MS(-15)">
-                        <v-icon>fa-backward</v-icon>
-                    </v-btn>
+                    <v-badge
+                            bordered
+                            color="green"
+                            overlap
+                            left
+                            content="-15 sec"
+                            offset-x="40"
+                    >
+                        <v-btn class="mx-2"
+                               dark large color="primary"
+                               title
+                               @click="CHANGE_TO_DELTA_MS(-15)">
+                            <v-icon>fa-backward</v-icon>
+                        </v-btn>
+                    </v-badge>
 
                     <v-btn class="mx-2" dark large
                            @click="TOGGLE_PLAY_PAUSE"
@@ -19,10 +28,19 @@
                         <v-icon v-if="!isPlaying">fa-play</v-icon>
                         <v-icon v-if="isPlaying">fa-pause</v-icon>
                     </v-btn>
-                    <v-btn class="mx-2" dark large color="primary"
-                           @click="CHANGE_TO_DELTA_MS(15)">
-                        <v-icon>fa-forward</v-icon>
-                    </v-btn>
+
+                    <v-badge
+                            bordered
+                            color="green"
+                            overlap
+                            offset-x="40"
+                            content="15 sec"
+                    >
+                        <v-btn class="mx-2" dark large color="primary"
+                               @click="CHANGE_TO_DELTA_MS(15)">
+                            <v-icon>fa-forward</v-icon>
+                        </v-btn>
+                    </v-badge>
                 </v-row>
                 <v-row
                         class="mt-4"

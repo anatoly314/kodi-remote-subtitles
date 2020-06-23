@@ -1,9 +1,9 @@
 <template>
-    <div>
+    <div class="table-container">
         <button @click="scrollTo">Scroll</button>
         <ag-grid-vue style="height: 500px;"
                      ref="table"
-                     class="ag-theme-alpine"
+                     class="ag-theme-alpine subtitles-table"
                      :columnDefs="columnDefs"
                      :defaultColDef="defaultColDef"
                      :rowData="originalSubtitles">
@@ -54,21 +54,21 @@
         },
         beforeMount() {
             this.columnDefs = [
-                {
-                    headerName: 'Start',
-                    field: 'start',
-                    cellRenderer: function (params) {
-                        return `${toSrtTime(params.value)}`;
-
-                    }
-                },
-                {
-                    headerName: 'End',
-                    field: 'end',
-                    cellRenderer: function (params) {
-                        return `${toSrtTime(params.value)}`;
-                    }
-                },
+                // {
+                //     headerName: 'Start',
+                //     field: 'start',
+                //     cellRenderer: function (params) {
+                //         return `${toSrtTime(params.value)}`;
+                //
+                //     }
+                // },
+                // {
+                //     headerName: 'End',
+                //     field: 'end',
+                //     cellRenderer: function (params) {
+                //         return `${toSrtTime(params.value)}`;
+                //     }
+                // },
                 {
                     headerName: 'Text',
                     autoHeight: true,
@@ -92,4 +92,7 @@
     }
 </script>
 <style scoped>
+    .subtitles-table /deep/ .ag-root-wrapper{
+        border: none;
+    }
 </style>

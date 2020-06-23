@@ -17,6 +17,7 @@ function _delayedResponseBagTimeoutMonitor() {
         if (now - strated > RESPONSE_TIMEOUT) {
             const reject = delayedResponseBag[key].reject;
             const error = Error(`Timeout of ${RESPONSE_TIMEOUT}ms for request ${key} expired`);
+            console.error(error);
             reject(error);
             delete delayedResponseBag[key];
         }
@@ -70,14 +71,16 @@ export function disconnect() {
  */
 
 export function sendAsyncRequest (request) {
+    const newRequest = Object.assign({}, request);
     const delayedResponse = new Promise((resolve, reject) => {
-      delayedResponseBag[request.id] = {
+        newRequest.id = `${newRequest.id}-${performance.now()}`;
+        delayedResponseBag[newRequest.id] = {
           resolve: resolve,
           reject: reject,
           started: performance.now()
-      }
+        }
     });
-    send(request);
+    send(newRequest);
     return delayedResponse;
 }
 

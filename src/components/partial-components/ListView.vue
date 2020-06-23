@@ -1,43 +1,41 @@
 <template>
-    <div>
-        <button @click="scrollTo">Scroll TO</button>
-        <div class="dynamic-scroller-demo">
-            <DynamicScroller
-                    ref="scroller"
-                    :items="originalSubtitles"
-                    :min-item-size="54"
-                    class="scroller"
-            >
-                <template v-slot="{ item, index, active }">
-                    <DynamicScrollerItem
-                            :item="item"
-                            :active="active"
-                            :size-dependencies="[item.text]"
-                            :data-index="index"
-                            :data-active="active"
-                            class="message"
-                    >
-                        <div class="text">
-                            {{ item.text }}
-                        </div>
-                        <div class="index">
-                            <span>{{ item.id }} (id)</span>
-                            <span>{{ index }} (index)</span>
-                        </div>
-                    </DynamicScrollerItem>
-                </template>
-            </DynamicScroller>
-        </div>
+    <div class="scroller-container">
+        <DynamicScroller
+                ref="scroller"
+                :items="originalSubtitles"
+                :min-item-size="54"
+                class="scroller"
+        >
+            <template v-slot="{ item, index, active }">
+                <DynamicScrollerItem
+                        :item="item"
+                        :active="active"
+                        :size-dependencies="[item.text]"
+                        :data-index="index"
+                        :data-active="active"
+                        class="message"
+                >
+                    <ListViewItem :display-subtitles-time="displaySubtitlesTime"
+                                  :style="highlightedRow === index ? 'background-color: lightgrey;' : ''"
+                                  :subtitle-row="item"/>
+                </DynamicScrollerItem>
+            </template>
+        </DynamicScroller>
     </div>
 </template>
 
 <script>
     import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+    import ListViewItem from "./ListViewItem";
     import { mapGetters } from 'vuex';
 
     export default {
+        props: {
+            displaySubtitlesTime: Boolean
+        },
         data () {
             return {
+                highlightedRow: -1
             }
         },
         watch: {
@@ -48,65 +46,47 @@
             ])
         },
         methods: {
-            scrollTo () {
-                console.log(this.$refs.scroller.scrollToItem(1000));
+            scrollToTime(timeInMs) {
+                for (let i = 0; i < this.originalSubtitles.length; i++){
+                    const row = this.originalSubtitles[i];
+                    const followingRow = this.originalSubtitles[i + 1];
+                    const start = row.start;
+                    const followingStart = followingRow ? followingRow.start : start + 1;
+                    if (timeInMs >= start && timeInMs <= followingStart) {
+                        this.$refs.scroller.scrollToItem(i);
+                        this.highlightedRow = i;
+                        return;
+                    } else {
+                        this.highlightedRow = -1;
+                    }
+                }
             }
         },
         components: {
             DynamicScroller,
-            DynamicScrollerItem
+            DynamicScrollerItem,
+            ListViewItem
         }
     }
 </script>
 
 <style scoped>
-    .dynamic-scroller-demo,
     .scroller {
-        height: 500px;
+        height: 50vh;
     }
-
-    .dynamic-scroller-demo {
+    .scroller-container {
+        height: 100%;
         overflow: hidden;
+        border: 1px lightgrey solid;
+        border-radius: 3px;
+        padding: 3px;
     }
 
-    .notice {
-        padding: 24px;
-        font-size: 20px;
-        color: #999;
-    }
 
     .message {
         display: flex;
         min-height: 32px;
-        padding: 12px;
         box-sizing: border-box;
-    }
-
-    .avatar {
-        flex: auto 0 0;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        margin-right: 12px;
-    }
-
-    .avatar .image {
-        max-width: 100%;
-        max-height: 100%;
-        border-radius: 50%;
-    }
-
-    .index,
-    .text {
-        flex: 1;
-    }
-
-    .text {
-        max-width: 400px;
-    }
-
-    .index {
-        opacity: .5;
     }
 
     .index span {

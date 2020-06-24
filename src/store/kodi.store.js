@@ -21,13 +21,15 @@ export default {
         kodiIpPort: null,
         isPlaying: false,
         connectionState: SOCKET_STATE.CLOSED,
-        currentPlayTimeInMilliseconds: 0
+        currentPlayTimeInMilliseconds: 0,
+        syncTimestamp: 0
     },
     getters: {
         getKodiIpPort: state => state.kodiIpPort,
         connectionState: state => state.connectionState,
         isPlaying: state => state.isPlaying,
-        currentPlayTimeInMilliseconds: state => state.currentPlayTimeInMilliseconds
+        currentPlayTimeInMilliseconds: state => state.currentPlayTimeInMilliseconds,
+        syncTimestamp: state => state.syncTimestamp
     },
     actions: {
         /**
@@ -142,6 +144,8 @@ export default {
                 commit('SET_PLAYING_STATUS', true);
             } else if (method && method === KODI_METHODS["Player.OnAVStart"]) {
                 commit('SET_PLAYING_STATUS', true);
+            } else if (method && method === KODI_METHODS["Player.OnSeek"]) {
+                dispatch('SYNC_PLAYING_TIME');
             } else {
                 console.log('UNKNOWN MESSAGE', message);
             }
@@ -161,6 +165,7 @@ export default {
         },
         SET_CURRENT_PLAYING_TIME(state, value) {
             state.currentPlayTimeInMilliseconds = value;
+            state.syncTimestamp = performance.now();
         },
         SET_CONNECTION_STATE(state, value) {
             state.connectionState = value;

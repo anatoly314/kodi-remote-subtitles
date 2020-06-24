@@ -3,4 +3,5 @@ export default {
     'Player.OnPause': 'Player.OnPause',
     'Player.OnAVStart': 'Player.OnAVStart',
     'Player.OnStop': 'Player.OnStop',
+    'Player.OnSeek': 'Player.OnSeek'
 }

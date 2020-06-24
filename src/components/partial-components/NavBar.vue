@@ -69,6 +69,11 @@
                       title: 'Advanced View',
                       icon: 'mdi-view-dashboard',
                       to: '/advanced-list'
+                  },
+                  {
+                      title: 'Advanced View Tracking',
+                      icon: 'mdi-view-dashboard',
+                      to: '/advanced-list-tracking'
                   }
               ]
           }

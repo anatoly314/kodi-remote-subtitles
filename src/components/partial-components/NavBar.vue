@@ -56,34 +56,19 @@
               drawer: null,
               items: [
                   {
-                      title: '',
+                      title: 'Home',
                       icon: 'mdi-help-box',
-                      to: 'home'
+                      to: '/'
                   },
                   {
-                      title: 'basic',
+                      title: 'Basic View',
                       icon: 'mdi-image',
-                      to: 'basic'
+                      to: '/basic'
                   },
                   {
-                      title: 'advanced table',
+                      title: 'Advanced View',
                       icon: 'mdi-view-dashboard',
-                      to: 'advanced-table'
-                  },
-                  {
-                      title: 'advanced list',
-                      icon: 'mdi-view-dashboard',
-                      to: 'advanced-list'
-                  },
-                  {
-                      title: 'vuetify-virtual-list',
-                      icon: 'mdi-help-box',
-                      to: 'vuetify-virtual-list'
-                  },
-                  {
-                      title: 'dynamic scroller demo',
-                      icon: 'mdi-help-box',
-                      to: 'scroller-demo'
+                      to: '/advanced-list'
                   }
               ]
           }

@@ -1,15 +1,15 @@
 <template>
     <div class="component-container">
         <ListView ref="listview"
+                  :scroll-to-active-row="gui.scrollToActiveRow"
                   :current-playing-time-ms="calculatedCurrentPlayingTime"
-                  :display-subtitles-time="displaySubtitlesTime">
-
+                  :display-subtitles-time="gui.displaySubtitlesTime">
         </ListView>
         <div class="buttons-container">
-            calculatedCurrentPlayingTime: {{calculatedCurrentPlayingTime}}
-            <br/>
-            currentPlayingTimeHumanReadable: {{currentPlayingTimeHumanReadable}}
-            <div class="row1-buttons">
+            <h2 class="text-center">
+                {{currentPlayingTimeHumanReadable}}
+            </h2>
+            <div class="row-buttons">
                 <v-badge
                         bordered
                         color="green"
@@ -46,7 +46,7 @@
                     </v-btn>
                 </v-badge>
             </div>
-            <div class="row2-buttons">
+            <div class="row-buttons">
                 <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="scrollToCurrentSubtitles">
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
@@ -57,8 +57,11 @@
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
                 </v-btn>
             </div>
-            <div class="row3-buttons">
-                <v-switch v-model="displaySubtitlesTime" :label="`Display time`"></v-switch>
+            <div class="row-buttons">
+                <v-switch v-model="gui.displaySubtitlesTime" :label="`Display time`"></v-switch>
+                <v-switch class="ml-4" v-model="gui.scrollToActiveRow" :label="`Scroll To Active Row`"></v-switch>
+            </div>
+            <div class="row-buttons">
                 <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
                     <v-btn color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
                     <input v-show="false" ref="inputUpload" type="file" @change="addOriginalSubtitles">
@@ -80,9 +83,16 @@
         name: 'App',
         data() {
             return {
-                displaySubtitlesTime: true,
+                gui : {
+                    displaySubtitlesTime: true,
+                    hightlightActiveRow: true
+                },
+                service: {
+                    animationFrame: null,
+                    startedCalculatingTimeAt: 0,
+                    RESYNC_EVERY_SECONDS: 60
+                },
                 calculatedCurrentPlayingTime: 0,
-                animationFrame: null
             }
         },
         watch: {
@@ -135,20 +145,25 @@
             },
             async scrollToCurrentSubtitles () {
                 await this.SYNC_PLAYING_TIME();
-                this.$refs.listview.scrollToTime(this.currentPlayTimeInMilliseconds);
-
+                this.$refs.listview.scrollToPlayingTime(this.currentPlayTimeInMilliseconds);
             },
             calculateTime () {
                 const diffSinceSync = performance.now() - this.syncTimestamp;
                 this.calculatedCurrentPlayingTime = this.currentPlayTimeInMilliseconds + diffSinceSync;
-                this.animationFrame = requestAnimationFrame(this.calculateTime);
+                const secondsSinceStartedCalculating = (performance.now() - this.startedCalculatingTimeAt) / 1000;
+                if (secondsSinceStartedCalculating > this.service.RESYNC_EVERY_SECONDS) {
+                    this.SYNC_PLAYING_TIME();
+                    this.startedCalculatingTimeAt = performance.now();
+                }
+                this.service.animationFrame = requestAnimationFrame(this.calculateTime);
             },
             startCalculateTime () {
-                this.animationFrame = requestAnimationFrame(this.calculateTime);
+                this.service.animationFrame = requestAnimationFrame(this.calculateTime);
+                this.startedCalculatingTimeAt = performance.now();
             },
             stopCalculateTime () {
-                cancelAnimationFrame(this.animationFrame);
-                this.animationFrame = null;
+                cancelAnimationFrame(this.service.animationFrame);
+                this.service.animationFrame = null;
             }
         },
         components: {
@@ -163,16 +178,7 @@
         justify-content: center;
         padding-top: 20px;
     }
-    .row1-buttons{
-        display: flex;
-        justify-content: center;
-    }
-    .row2-buttons{
-        margin-top: 20px;
-        display: flex;
-        justify-content: center;
-    }
-    .row3-buttons{
+    .row-buttons{
         margin-top: 20px;
         display: flex;
         justify-content: center;

@@ -17,7 +17,7 @@
                 >
                     <ListViewItem @click.native="movePlayerTo(item.start)"
                                     :display-subtitles-time="displaySubtitlesTime"
-                                  :style="highlightedRow === index ? 'background-color: lightgrey;' : ''"
+                                  :style="activeRow === index ? 'background-color: lightgrey;' : ''"
                                   :subtitle-row="item"/>
                 </DynamicScrollerItem>
             </template>
@@ -32,19 +32,43 @@
 
     export default {
         props: {
-            displaySubtitlesTime: Boolean
+            displaySubtitlesTime: Boolean,
+            scrollToActiveRow: Boolean,
+            currentPlayingTimeMs: {
+                type: Number,
+                default: 0,
+                required: true
+            }
         },
         data () {
             return {
-                highlightedRow: -1
             }
         },
         watch: {
+            activeRow () {
+                if (this.scrollToActiveRow) {
+                    this.scrollToPlayingTime();
+                }
+            }
         },
         computed: {
             ...mapGetters('subtitles', [
                 "originalSubtitles"
-            ])
+            ]),
+            activeRow () {
+                let activeRow = -1;
+                for (let i = 0; i < this.originalSubtitles.length; i++){
+                    const row = this.originalSubtitles[i];
+                    const followingRow = this.originalSubtitles[i + 1];
+                    const start = row.start;
+                    const followingStart = followingRow ? followingRow.start : start + 1;
+                    if (this.currentPlayingTimeMs >= start && this.currentPlayingTimeMs <= followingStart) {
+                        activeRow = i;
+                        break;
+                    }
+                }
+                return activeRow;
+            }
         },
         methods: {
             ...mapActions('kodi', [
@@ -54,19 +78,10 @@
               console.log('double click', start);
               this.MOVE_TO_SPECIFIC_TIME(start);
             },
-            scrollToTime(timeInMs) {
-                for (let i = 0; i < this.originalSubtitles.length; i++){
-                    const row = this.originalSubtitles[i];
-                    const followingRow = this.originalSubtitles[i + 1];
-                    const start = row.start;
-                    const followingStart = followingRow ? followingRow.start : start + 1;
-                    if (timeInMs >= start && timeInMs <= followingStart) {
-                        this.$refs.scroller.scrollToItem(i);
-                        this.highlightedRow = i;
-                        return;
-                    } else {
-                        this.highlightedRow = -1;
-                    }
+            scrollToPlayingTime() {
+                const activeRow = this.activeRow;
+                if (activeRow > -1) {
+                    this.$refs.scroller.scrollToItem(activeRow);
                 }
             }
         },

@@ -1,6 +1,8 @@
 <template>
     <div class="component-container">
-        <ListView ref="listview" :display-subtitles-time="displaySubtitlesTime"></ListView>
+        <ListView ref="listview"
+                  :current-playing-time-ms="currentPlayTimeInMilliseconds"
+                  :display-subtitles-time="gui.displaySubtitlesTime"></ListView>
         <div class="buttons-container">
             <div class="row1-buttons">
                 <v-badge
@@ -51,7 +53,7 @@
                 </v-btn>
             </div>
             <div class="row3-buttons">
-                <v-switch v-model="displaySubtitlesTime" :label="`Display time`"></v-switch>
+                <v-switch v-model="gui.displaySubtitlesTime" :label="`Display time`"></v-switch>
                 <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
                     <v-btn color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
                     <input v-show="false" ref="inputUpload" type="file" @change="addOriginalSubtitles">
@@ -72,7 +74,9 @@
         name: 'App',
         data() {
             return {
-                displaySubtitlesTime: true
+                gui: {
+                    displaySubtitlesTime: true
+                }
             }
         },
         watch: {
@@ -107,7 +111,7 @@
             },
             async scrollToCurrentSubtitles () {
                 await this.SYNC_PLAYING_TIME();
-                this.$refs.listview.scrollToTime(this.currentPlayTimeInMilliseconds);
+                this.$refs.listview.scrollToPlayingTime();
 
             }
         },

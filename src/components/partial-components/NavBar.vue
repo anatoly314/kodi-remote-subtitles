@@ -10,7 +10,9 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-
+            <v-btn icon @click="CONNECT" v-if="!isConnected">
+                <v-icon color="red">fa-link</v-icon>
+            </v-btn>
             <v-btn icon @click="openSettings">
                 <v-icon :color="isConnected ? 'primary' : 'red'">fa-cog</v-icon>
             </v-btn>
@@ -47,7 +49,7 @@
 
     import { ENV_CHECKER } from "../../mixins/helpers";
     import SOCKET_STATES from "../../enums/socket.states";
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     export default {
         name: 'NavBar',
         mixins: [ ENV_CHECKER ],
@@ -87,6 +89,9 @@
             }
         },
         methods: {
+            ...mapActions('kodi', [
+                'CONNECT'
+            ]),
             openSettings () {
                 this.$bus.$emit('settings-modal:open');
             }

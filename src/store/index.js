@@ -8,7 +8,7 @@ import kodi from './kodi.store';
 Vue.use(Vuex);
 
 const dataState = new createPersistedState({
-    paths: ['kodi.kodiIpPort']
+    paths: ['kodi.kodiIpPort', 'subtitles.originalSubtitles']
 })
 
 export default new Vuex.Store({

@@ -17,7 +17,7 @@
                         <v-btn class="mx-2"
                                dark large color="primary"
                                title
-                               @click="CHANGE_TO_DELTA_MS(-15)">
+                               @click="CHANGE_TO_DELTA_SECONDS(-15)">
                             <v-icon>fa-backward</v-icon>
                         </v-btn>
                     </v-badge>
@@ -37,7 +37,7 @@
                             content="15 sec"
                     >
                         <v-btn class="mx-2" dark large color="primary"
-                               @click="CHANGE_TO_DELTA_MS(15)">
+                               @click="CHANGE_TO_DELTA_SECONDS(15)">
                             <v-icon>fa-forward</v-icon>
                         </v-btn>
                     </v-badge>
@@ -97,7 +97,7 @@
                 'CONNECT',
                 'TOGGLE_PLAY_PAUSE',
                 'INPUT_BACK',
-                'CHANGE_TO_DELTA_MS',
+                'CHANGE_TO_DELTA_SECONDS',
                 'MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES',
                 'TOGGLE_SUBTITLES'
             ])

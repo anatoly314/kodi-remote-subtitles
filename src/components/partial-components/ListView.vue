@@ -15,7 +15,8 @@
                         :data-active="active"
                         class="message"
                 >
-                    <ListViewItem :display-subtitles-time="displaySubtitlesTime"
+                    <ListViewItem @click.native="movePlayerTo(item.start)"
+                                    :display-subtitles-time="displaySubtitlesTime"
                                   :style="highlightedRow === index ? 'background-color: lightgrey;' : ''"
                                   :subtitle-row="item"/>
                 </DynamicScrollerItem>
@@ -27,7 +28,7 @@
 <script>
     import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
     import ListViewItem from "./ListViewItem";
-    import { mapGetters } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         props: {
@@ -46,6 +47,13 @@
             ])
         },
         methods: {
+            ...mapActions('kodi', [
+                'MOVE_TO_SPECIFIC_TIME'
+            ]),
+            movePlayerTo (start) {
+              console.log('double click', start);
+              this.MOVE_TO_SPECIFIC_TIME(start);
+            },
             scrollToTime(timeInMs) {
                 for (let i = 0; i < this.originalSubtitles.length; i++){
                     const row = this.originalSubtitles[i];

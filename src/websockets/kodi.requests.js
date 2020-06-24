@@ -35,9 +35,9 @@ export default {
         },
         id: 'CURRENT_TIME'
     },
-    CHANGE_TO_DELTA_MS: {
+    CHANGE_TO_DELTA_SECONDS: {
         jsonrpc: '2.0',
-        id: 'CHANGE_TO_DELTA_MS',
+        id: 'CHANGE_TO_DELTA_SECONDS',
         method: 'Player.Seek',
         params: {
             value: {

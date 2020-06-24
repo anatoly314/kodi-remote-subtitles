@@ -14,7 +14,7 @@
                     <v-btn class="mx-2"
                            dark large color="primary"
                            title
-                           @click="CHANGE_TO_DELTA_MS(-15)">
+                           @click="CHANGE_TO_DELTA_SECONDS(-15)">
                         <v-icon>fa-backward</v-icon>
                     </v-btn>
                 </v-badge>
@@ -34,7 +34,7 @@
                         content="15 sec"
                 >
                     <v-btn class="mx-2" dark large color="primary"
-                           @click="CHANGE_TO_DELTA_MS(15)">
+                           @click="CHANGE_TO_DELTA_SECONDS(15)">
                         <v-icon>fa-forward</v-icon>
                     </v-btn>
                 </v-badge>
@@ -95,21 +95,18 @@
             ]),
             ...mapActions('kodi', [
                 'TOGGLE_PLAY_PAUSE',
-                'CHANGE_TO_DELTA_MS',
+                'CHANGE_TO_DELTA_SECONDS',
                 'SYNC_PLAYING_TIME',
                 'CONNECT'
             ]),
             async pauseAndScrollToCurrentSubtitles () {
                 if (this.isPlaying) {
                     await this.TOGGLE_PLAY_PAUSE();
-                    await this.scrollToCurrentSubtitles();
-                } else {
-                    await this.scrollToCurrentSubtitles();
                 }
+                await this.scrollToCurrentSubtitles();
             },
             async scrollToCurrentSubtitles () {
-                const result = await this.SYNC_PLAYING_TIME();
-                console.log(result, this.currentPlayTimeInMilliseconds);
+                await this.SYNC_PLAYING_TIME();
                 this.$refs.listview.scrollToTime(this.currentPlayTimeInMilliseconds);
 
             }

@@ -10,7 +10,7 @@
     </v-main>
 
     <v-footer app>
-      Footer
+      (c) Anatoly Tarnavsky
     </v-footer>
   </v-app>
 </template>

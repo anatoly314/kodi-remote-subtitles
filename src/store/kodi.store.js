@@ -55,7 +55,7 @@ export default {
             const response = await requestCurrentMovieDetails();
             console.log(response);
         },
-        async CHANGE_TO_DELTA_MS ({ state, dispatch }, deltaSeconds) {
+        async CHANGE_TO_DELTA_SECONDS ({ state, dispatch }, deltaSeconds) {
             await dispatch('SYNC_PLAYING_TIME');
             const currentPlayingTime = moment.duration(state.currentPlayTimeInMilliseconds, 'milliseconds');
             const newPlayingTime = currentPlayingTime.clone().add(deltaSeconds, 'seconds');
@@ -94,6 +94,12 @@ export default {
         /**
          * COMPOSED KODI ACTIONS
          */
+        async MOVE_TO_SPECIFIC_TIME({ dispatch, state }, timeInMs) {
+            await dispatch('SYNC_PLAYING_TIME');
+            const deltaMs = timeInMs - state.currentPlayTimeInMilliseconds;
+            const deltaSeconds = deltaMs / 1000;
+            await dispatch('CHANGE_TO_DELTA_SECONDS', deltaSeconds);
+        },
         async TOGGLE_SUBTITLES ({ dispatch }) {
             const isSubtitlesPlaying = await dispatch('IS_SUBTITLES_PLAYING');
             if (isSubtitlesPlaying) {
@@ -104,7 +110,7 @@ export default {
         },
         async MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES ({dispatch}, deltaSeconds) {
           await dispatch('TURN_SUBTITLES_ON');
-          await dispatch('CHANGE_TO_DELTA_MS', -deltaSeconds);
+          await dispatch('CHANGE_TO_DELTA_SECONDS', -deltaSeconds);
         },
         async SYNC_PLAYING_STATUS ({ dispatch, commit, state }) {
             if (state.connectionState !== SOCKET_STATE.OPEN) {
@@ -122,7 +128,6 @@ export default {
         async SYNC_PLAYING_TIME({ dispatch, commit }) {
             const currentPlayingTimeMs = await dispatch('REQUEST_CURRENT_TIME');
             commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs);
-            return currentPlayingTimeMs;
         },
         /**
          * KODI CALLBACKS

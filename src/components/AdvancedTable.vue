@@ -47,7 +47,7 @@
                 'SYNC_PLAYING_TIME',
                 'TURN_SUBTITLES_ON',
                 'TURN_SUBTITLES_OFF',
-                'CHANGE_TO_DELTA_MS',
+                'CHANGE_TO_DELTA_SECONDS',
                 'MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES'
             ]),
             pageVisible () {

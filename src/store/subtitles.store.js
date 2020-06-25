@@ -1,6 +1,6 @@
 import { parse } from "subtitle";
+import {download, getSubtitlesListByQuery} from "../utils/opensubtitles";
 
-// eslint-disable-next-line no-unused-vars
 const calculateHash = function(string) {
     let hash = 0, i, chr;
     for (i = 0; i < string.length; i++) {
@@ -20,8 +20,16 @@ export default {
         originalSubtitles: status => status.originalSubtitles,
     },
     actions: {
-        async addOriginalSubtitles ({ commit, dispatch }, event) {
-            let subtitles = await dispatch('uploadFile', event);
+        async GET_SUBTITLES_LIST_BY_QUERY(state, query) {
+            const subtitlesList = await getSubtitlesListByQuery(query);
+            return subtitlesList;
+        },
+        async DOWNLOAD_SUBTITLES_BY_ID (state, id) {
+            const subtitles = await download(id);
+            return subtitles;
+        },
+        async ADD_ORIGINAL_SUBTITLES ({ commit, dispatch }, event) {
+            let subtitles = await dispatch('UPLOAD_FILE', event);
             subtitles = subtitles.map(row => {
                 return {
                     start: row.start,
@@ -32,7 +40,7 @@ export default {
             })
             commit('ADD_ORIGINAL_SUBTITLES', subtitles);
         },
-        async uploadFile (state, event) {
+        async UPLOAD_FILE (state, event) {
             return new Promise((resolve, reject) => {
                 const files = event.target.files || event.dataTransfer.files;
                 if (!files.length) {

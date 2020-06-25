@@ -55,7 +55,12 @@ export default {
         },
         async REQUEST_CURRENT_MOVIE_DETAILS () {
             const response = await requestCurrentMovieDetails();
-            console.log(response);
+            const movieDetails = {
+                filename: response.result['Player.Filename'],
+                title: response.result['Player.Title'],
+                fps: response.result['Player.Process(VideoFPS)']
+            }
+            return movieDetails;
         },
         async CHANGE_TO_DELTA_SECONDS ({ state, dispatch }, deltaSeconds) {
             await dispatch('SYNC_PLAYING_TIME');

@@ -17,14 +17,15 @@ export default {
     },
     CURRENT_MOVIE_DETAILS: {
         "jsonrpc": "2.0",
-        "id": "CURRENT_MOVIE_DETAILS",
-        "method": "Player.GetItem",
-        "params": {
-            "playerid": 1,
-            "properties": [
-                "art"
+        "method": "XBMC.GetInfoLabels",
+        "params": [
+            [
+                "Player.Process(VideoFPS)",
+                "Player.Filename",
+                "Player.Title"
             ]
-        }
+        ],
+        "id": "CURRENT_MOVIE_DETAILS"
     },
     CURRENT_TIME: {
         jsonrpc: '2.0',

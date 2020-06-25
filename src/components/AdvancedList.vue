@@ -56,7 +56,7 @@
                 <v-switch v-model="gui.displaySubtitlesTime" :label="`Display time`"></v-switch>
                 <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
                     <v-btn color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
-                    <input v-show="false" ref="inputUpload" type="file" @change="addOriginalSubtitles">
+                    <input v-show="false" ref="inputUpload" type="file" @change="ADD_ORIGINAL_SUBTITLES">
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
         },
         methods: {
             ...mapActions('subtitles', [
-                'addOriginalSubtitles'
+                'ADD_ORIGINAL_SUBTITLES'
             ]),
             ...mapActions('kodi', [
                 'TOGGLE_PLAY_PAUSE',

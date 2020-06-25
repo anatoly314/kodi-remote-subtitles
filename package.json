@@ -17,7 +17,9 @@
     "vuetify": "^2.3.1",
     "vuex": "^3.4.0",
     "vuex-persistedstate": "^3.0.1",
-    "vue-virtual-scroller": "^1.0.10"
+    "vue-virtual-scroller": "^1.0.10",
+    "opensubtitles-api": "^5.1.2",
+    "pako": "^1.0.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",

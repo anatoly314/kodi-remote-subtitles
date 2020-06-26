@@ -42,6 +42,7 @@
         },
         data () {
             return {
+                activeRow: -1
             }
         },
         watch: {
@@ -54,8 +55,13 @@
         computed: {
             ...mapGetters('subtitles', [
                 "originalSubtitles"
+            ])
+        },
+        methods: {
+            ...mapActions('kodi', [
+                'MOVE_TO_SPECIFIC_TIME'
             ]),
-            activeRow () {
+            calculateActiveRow () {
                 let activeRow = -1;
                 for (let i = 0; i < this.originalSubtitles.length; i++){
                     const row = this.originalSubtitles[i];
@@ -67,13 +73,8 @@
                         break;
                     }
                 }
-                return activeRow;
-            }
-        },
-        methods: {
-            ...mapActions('kodi', [
-                'MOVE_TO_SPECIFIC_TIME'
-            ]),
+                this.activeRow = activeRow;
+            },
             movePlayerTo (start) {
               console.log('double click', start);
               this.MOVE_TO_SPECIFIC_TIME(start);

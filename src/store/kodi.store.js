@@ -84,7 +84,8 @@ export default {
         async INPUT_BACK () {
             await inputBack();
         },
-        async TOGGLE_PLAY_PAUSE () {
+        async TOGGLE_PLAY_PAUSE ({dispatch}) {
+            await dispatch('SYNC_PLAYING_TIME');
             await togglePlayPause();
         },
         async TURN_SUBTITLES_ON () {
@@ -101,11 +102,14 @@ export default {
         /**
          * COMPOSED KODI ACTIONS
          */
-        async MOVE_TO_SPECIFIC_TIME({ dispatch, state }, timeInMs) {
-            await dispatch('SYNC_PLAYING_TIME');
-            const deltaMs = timeInMs - state.currentPlayTimeInMilliseconds;
-            const deltaSeconds = deltaMs / 1000;
-            await dispatch('CHANGE_TO_DELTA_SECONDS', deltaSeconds);
+        async MOVE_TO_SPECIFIC_TIME({ commit }, timeInMs) {
+            await commit('SET_CURRENT_PLAYING_TIME', timeInMs);
+            const duration = moment.duration(timeInMs, 'milliseconds');
+            const hours = duration.hours();
+            const minutes = duration.minutes();
+            const seconds = duration.seconds();
+            const milliseconds = duration.milliseconds();
+            await setPlayingToTime(hours, minutes, seconds, milliseconds);
         },
         async TOGGLE_SUBTITLES ({ dispatch }) {
             const isSubtitlesPlaying = await dispatch('IS_SUBTITLES_PLAYING');

@@ -150,6 +150,7 @@
             calculateTime () {
                 const diffSinceSync = performance.now() - this.syncTimestamp;
                 this.calculatedCurrentPlayingTime = this.currentPlayTimeInMilliseconds + diffSinceSync;
+                this.$refs.listview.calculateActiveRow();
                 const secondsSinceStartedCalculating = (performance.now() - this.startedCalculatingTimeAt) / 1000;
                 if (secondsSinceStartedCalculating > this.service.RESYNC_EVERY_SECONDS) {
                     this.SYNC_PLAYING_TIME();

@@ -42,7 +42,6 @@
         },
         data () {
             return {
-                activeRow: -1
             }
         },
         watch: {
@@ -55,13 +54,9 @@
         computed: {
             ...mapGetters('subtitles', [
                 "originalSubtitles"
-            ])
-        },
-        methods: {
-            ...mapActions('kodi', [
-                'MOVE_TO_SPECIFIC_TIME'
             ]),
-            calculateActiveRow () {
+            activeRow () {
+                // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
                 const originalSubtitles = this.originalSubtitles;
                 const currentPlayingTimeMs = this.currentPlayingTimeMs;
                 let activeRow = -1;
@@ -70,13 +65,18 @@
                     const followingRow = originalSubtitles[i + 1];
                     const start = row.start;
                     const followingStart = followingRow ? followingRow.start : start + 1;
-                    if (currentPlayingTimeMs >= start && currentPlayingTimeMs <= followingStart) {
+                    if (currentPlayingTimeMs >= start && currentPlayingTimeMs < followingStart) {
                         activeRow = i;
                         break;
                     }
                 }
-                this.activeRow = activeRow;
-            },
+                return activeRow;
+            }
+        },
+        methods: {
+            ...mapActions('kodi', [
+                'MOVE_TO_SPECIFIC_TIME'
+            ]),
             scrollToPlayingTime() {
                 const activeRow = this.activeRow;
                 if (activeRow > -1) {

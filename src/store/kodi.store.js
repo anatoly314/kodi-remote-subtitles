@@ -63,6 +63,7 @@ export default {
             return movieDetails;
         },
         async CHANGE_TO_DELTA_SECONDS ({ state, dispatch }, deltaSeconds) {
+            console.log(deltaSeconds);
             await dispatch('SYNC_PLAYING_TIME');
             const currentPlayingTime = moment.duration(state.currentPlayTimeInMilliseconds, 'milliseconds');
             const newPlayingTime = currentPlayingTime.clone().add(deltaSeconds, 'seconds');
@@ -70,6 +71,7 @@ export default {
             const minutes = newPlayingTime.minutes();
             const seconds = newPlayingTime.seconds();
             const milliseconds = newPlayingTime.milliseconds();
+            console.log(hours, minutes, seconds, milliseconds);
             await setPlayingToTime(hours, minutes, seconds, milliseconds);
         },
         async REQUEST_CURRENT_TIME () {
@@ -78,7 +80,9 @@ export default {
             const minutes = response.result.time.minutes;
             const seconds = response.result.time.seconds;
             const milliseconds = response.result.time.milliseconds;
-            const currentTimeInMs = (((hours * 60 * 60) + (minutes * 60) + seconds) * 1000) + milliseconds;
+            const requestDuration = response.__duration;
+            let currentTimeInMs = (((hours * 60 * 60) + (minutes * 60) + seconds) * 1000) + milliseconds;
+            currentTimeInMs += requestDuration;
             return currentTimeInMs;
         },
         async INPUT_BACK () {
@@ -103,6 +107,7 @@ export default {
          * COMPOSED KODI ACTIONS
          */
         async MOVE_TO_SPECIFIC_TIME({ commit }, timeInMs) {
+            console.log('MOVE_TO_SPECIFIC_TIME', timeInMs);
             await commit('SET_CURRENT_PLAYING_TIME', timeInMs);
             const duration = moment.duration(timeInMs, 'milliseconds');
             const hours = duration.hours();

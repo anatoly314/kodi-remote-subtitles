@@ -10,14 +10,12 @@
                 <DynamicScrollerItem
                         :item="item"
                         :active="active"
-                        :size-dependencies="[item.text]"
                         :data-index="index"
                         :data-active="active"
                         class="message"
                 >
-                    <ListViewItem @click.native="MOVE_TO_SPECIFIC_TIME(item.start)"
+                    <ListViewItem :index="index"
                                     :display-subtitles-time="displaySubtitlesTime"
-                                  :style="activeRow === index ? 'background-color: lightgrey;' : ''"
                                   :subtitle-row="item">
                     </ListViewItem>
                 </DynamicScrollerItem>
@@ -29,11 +27,10 @@
 <script>
     import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
     import ListViewItem from "./ListViewItem";
-    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         props: {
-            items: [],
+            items: Array,
             displaySubtitlesTime: Boolean
         },
         data () {
@@ -41,17 +38,10 @@
             }
         },
         watch: {
-
         },
         computed: {
-            ...mapGetters('subtitles', [
-                'activeRow'
-            ])
         },
         methods: {
-            ...mapActions('kodi', [
-                'MOVE_TO_SPECIFIC_TIME'
-            ]),
             scrollToRow(rowIndex) {
                 this.$refs.scroller.scrollToItem(rowIndex);
             }

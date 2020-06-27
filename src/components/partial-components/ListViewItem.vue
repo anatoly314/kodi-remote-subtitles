@@ -1,5 +1,7 @@
 <template>
-    <div class="row-container">
+    <div class="row-container"
+         :style="activeRow === index ? 'background-color: lightgrey;' : ''"
+         @click="MOVE_TO_SPECIFIC_TIME(subtitleRow.start)">
         <div class="time-container" v-if="displaySubtitlesTime">
             <div>{{toSrtTime(subtitleRow.start)}}</div>
             <div>{{toSrtTime(subtitleRow.end)}}</div>
@@ -12,10 +14,12 @@
 
 <script>
     import { toSrtTime } from 'subtitle';
+    import { mapActions, mapGetters } from 'vuex';
     export default {
         props: {
             subtitleRow: Object,
-            displaySubtitlesTime: Boolean
+            displaySubtitlesTime: Boolean,
+            index: Number
         },
         data () {
             return {
@@ -24,8 +28,14 @@
         watch: {
         },
         computed: {
+            ...mapGetters('subtitles', [
+                'activeRow'
+            ]),
         },
         methods: {
+            ...mapActions('kodi',[
+                'MOVE_TO_SPECIFIC_TIME'
+            ]),
             toSrtTime: toSrtTime
         },
         components: {

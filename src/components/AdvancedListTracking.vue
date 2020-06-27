@@ -94,8 +94,7 @@
                     this.stopCalculateTime();
                 }
             },
-            activeRow (value) {
-                console.log(value);
+            activeRow () {
                 if (this.gui.scrollToActiveRow) {
                     this.scrollToActiveRow();
                 }

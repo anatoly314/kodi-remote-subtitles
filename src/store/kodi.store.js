@@ -22,6 +22,7 @@ export default {
         isPlaying: false,
         connectionState: SOCKET_STATE.CLOSED,
         currentPlayTimeInMilliseconds: 0,
+        currentCalculatedPlayTimeMs: 0,
         syncTimestamp: 0
     },
     getters: {
@@ -29,7 +30,14 @@ export default {
         connectionState: state => state.connectionState,
         isPlaying: state => state.isPlaying,
         currentPlayTimeInMilliseconds: state => state.currentPlayTimeInMilliseconds,
-        syncTimestamp: state => state.syncTimestamp
+        currentCalculatedPlayTimeMs: state => state.currentCalculatedPlayTimeMs,
+        syncTimestamp: state => state.syncTimestamp,
+        currentPlayingTimeHumanReadable: state => {
+            const currentCalculatedPlayTimeMs = state.currentCalculatedPlayTimeMs;
+            const currentPlayingTimeDuration = moment.duration(currentCalculatedPlayTimeMs, 'milliseconds');
+            const currentPlayingTimeHumanReadable =  moment.utc(currentPlayingTimeDuration.as('milliseconds')).format('HH:mm:ss');
+            return currentPlayingTimeHumanReadable;
+        }
     },
     actions: {
         /**
@@ -62,17 +70,13 @@ export default {
             }
             return movieDetails;
         },
-        async CHANGE_TO_DELTA_SECONDS ({ state, dispatch }, deltaSeconds) {
-            console.log(deltaSeconds);
-            await dispatch('SYNC_PLAYING_TIME');
-            const currentPlayingTime = moment.duration(state.currentPlayTimeInMilliseconds, 'milliseconds');
+        async CHANGE_TO_DELTA_SECONDS ({ state }, deltaSeconds) {
+            const currentPlayingTime = moment.duration(state.currentCalculatedPlayTimeMs, 'milliseconds');
             const newPlayingTime = currentPlayingTime.clone().add(deltaSeconds, 'seconds');
             const hours = newPlayingTime.hours();
             const minutes = newPlayingTime.minutes();
             const seconds = newPlayingTime.seconds();
-            const milliseconds = newPlayingTime.milliseconds();
-            console.log(hours, minutes, seconds, milliseconds);
-            await setPlayingToTime(hours, minutes, seconds, milliseconds);
+            await setPlayingToTime(hours, minutes, seconds);
         },
         async REQUEST_CURRENT_TIME () {
             const response = await requestCurrentTime();
@@ -82,7 +86,7 @@ export default {
             const milliseconds = response.result.time.milliseconds;
             const requestDuration = response.__duration;
             let currentTimeInMs = (((hours * 60 * 60) + (minutes * 60) + seconds) * 1000) + milliseconds;
-            currentTimeInMs += requestDuration;
+            currentTimeInMs += requestDuration / 2;
             return currentTimeInMs;
         },
         async INPUT_BACK () {
@@ -107,14 +111,12 @@ export default {
          * COMPOSED KODI ACTIONS
          */
         async MOVE_TO_SPECIFIC_TIME({ commit }, timeInMs) {
-            console.log('MOVE_TO_SPECIFIC_TIME', timeInMs);
             await commit('SET_CURRENT_PLAYING_TIME', timeInMs);
             const duration = moment.duration(timeInMs, 'milliseconds');
             const hours = duration.hours();
             const minutes = duration.minutes();
             const seconds = duration.seconds();
-            const milliseconds = duration.milliseconds();
-            await setPlayingToTime(hours, minutes, seconds, milliseconds);
+            await setPlayingToTime(hours, minutes, seconds);
         },
         async TOGGLE_SUBTITLES ({ dispatch }) {
             const isSubtitlesPlaying = await dispatch('IS_SUBTITLES_PLAYING');
@@ -180,6 +182,9 @@ export default {
         SET_CURRENT_PLAYING_TIME(state, value) {
             state.currentPlayTimeInMilliseconds = value;
             state.syncTimestamp = performance.now();
+        },
+        SET_CURRENT_CALCULATED_PLAY_TIME(state, value) {
+          state.currentCalculatedPlayTimeMs = value;
         },
         SET_CONNECTION_STATE(state, value) {
             state.connectionState = value;

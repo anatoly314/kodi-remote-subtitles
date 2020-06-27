@@ -18,6 +18,23 @@ export default {
     },
     getters: {
         originalSubtitles: status => status.originalSubtitles,
+        activeRow: (state, getters, rootState, rootGetters) => {
+            // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+            const originalSubtitles = state.originalSubtitles;
+            const currentPlayingTimeMs = rootGetters['kodi/currentCalculatedPlayTimeMs'];
+            let activeRow = -1;
+            for (let i = 0; i < originalSubtitles.length; i++){
+                const row = originalSubtitles[i];
+                const followingRow = originalSubtitles[i + 1];
+                const start = row.start;
+                const followingStart = followingRow ? followingRow.start : start + 1;
+                if (currentPlayingTimeMs >= start && currentPlayingTimeMs < followingStart) {
+                    activeRow = i;
+                    break;
+                }
+            }
+            return activeRow;
+        }
     },
     actions: {
         async GET_SUBTITLES_LIST_BY_QUERY(state, query) {

@@ -2,7 +2,6 @@
     <div class="component-container">
         <ListView ref="listview"
                   :scroll-to-active-row="gui.scrollToActiveRow"
-                  :current-playing-time-ms="calculatedCurrentPlayingTime"
                   :display-subtitles-time="gui.displaySubtitlesTime">
         </ListView>
         <div class="buttons-container">
@@ -75,9 +74,8 @@
 
 <script>
 
-    import { mapActions, mapGetters } from 'vuex';
+    import { mapActions, mapGetters, mapMutations } from 'vuex';
     import ListView from "./partial-components/ListView";
-    import moment from "moment";
 
     export default {
         name: 'App',
@@ -90,8 +88,7 @@
                     animationFrame: null,
                     startedCalculatingTimeAt: 0,
                     RESYNC_EVERY_SECONDS: 60
-                },
-                calculatedCurrentPlayingTime: 0,
+                }
             }
         },
         watch: {
@@ -104,7 +101,7 @@
             },
             currentPlayTimeInMilliseconds (newValue) {
                 if (!this.isPlaying) {  //we need update it only once
-                    this.calculatedCurrentPlayingTime = newValue;
+                    this.SET_CURRENT_CALCULATED_PLAY_TIME(newValue);
                 }
             }
         },
@@ -115,13 +112,10 @@
             ...mapGetters('kodi', [
                 'isPlaying',
                 'currentPlayTimeInMilliseconds',
-                'syncTimestamp'
-            ]),
-            currentPlayingTimeHumanReadable () {
-                const currentPlayingTimeDuration = moment.duration(this.calculatedCurrentPlayingTime, 'milliseconds');
-                const currentPlayingTimeHumanReadable =  moment.utc(currentPlayingTimeDuration.as('milliseconds')).format('HH:mm:ss');
-                return currentPlayingTimeHumanReadable;
-            }
+                'currentCalculatedPlayTimeMs',
+                'syncTimestamp',
+                'currentPlayingTimeHumanReadable'
+            ])
         },
         mounted() {
             this.CONNECT();
@@ -136,6 +130,9 @@
                 'SYNC_PLAYING_TIME',
                 'CONNECT'
             ]),
+            ...mapMutations('kodi', [
+                'SET_CURRENT_CALCULATED_PLAY_TIME'
+            ]),
             async pauseAndScrollToCurrentSubtitles () {
                 if (this.isPlaying) {
                     await this.TOGGLE_PLAY_PAUSE();
@@ -143,12 +140,12 @@
                 await this.scrollToCurrentSubtitles();
             },
             async scrollToCurrentSubtitles () {
-                await this.SYNC_PLAYING_TIME();
-                this.$refs.listview.scrollToPlayingTime(this.currentPlayTimeInMilliseconds);
+                this.$refs.listview.scrollToPlayingTime();
             },
             calculateTime () {
                 const diffSinceSync = performance.now() - this.syncTimestamp;
-                this.calculatedCurrentPlayingTime = this.currentPlayTimeInMilliseconds + diffSinceSync;
+                const currentCalculatedPlayTimeMs = this.currentPlayTimeInMilliseconds + diffSinceSync;
+                this.SET_CURRENT_CALCULATED_PLAY_TIME(currentCalculatedPlayTimeMs)
                 const secondsSinceStartedCalculating = (performance.now() - this.startedCalculatingTimeAt) / 1000;
                 if (secondsSinceStartedCalculating > this.service.RESYNC_EVERY_SECONDS) {
                     this.SYNC_PLAYING_TIME();

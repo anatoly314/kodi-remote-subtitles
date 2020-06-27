@@ -33,45 +33,25 @@
     export default {
         props: {
             displaySubtitlesTime: Boolean,
-            scrollToActiveRow: Boolean,
-            currentPlayingTimeMs: {
-                type: Number,
-                default: 0,
-                required: true
-            }
+            scrollToActiveRow: Boolean
         },
         data () {
             return {
             }
         },
         watch: {
-            activeRow () {
+            activeRow (value) {
                 if (this.scrollToActiveRow) {
+                    console.log(value);
                     this.scrollToPlayingTime();
                 }
             }
         },
         computed: {
             ...mapGetters('subtitles', [
-                "originalSubtitles"
-            ]),
-            activeRow () {
-                // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
-                const originalSubtitles = this.originalSubtitles;
-                const currentPlayingTimeMs = this.currentPlayingTimeMs;
-                let activeRow = -1;
-                for (let i = 0; i < originalSubtitles.length; i++){
-                    const row = originalSubtitles[i];
-                    const followingRow = originalSubtitles[i + 1];
-                    const start = row.start;
-                    const followingStart = followingRow ? followingRow.start : start + 1;
-                    if (currentPlayingTimeMs >= start && currentPlayingTimeMs < followingStart) {
-                        activeRow = i;
-                        break;
-                    }
-                }
-                return activeRow;
-            }
+                'originalSubtitles',
+                'activeRow'
+            ])
         },
         methods: {
             ...mapActions('kodi', [

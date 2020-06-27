@@ -1,27 +1,25 @@
 <template>
-    <div class="scroller-container">
-        <DynamicScroller
-                ref="scroller"
-                :items="items"
-                :min-item-size="54"
-                class="scroller"
-        >
-            <template v-slot="{ item, index, active }">
-                <DynamicScrollerItem
-                        :item="item"
-                        :active="active"
-                        :data-index="index"
-                        :data-active="active"
-                        class="message"
-                >
-                    <Component v-bind:is="listItemComponent" :index="index"
-                                  v-bind="$attrs"
-                                  :rowData="item">
-                    </Component>
-                </DynamicScrollerItem>
-            </template>
-        </DynamicScroller>
-    </div>
+    <DynamicScroller
+            ref="scroller"
+            :items="items"
+            :min-item-size="54"
+            class="scroller"
+    >
+        <template v-slot="{ item, index, active }">
+            <DynamicScrollerItem
+                    :item="item"
+                    :active="active"
+                    :data-index="index"
+                    :data-active="active"
+                    class="message"
+            >
+                <Component v-bind:is="listItemComponent" :index="index"
+                           v-bind="$attrs"
+                           :rowData="item">
+                </Component>
+            </DynamicScrollerItem>
+        </template>
+    </DynamicScroller>
 </template>
 
 <script>
@@ -56,16 +54,12 @@
 
 <style scoped>
     .scroller {
-        height: 50vh;
-    }
-    .scroller-container {
         height: 100%;
         overflow: hidden;
         border: 1px lightgrey solid;
         border-radius: 3px;
         padding: 3px;
     }
-
 
     .message {
         display: flex;

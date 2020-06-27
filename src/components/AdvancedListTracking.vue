@@ -1,6 +1,7 @@
 <template>
     <div class="component-container">
         <ListView ref="listview"
+                  class="subtitles-list"
                   :items="originalSubtitles"
                   list-item-component="SubtitlesRow"
                   v-bind="gui">
@@ -157,6 +158,9 @@
     }
 </script>
 <style scoped>
+    .subtitles-list{
+        height: 50vh;
+    }
     .buttons-container{
         display: flex;
         flex-direction: column;

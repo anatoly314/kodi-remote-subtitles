@@ -62,13 +62,15 @@
                 'MOVE_TO_SPECIFIC_TIME'
             ]),
             calculateActiveRow () {
+                const originalSubtitles = this.originalSubtitles;
+                const currentPlayingTimeMs = this.currentPlayingTimeMs;
                 let activeRow = -1;
-                for (let i = 0; i < this.originalSubtitles.length; i++){
-                    const row = this.originalSubtitles[i];
-                    const followingRow = this.originalSubtitles[i + 1];
+                for (let i = 0; i < originalSubtitles.length; i++){
+                    const row = originalSubtitles[i];
+                    const followingRow = originalSubtitles[i + 1];
                     const start = row.start;
                     const followingStart = followingRow ? followingRow.start : start + 1;
-                    if (this.currentPlayingTimeMs >= start && this.currentPlayingTimeMs <= followingStart) {
+                    if (currentPlayingTimeMs >= start && currentPlayingTimeMs <= followingStart) {
                         activeRow = i;
                         break;
                     }

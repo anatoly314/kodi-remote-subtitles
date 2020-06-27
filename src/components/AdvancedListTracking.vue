@@ -98,11 +98,6 @@
                 } else {
                     this.stopCalculateTime();
                 }
-            },
-            currentPlayTimeInMilliseconds (newValue) {
-                if (!this.isPlaying) {  //we need update it only once
-                    this.SET_CURRENT_CALCULATED_PLAY_TIME(newValue);
-                }
             }
         },
         computed: {

@@ -112,8 +112,15 @@ export default {
         /**
          * COMPOSED KODI ACTIONS
          */
-        async MOVE_TO_SPECIFIC_TIME({ commit }, timeInMs) {
-            await commit('SET_CURRENT_PLAYING_TIME', timeInMs);
+        SET_CURRENT_PLAYING_TIME ({ commit, getters }, timeInMs) {
+            commit('SET_CURRENT_PLAYING_TIME', timeInMs);
+            if (!getters.isPlaying) {
+                commit('SET_CURRENT_CALCULATED_PLAY_TIME', timeInMs);
+            }
+
+        },
+        async MOVE_TO_SPECIFIC_TIME({ dispatch }, timeInMs) {
+            dispatch('SET_CURRENT_PLAYING_TIME', timeInMs);
             const duration = moment.duration(timeInMs, 'milliseconds');
             const hours = duration.hours();
             const minutes = duration.minutes();
@@ -146,9 +153,9 @@ export default {
                 commit('SET_PLAYING_STATUS', true);
             }
         },
-        async SYNC_PLAYING_TIME({ dispatch, commit }) {
+        async SYNC_PLAYING_TIME({ dispatch }) {
             const currentPlayingTimeMs = await dispatch('REQUEST_CURRENT_TIME');
-            commit('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs);
+            dispatch('SET_CURRENT_PLAYING_TIME', currentPlayingTimeMs);
         },
         /**
          * KODI CALLBACKS

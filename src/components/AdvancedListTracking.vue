@@ -1,7 +1,7 @@
 <template>
     <div class="component-container">
         <ListView ref="listview"
-                  :scroll-to-active-row="gui.scrollToActiveRow"
+                  :items="originalSubtitles"
                   :display-subtitles-time="gui.displaySubtitlesTime">
         </ListView>
         <div class="buttons-container">
@@ -46,11 +46,11 @@
                 </v-badge>
             </div>
             <div class="row-buttons">
-                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="scrollToCurrentSubtitles">
+                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="scrollToActiveRow">
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="pauseAndScrollToCurrentSubtitles">
+                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="pauseAndScrollToActiveRow">
                     <v-icon>fa-pause</v-icon>
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
@@ -83,11 +83,6 @@
             return {
                 gui : {
                     displaySubtitlesTime: true
-                },
-                service: {
-                    animationFrame: null,
-                    startedCalculatingTimeAt: 0,
-                    RESYNC_EVERY_SECONDS: 60
                 }
             }
         },
@@ -98,11 +93,18 @@
                 } else {
                     this.stopCalculateTime();
                 }
+            },
+            activeRow (value) {
+                console.log(value);
+                if (this.gui.scrollToActiveRow) {
+                    this.scrollToActiveRow();
+                }
             }
         },
         computed: {
             ...mapGetters('subtitles', [
-                'originalSubtitles'
+                'originalSubtitles',
+                'activeRow'
             ]),
             ...mapGetters('kodi', [
                 'isPlaying',
@@ -130,14 +132,17 @@
             ...mapMutations('kodi', [
                 'SET_CURRENT_CALCULATED_PLAY_TIME'
             ]),
-            async pauseAndScrollToCurrentSubtitles () {
+            async pauseAndScrollToActiveRow () {
                 if (this.isPlaying) {
                     await this.TOGGLE_PLAY_PAUSE();
                 }
-                await this.scrollToCurrentSubtitles();
+                await this.scrollToActiveRow();
             },
-            async scrollToCurrentSubtitles () {
-                this.$refs.listview.scrollToPlayingTime();
+            async scrollToActiveRow () {
+                const activeRow = this.activeRow;
+                if (activeRow > -1) {
+                    this.$refs.listview.scrollToRow(activeRow);
+                }
             },
             startCalculateTime () {
                 this.START_CALCULATE_TIME();

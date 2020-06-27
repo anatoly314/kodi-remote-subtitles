@@ -2,7 +2,7 @@
     <div class="scroller-container">
         <DynamicScroller
                 ref="scroller"
-                :items="originalSubtitles"
+                :items="items"
                 :min-item-size="54"
                 class="scroller"
         >
@@ -18,7 +18,8 @@
                     <ListViewItem @click.native="MOVE_TO_SPECIFIC_TIME(item.start)"
                                     :display-subtitles-time="displaySubtitlesTime"
                                   :style="activeRow === index ? 'background-color: lightgrey;' : ''"
-                                  :subtitle-row="item"/>
+                                  :subtitle-row="item">
+                    </ListViewItem>
                 </DynamicScrollerItem>
             </template>
         </DynamicScroller>
@@ -32,24 +33,18 @@
 
     export default {
         props: {
-            displaySubtitlesTime: Boolean,
-            scrollToActiveRow: Boolean
+            items: [],
+            displaySubtitlesTime: Boolean
         },
         data () {
             return {
             }
         },
         watch: {
-            activeRow (value) {
-                if (this.scrollToActiveRow) {
-                    console.log(value);
-                    this.scrollToPlayingTime();
-                }
-            }
+
         },
         computed: {
             ...mapGetters('subtitles', [
-                'originalSubtitles',
                 'activeRow'
             ])
         },
@@ -57,11 +52,8 @@
             ...mapActions('kodi', [
                 'MOVE_TO_SPECIFIC_TIME'
             ]),
-            scrollToPlayingTime() {
-                const activeRow = this.activeRow;
-                if (activeRow > -1) {
-                    this.$refs.scroller.scrollToItem(activeRow);
-                }
+            scrollToRow(rowIndex) {
+                this.$refs.scroller.scrollToItem(rowIndex);
             }
         },
         components: {

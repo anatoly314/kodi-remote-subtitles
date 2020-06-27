@@ -14,10 +14,10 @@
                         :data-active="active"
                         class="message"
                 >
-                    <ListViewItem :index="index"
-                                    :display-subtitles-time="displaySubtitlesTime"
-                                  :subtitle-row="item">
-                    </ListViewItem>
+                    <Component v-bind:is="listItemComponent" :index="index"
+                                  v-bind="$attrs"
+                                  :rowData="item">
+                    </Component>
                 </DynamicScrollerItem>
             </template>
         </DynamicScroller>
@@ -26,12 +26,12 @@
 
 <script>
     import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
-    import ListViewItem from "./ListViewItem";
+    import SubtitlesRow from "./SubtitlesRow";
 
     export default {
         props: {
             items: Array,
-            displaySubtitlesTime: Boolean
+            listItemComponent: String
         },
         data () {
             return {
@@ -49,7 +49,7 @@
         components: {
             DynamicScroller,
             DynamicScrollerItem,
-            ListViewItem
+            SubtitlesRow
         }
     }
 </script>

@@ -1,13 +1,13 @@
 <template>
     <div class="row-container"
          :style="activeRow === index ? 'background-color: lightgrey;' : ''"
-         @click="MOVE_TO_SPECIFIC_TIME(subtitleRow.start)">
+         @click="MOVE_TO_SPECIFIC_TIME(rowData.start)">
         <div class="time-container" v-if="displaySubtitlesTime">
-            <div>{{toSrtTime(subtitleRow.start)}}</div>
-            <div>{{toSrtTime(subtitleRow.end)}}</div>
+            <div>{{toSrtTime(rowData.start)}}</div>
+            <div>{{toSrtTime(rowData.end)}}</div>
         </div>
         <div class="text-container">
-            <span v-html="subtitleRow.text"></span>
+            <span v-html="rowData.text"></span>
         </div>
     </div>
 </template>
@@ -17,7 +17,7 @@
     import { mapActions, mapGetters } from 'vuex';
     export default {
         props: {
-            subtitleRow: Object,
+            rowData: Object,
             displaySubtitlesTime: Boolean,
             index: Number
         },

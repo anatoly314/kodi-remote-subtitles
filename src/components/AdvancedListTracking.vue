@@ -2,7 +2,8 @@
     <div class="component-container">
         <ListView ref="listview"
                   :items="originalSubtitles"
-                  :display-subtitles-time="gui.displaySubtitlesTime">
+                  list-item-component="SubtitlesRow"
+                  v-bind="gui">
         </ListView>
         <div class="buttons-container">
             <h2 class="text-center">

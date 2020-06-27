@@ -15,7 +15,7 @@
                         :data-active="active"
                         class="message"
                 >
-                    <ListViewItem @click.native="movePlayerTo(item.start)"
+                    <ListViewItem @click.native="MOVE_TO_SPECIFIC_TIME(item.start)"
                                     :display-subtitles-time="displaySubtitlesTime"
                                   :style="activeRow === index ? 'background-color: lightgrey;' : ''"
                                   :subtitle-row="item"/>
@@ -74,10 +74,6 @@
                     }
                 }
                 this.activeRow = activeRow;
-            },
-            movePlayerTo (start) {
-              console.log('double click', start);
-              this.MOVE_TO_SPECIFIC_TIME(start);
             },
             scrollToPlayingTime() {
                 const activeRow = this.activeRow;

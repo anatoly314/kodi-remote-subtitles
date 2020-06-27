@@ -84,8 +84,7 @@
         data() {
             return {
                 gui : {
-                    displaySubtitlesTime: true,
-                    hightlightActiveRow: true
+                    displaySubtitlesTime: true
                 },
                 service: {
                     animationFrame: null,

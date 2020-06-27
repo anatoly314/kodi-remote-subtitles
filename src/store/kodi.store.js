@@ -13,6 +13,7 @@ import {
     setPlayingToTime,
     isSubtitlesPlaying
 } from '../websockets/websocket';
+import { startCalculate, stopCalculate } from '../utils/time-calculator';
 import KODI_METHODS from "../enums/kodi.methods";
 
 export default {
@@ -76,7 +77,8 @@ export default {
             const hours = newPlayingTime.hours();
             const minutes = newPlayingTime.minutes();
             const seconds = newPlayingTime.seconds();
-            await setPlayingToTime(hours, minutes, seconds);
+            const milliseconds = newPlayingTime.milliseconds();
+            await setPlayingToTime(hours, minutes, seconds, milliseconds);
         },
         async REQUEST_CURRENT_TIME () {
             const response = await requestCurrentTime();
@@ -116,7 +118,8 @@ export default {
             const hours = duration.hours();
             const minutes = duration.minutes();
             const seconds = duration.seconds();
-            await setPlayingToTime(hours, minutes, seconds);
+            const milliseconds = duration.milliseconds();
+            await setPlayingToTime(hours, minutes, seconds, milliseconds);
         },
         async TOGGLE_SUBTITLES ({ dispatch }) {
             const isSubtitlesPlaying = await dispatch('IS_SUBTITLES_PLAYING');
@@ -173,6 +176,21 @@ export default {
             if (connectionState === SOCKET_STATE.OPEN) {
                 dispatch('SYNC_PLAYING_TIME');
             }
+        },
+        /**
+         * SERVICE
+         */
+        START_CALCULATE_TIME ({ commit, getters, dispatch }) {
+            const setCalculatedTimeCallback = commit.bind(null, 'SET_CURRENT_CALCULATED_PLAY_TIME');
+            const syncPlayingTimeCallback = dispatch.bind(null, 'SYNC_PLAYING_TIME');
+            startCalculate(
+                setCalculatedTimeCallback,
+                syncPlayingTimeCallback,
+                getters
+            );
+        },
+        STOP_CALCULATE_TIME () {
+            stopCalculate();
         }
     },
     mutations:{

@@ -128,7 +128,9 @@
                 'TOGGLE_PLAY_PAUSE',
                 'CHANGE_TO_DELTA_SECONDS',
                 'SYNC_PLAYING_TIME',
-                'CONNECT'
+                'CONNECT',
+                'START_CALCULATE_TIME',
+                'STOP_CALCULATE_TIME'
             ]),
             ...mapMutations('kodi', [
                 'SET_CURRENT_CALCULATED_PLAY_TIME'
@@ -142,24 +144,11 @@
             async scrollToCurrentSubtitles () {
                 this.$refs.listview.scrollToPlayingTime();
             },
-            calculateTime () {
-                const diffSinceSync = performance.now() - this.syncTimestamp;
-                const currentCalculatedPlayTimeMs = this.currentPlayTimeInMilliseconds + diffSinceSync;
-                this.SET_CURRENT_CALCULATED_PLAY_TIME(currentCalculatedPlayTimeMs)
-                const secondsSinceStartedCalculating = (performance.now() - this.startedCalculatingTimeAt) / 1000;
-                if (secondsSinceStartedCalculating > this.service.RESYNC_EVERY_SECONDS) {
-                    this.SYNC_PLAYING_TIME();
-                    this.startedCalculatingTimeAt = performance.now();
-                }
-                this.service.animationFrame = requestAnimationFrame(this.calculateTime);
-            },
             startCalculateTime () {
-                this.service.animationFrame = requestAnimationFrame(this.calculateTime);
-                this.startedCalculatingTimeAt = performance.now();
+                this.START_CALCULATE_TIME();
             },
             stopCalculateTime () {
-                cancelAnimationFrame(this.service.animationFrame);
-                this.service.animationFrame = null;
+                this.STOP_CALCULATE_TIME();
             }
         },
         components: {

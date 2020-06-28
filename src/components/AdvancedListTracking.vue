@@ -5,6 +5,12 @@
                   :items="originalSubtitles"
                   list-item-component="SubtitlesRow"
                   v-bind="gui">
+            <template v-slot:default="{ item, index }">
+                <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
+                              :rowData="item"
+                              :index="index">
+                </SubtitlesRow>
+            </template>
         </ListView>
         <div class="buttons-container">
             <h2 class="text-center">
@@ -78,6 +84,7 @@
 
     import { mapActions, mapGetters, mapMutations } from 'vuex';
     import ListView from "./partial-components/ListView";
+    import SubtitlesRow from "./partial-components/SubtitlesRow";
 
     export default {
         name: 'App',
@@ -154,6 +161,7 @@
         },
         components: {
             ListView,
+            SubtitlesRow
         }
     }
 </script>

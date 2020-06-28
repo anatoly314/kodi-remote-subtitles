@@ -16,24 +16,17 @@
       </v-btn>
     </div>
     <div class="subtitles-list-container">
-      <v-expansion-panels accordion>
-        <v-expansion-panel v-for="(item,i) in subtitlesList"
-                           :key="i">
-          <v-expansion-panel-header>
-            <div class="subtitle-filename">
-              <v-btn icon x-small @click.prevent.stop="downloadCurrentSubtitle(item)">
-                <v-icon>fa-download</v-icon>
-              </v-btn>
-              <div>
-                {{item.filename}}
-              </div>
-            </div>
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            Button
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+
+      <ListView ref="listview"
+                class="subtitles-list"
+                :items="subtitlesList"
+                list-item-component="SubtitlesRow"
+                v-bind="gui">
+            <template v-slot:default="slotProps">
+              <OpenSubtitlesRow :item="slotProps"></OpenSubtitlesRow>
+            </template>
+      </ListView>
+
     </div>
     <v-btn @click="test">test</v-btn>
   </div>
@@ -41,13 +34,18 @@
 
 <script>
   import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
+  import ListView from "./partial-components/ListView";
+  import OpenSubtitlesRow from "./partial-components/OpenSubtitlesRow";
   import { mapActions } from 'vuex';
   export default {
     name: 'Home',
     data() {
       return {
         subtitlesSearchQuery: '',
-        subtitlesList: []
+        subtitlesList: [],
+        gui: {
+          test: 'Test text'
+        }
       }
     },
     computed: {
@@ -95,7 +93,9 @@
       // eslint-disable-next-line vue/no-unused-components
       DynamicScroller,
       // eslint-disable-next-line vue/no-unused-components
-      DynamicScrollerItem
+      DynamicScrollerItem,
+      ListView,
+      OpenSubtitlesRow
     }
   }
 </script>

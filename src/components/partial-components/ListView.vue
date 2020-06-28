@@ -13,10 +13,9 @@
                     :data-active="active"
                     class="message"
             >
-                <Component v-bind:is="listItemComponent" :index="index"
-                           v-bind="$attrs"
-                           :rowData="item">
-                </Component>
+                    <slot v-bind:item="item"
+                          v-bind:index="index">
+                    </slot>
             </DynamicScrollerItem>
         </template>
     </DynamicScroller>
@@ -24,12 +23,10 @@
 
 <script>
     import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller'
-    import SubtitlesRow from "./SubtitlesRow";
 
     export default {
         props: {
-            items: Array,
-            listItemComponent: String
+            items: Array
         },
         data () {
             return {
@@ -46,8 +43,7 @@
         },
         components: {
             DynamicScroller,
-            DynamicScrollerItem,
-            SubtitlesRow
+            DynamicScrollerItem
         }
     }
 </script>

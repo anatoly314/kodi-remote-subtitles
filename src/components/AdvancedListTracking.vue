@@ -2,9 +2,7 @@
     <div class="component-container">
         <ListView ref="listview"
                   class="subtitles-list"
-                  :items="originalSubtitles"
-                  list-item-component="SubtitlesRow"
-                  v-bind="gui">
+                  :items="originalSubtitles">
             <template v-slot:default="{ item, index }">
                 <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
                               :rowData="item"
@@ -71,7 +69,7 @@
             <div class="row-buttons">
                 <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
                     <v-btn color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
-                    <input v-show="false" ref="inputUpload" type="file" @change="ADD_ORIGINAL_SUBTITLES">
+                    <input v-show="false" ref="inputUpload" type="file" @change="ADD_ORIGINAL_SUBTITLES_FILE">
                 </div>
             </div>
 
@@ -127,7 +125,7 @@
         },
         methods: {
             ...mapActions('subtitles', [
-                'ADD_ORIGINAL_SUBTITLES'
+                'ADD_ORIGINAL_SUBTITLES_FILE'
             ]),
             ...mapActions('kodi', [
                 'TOGGLE_PLAY_PAUSE',

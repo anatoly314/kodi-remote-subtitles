@@ -2,6 +2,7 @@
   <v-app id="app">
     <NavBar/>
     <SettingsDialog/>
+    <Notifications/>
 
     <v-main>
       <v-container fluid class="router-container">
@@ -18,11 +19,13 @@
 <script>
 import NavBar from "./components/partial-components/NavBar";
 import SettingsDialog from "./components/SettingsDialog";
+import Notifications from "./components/Notifications";
 export default {
   name: 'App',
   components: {
     NavBar,
-    SettingsDialog
+    SettingsDialog,
+    Notifications
   }
 }
 </script>

@@ -33,6 +33,5 @@ export async function download(id) {
     const gZippedBase64Subtitles = respone.data['0'].data;
     const gzippedSubtitles = atob(gZippedBase64Subtitles);
     const output = pako.ungzip(gzippedSubtitles, { to: 'string' });
-
-    console.log(output);
+    return output;
 }

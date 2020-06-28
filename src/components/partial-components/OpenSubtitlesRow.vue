@@ -1,17 +1,30 @@
 <template>
     <div class="row-container">
-        {{item}}
+        <div class="subtitles-details">
+            <div class="subtitles-button-title">
+                <v-btn class="mx-2"
+                       @click="$emit('click', rowData)"
+                       icon x-small color="primary">
+                    <v-icon>fa-download</v-icon>
+                </v-btn>
+                <div>
+                    {{rowData.filename}}
+                </div>
+            </div>
+            <div class="subtitles-props">
+                <span>{{rowData.lang}}</span>
+                <span>{{rowData.fps}}</span>
+                <span>{{rowData.encoding}}</span>
+                <span>{{rowData.downloads}}</span>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import { toSrtTime } from 'subtitle';
-    import { mapActions, mapGetters } from 'vuex';
     export default {
         props: {
-            item: Object,
             rowData: Object,
-            displaySubtitlesTime: Boolean,
             index: Number
         },
         data () {
@@ -21,33 +34,39 @@
         watch: {
         },
         computed: {
-            ...mapGetters('subtitles', [
-                'activeRow'
-            ]),
         },
         methods: {
-            ...mapActions('kodi',[
-                'MOVE_TO_SPECIFIC_TIME'
-            ]),
-            toSrtTime: toSrtTime
         },
         components: {
         }
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     .row-container{
         width: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         border: 1px lightgrey solid;
         border-radius: 3px;
         padding: 3px;
         margin: 1px;
     }
-    .time-container{
+    .subtitles-details{
         display: flex;
-        justify-content: space-evenly;
+        flex-direction: column;
+        flex-grow: 1;
+        .subtitles-button-title{
+            display: flex;
+            margin: 2px;
+            overflow-wrap: anywhere;
+            border-bottom: 1px lightgrey solid;
+        }
+        .subtitles-props{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
     }
+
 </style>

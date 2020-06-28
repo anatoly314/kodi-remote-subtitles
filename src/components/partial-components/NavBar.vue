@@ -68,6 +68,11 @@
                       to: '/basic'
                   },
                   {
+                      title: 'Subtitles',
+                      icon: 'mdi-image',
+                      to: '/subtitles'
+                  },
+                  {
                       title: 'Advanced View Tracking',
                       icon: 'mdi-view-dashboard',
                       to: '/advanced-list-tracking'

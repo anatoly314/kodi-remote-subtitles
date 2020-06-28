@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { parse } from "subtitle";
 import {download, getSubtitlesListByQuery} from "../utils/opensubtitles";
 
@@ -9,6 +10,18 @@ const calculateHash = function(string) {
         hash |= 0; // Convert to 32bit integer
     }
     return hash;
+}
+
+const addIdToSubtitles = function(subtitles) {
+    subtitles = subtitles.map(row => {
+        return {
+            start: row.start,
+            end: row.end,
+            text: row.text.trim(),
+            id: calculateHash(`${row.start}-${row.end}-${row.text}`)
+        }
+    })
+    return subtitles;
 }
 
 export default {
@@ -43,19 +56,22 @@ export default {
         },
         async DOWNLOAD_SUBTITLES_BY_ID (state, id) {
             const subtitles = await download(id);
+            Vue.prototype.$bus.$emit('show-notification', {
+                type: 'info',
+                text: 'Subtitles successfully donwloaded'
+            });
             return subtitles;
         },
-        async ADD_ORIGINAL_SUBTITLES ({ commit, dispatch }, event) {
+        async ADD_ORIGINAL_SUBTITLES_FILE ({ commit, dispatch }, event) {
             let subtitles = await dispatch('UPLOAD_FILE', event);
-            subtitles = subtitles.map(row => {
-                return {
-                    start: row.start,
-                    end: row.end,
-                    text: row.text.trim(),
-                    id: calculateHash(`${row.start}-${row.end}-${row.text}`)
-                }
-            })
-            commit('ADD_ORIGINAL_SUBTITLES', subtitles);
+            subtitles = addIdToSubtitles(subtitles);
+            commit('SET_ORIGINAL_SUBTITLES', subtitles);
+        },
+        // eslint-disable-next-line no-unused-vars
+        async ADD_ORIGINAL_SUBTITLES_API ({ commit, dispatch }, subtitlesString) {
+            let subtitles = parse(subtitlesString);
+            subtitles = addIdToSubtitles(subtitles);
+            commit('SET_ORIGINAL_SUBTITLES', subtitles);
         },
         async UPLOAD_FILE (state, event) {
             return new Promise((resolve, reject) => {
@@ -83,7 +99,7 @@ export default {
         }
     },
     mutations:{
-        ADD_ORIGINAL_SUBTITLES: (state, event) => {
+        SET_ORIGINAL_SUBTITLES: (state, event) => {
             state.originalSubtitles = event;
         }
     }

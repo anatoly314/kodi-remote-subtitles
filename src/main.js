@@ -17,6 +17,10 @@ Vue.use({
   }
 });
 
+Vue.config.errorHandler = function (err, vm, info) {
+  console.error(err, vm, info);
+};
+
 
 const router = new VueRouter({
   routes // short for `routes: routes`

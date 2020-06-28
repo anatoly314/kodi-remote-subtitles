@@ -1,5 +1,9 @@
 # kodi-remote-subtitles
 
+[![Code Quality Score](https://www.code-inspector.com/project/10412/score/svg)](https://github.com/anatoly314/kodi-remote-subtitles)
+[![Code Grade](https://www.code-inspector.com/project/10412/status/svg)](https://github.com/anatoly314/kodi-remote-subtitles)
+
+
 ## Project setup
 ```
 yarn install

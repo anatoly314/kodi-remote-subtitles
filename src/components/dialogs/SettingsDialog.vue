@@ -68,6 +68,6 @@
         },
         beforeDestroy () {
             this.$bus.$off('settings-modal:open');
-        },
+        }
     }
 </script>

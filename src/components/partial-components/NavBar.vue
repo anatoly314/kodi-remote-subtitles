@@ -10,6 +10,9 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
+            <v-btn icon @click="openSubtitles">
+                <v-icon :color="isConnected ? 'primary' : 'red'">fa-closed-captioning</v-icon>
+            </v-btn>
             <v-btn icon @click="CONNECT" v-if="!isConnected">
                 <v-icon color="red">fa-link</v-icon>
             </v-btn>
@@ -68,11 +71,6 @@
                       to: '/basic'
                   },
                   {
-                      title: 'Subtitles',
-                      icon: 'mdi-image',
-                      to: '/subtitles'
-                  },
-                  {
                       title: 'Advanced View Tracking',
                       icon: 'mdi-view-dashboard',
                       to: '/advanced-list-tracking'
@@ -94,6 +92,9 @@
             ]),
             openSettings () {
                 this.$bus.$emit('settings-modal:open');
+            },
+            openSubtitles () {
+                this.$bus.$emit('subtitles-modal:open');
             }
         },
         components: {

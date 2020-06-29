@@ -145,8 +145,9 @@
                 await this.scrollToActiveRow();
             },
             async scrollToActiveRow () {
-                const activeRow = this.activeRow;
+                let activeRow = this.activeRow;
                 if (activeRow > -1) {
+                    activeRow = activeRow > 3 ? activeRow - 3 : activeRow; //keep it in the middle of the list
                     this.$refs.listview.scrollToRow(activeRow);
                 }
             },

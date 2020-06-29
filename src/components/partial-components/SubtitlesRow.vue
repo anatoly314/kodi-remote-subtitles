@@ -6,7 +6,7 @@
             <div>{{toSrtTime(rowData.start)}}</div>
             <div>{{toSrtTime(rowData.end)}}</div>
             <v-btn class="mx-2"
-                   @click="copyToClipboard(rowData.text)"
+                   @click.stop="copyToClipboard(rowData.text)"
                    icon x-small color="primary">
                 <v-icon>fa-copy</v-icon>
             </v-btn>

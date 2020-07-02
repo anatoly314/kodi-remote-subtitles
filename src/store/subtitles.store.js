@@ -27,21 +27,25 @@ const addIdToSubtitles = function(subtitles) {
 export default {
     namespaced: true,
     state: {
-        originalSubtitles: []
+        originalSubtitles: [],
+        subtitlesTimingDeltaMs: 0
     },
     getters: {
-        originalSubtitles: status => status.originalSubtitles,
+        subtitlesTimingDeltaMs: state => state.subtitlesTimingDeltaMs,
+        originalSubtitles: state => state.originalSubtitles,
         activeRow: (state, getters, rootState, rootGetters) => {
             // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
             const originalSubtitles = state.originalSubtitles;
-            const currentPlayingTimeMs = rootGetters['kodi/currentCalculatedPlayTimeMs'];
+            const subtitlesTimingDeltaMs = state.subtitlesTimingDeltaMs;
+            let currentPlayingTimeMs = rootGetters['kodi/currentCalculatedPlayTimeMs'];
+            let currentPlayingTimeWithDeltaMs = currentPlayingTimeMs + subtitlesTimingDeltaMs;
             let activeRow = -1;
             for (let i = 0; i < originalSubtitles.length; i++){
                 const row = originalSubtitles[i];
                 const followingRow = originalSubtitles[i + 1];
                 const start = row.start;
                 const followingStart = followingRow ? followingRow.start : start + 1;
-                if (currentPlayingTimeMs >= start && currentPlayingTimeMs < followingStart) {
+                if (currentPlayingTimeWithDeltaMs >= start && currentPlayingTimeWithDeltaMs < followingStart) {
                     activeRow = i;
                     break;
                 }
@@ -101,6 +105,11 @@ export default {
     mutations:{
         SET_ORIGINAL_SUBTITLES: (state, event) => {
             state.originalSubtitles = event;
+        },
+        SET_SUBTITLES_TIMING_DELTA_MS: (state, event) => {
+            let deltaMs = Number.parseInt(event);
+            deltaMs = isNaN(deltaMs) ? 0 : deltaMs;
+            state.subtitlesTimingDeltaMs = deltaMs;
         }
     }
 }

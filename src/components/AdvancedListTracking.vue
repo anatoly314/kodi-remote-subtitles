@@ -11,9 +11,20 @@
             </template>
         </ListView>
         <div class="buttons-container">
-            <h2 class="text-center">
-                {{currentPlayingTimeHumanReadable}}
-            </h2>
+            <div style="display: flex; justify-content: center">
+                <h2 class="text-center">
+                    {{currentPlayingTimeHumanReadable}}
+                </h2>
+                <div>
+                    <v-text-field
+                            v-model="subtitlesDeltaMs"
+                            class="ml-2"
+                            label="Subtitles Timing Delta MS"
+                            placeholder="Delta MS"
+                    ></v-text-field>
+                </div>
+            </div>
+
             <div class="row-buttons">
                 <v-badge
                         bordered
@@ -110,7 +121,8 @@
         computed: {
             ...mapGetters('subtitles', [
                 'originalSubtitles',
-                'activeRow'
+                'activeRow',
+                'subtitlesTimingDeltaMs'
             ]),
             ...mapGetters('kodi', [
                 'isPlaying',
@@ -118,7 +130,15 @@
                 'currentCalculatedPlayTimeMs',
                 'syncTimestamp',
                 'currentPlayingTimeHumanReadable'
-            ])
+            ]),
+            subtitlesDeltaMs: {
+                get: function () {
+                    return this.subtitlesTimingDeltaMs;
+                },
+                set: function (value) {
+                    this.SET_SUBTITLES_TIMING_DELTA_MS(value);
+                }
+            }
         },
         mounted() {
             this.CONNECT();
@@ -137,6 +157,9 @@
             ]),
             ...mapMutations('kodi', [
                 'SET_CURRENT_CALCULATED_PLAY_TIME'
+            ]),
+            ...mapMutations('subtitles', [
+                'SET_SUBTITLES_TIMING_DELTA_MS'
             ]),
             async pauseAndScrollToActiveRow () {
                 if (this.isPlaying) {

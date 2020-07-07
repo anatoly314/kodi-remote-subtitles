@@ -61,19 +61,14 @@
               drawer: null,
               items: [
                   {
-                      title: 'Home',
-                      icon: 'mdi-help-box',
+                      title: 'Basic View',
+                      icon: 'fa-tv',
                       to: '/'
                   },
                   {
-                      title: 'Basic View',
-                      icon: 'mdi-image',
-                      to: '/basic'
-                  },
-                  {
                       title: 'Advanced View Tracking',
-                      icon: 'mdi-view-dashboard',
-                      to: '/advanced-list-tracking'
+                      icon: 'fa-closed-captioning',
+                      to: '/advanced'
                   }
               ]
           }

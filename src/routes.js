@@ -1,18 +1,13 @@
 import AdvancedListTracking from "./components/AdvancedListTracking";
 import Basic from "./components/Basic";
-import Home from "./components/Home";
 
 export const routes = [
     {
         path: '/',
-        component: Home
-    },
-    {
-        path: '/basic',
         component: Basic
     },
     {
-        path: '/advanced-list-tracking',
+        path: '/advanced',
         component: AdvancedListTracking
     }
 

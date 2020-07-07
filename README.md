@@ -17,6 +17,7 @@ You can:
 - play/pause the movie.
 
 UX is pretty self-explained.
+
 ![Basic view](./README/basic_view.png)
 
 - ### Advanced View
@@ -32,6 +33,7 @@ Available options:
 - manually enter delta in milliseconds if your subtitles not in a sync by constant value
 - copy subtitles text to clipboard
 - upload subtitles from a file
+
 ![Advanced view](./README/advanced_view.png)
 
 - ### Subtitles View

@@ -63,6 +63,9 @@
                 </v-badge>
             </div>
             <div class="row-buttons">
+                <v-btn class="mx-2" dark large color="primary" @click="TOGGLE_SUBTITLES">
+                    <v-icon>fa-closed-captioning</v-icon>
+                </v-btn>
                 <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="scrollToActiveRow">
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
@@ -153,7 +156,8 @@
                 'SYNC_PLAYING_TIME',
                 'CONNECT',
                 'START_CALCULATE_TIME',
-                'STOP_CALCULATE_TIME'
+                'STOP_CALCULATE_TIME',
+                'TOGGLE_SUBTITLES'
             ]),
             ...mapMutations('kodi', [
                 'SET_CURRENT_CALCULATED_PLAY_TIME'

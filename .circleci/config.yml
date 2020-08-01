@@ -25,10 +25,8 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       - run: yarn build
-  deploy:
-    working_directory: ~/repo
-    steps:
-        - run:
-          name: Deploy Over SSH
-          command: |
-            scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
+      - run:
+        name: Deploy Over SSH
+        command: |
+         scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
+

@@ -30,4 +30,8 @@ jobs:
       name: Deploy Over SSH
       command: |
         scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
-
+workflows:
+  build_and_deploy:
+    jobs:
+      - build
+      - deploy

@@ -52,15 +52,9 @@ workflows:
   build-deploy:
     jobs:
       - build:
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
       - deploy:
           requires:
             - build
-          filters:
-            branches:
-              only:
-                - master
+          <<: *master_only
 

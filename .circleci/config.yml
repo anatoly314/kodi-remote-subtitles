@@ -43,7 +43,7 @@ jobs:
           name: Deploy Over SSH
           command: |
             ls -all
-            rm -rf *
+            ssh $SERVER_USER_NAME@$SERVER_IP 'rm -rf /var/www/kodirs.cyou/html/'
             scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
 
 workflows:

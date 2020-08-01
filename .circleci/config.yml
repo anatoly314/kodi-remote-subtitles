@@ -3,7 +3,8 @@ version: 2.1
 master_only: &master_only
   filters:
     branches:
-      only: master
+      only:
+        - master
 
 executors:
   my-executor:

@@ -53,6 +53,7 @@ workflows:
       - build:
         <<: *master_only
       - deploy:
-          <<: *master_only
           requires:
             - build
+          <<: *master_only
+

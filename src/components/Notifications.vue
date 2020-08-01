@@ -33,9 +33,9 @@
                 mode: 'vertical',
                 snackbar: false,
                 text: 'Default text',
-                timeout: 6000,
+                timeout: 2000,
                 x: null,
-                y: 'bottom',
+                y: 'top',
             }
         },
         computed: {

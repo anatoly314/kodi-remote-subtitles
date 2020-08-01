@@ -3,6 +3,7 @@
 [![Code Quality Score](https://www.code-inspector.com/project/10412/score/svg)](https://github.com/anatoly314/kodi-remote-subtitles)
 [![Code Grade](https://www.code-inspector.com/project/10412/status/svg)](https://github.com/anatoly314/kodi-remote-subtitles)
 
+### Working demo: [kodirs.cyou](http://kodirs.cyou)
 
 ## Motivation
 English isn't my native language, and despite I can read/write, my verbal abilities lack. For example, sometimes it's difficult for me to understand spoken language. One way to improve it is by watching movies/series. But here's a catch. If I watch a movie without subtitles, I don't understand much. While I watch a movie with subtitles, I feel I am not engaged enough because I don't listen to a talk. So, I decided to write this POC application to overcome this limitation. You can watch a movie without subtitles, but if you didn't understand something, you easily read subtitles on your mobile phone. Or if you prefer you can read subtitles, before, the scene. Also, you can jump to the scene which you didn't understand and rewatch it again in an easy way. Once this app connected to the [Kodi](https://kodi.tv/) player, it synced with it together with subtitles relative to playing time. 

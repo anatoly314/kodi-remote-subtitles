@@ -1,4 +1,3 @@
-import Vue from 'vue';
 import { parse } from "subtitle";
 import {download, getSubtitlesListByQuery} from "../utils/opensubtitles";
 
@@ -60,10 +59,6 @@ export default {
         },
         async DOWNLOAD_SUBTITLES_BY_ID (state, id) {
             const subtitles = await download(id);
-            Vue.prototype.$bus.$emit('show-notification', {
-                type: 'info',
-                text: 'Subtitles successfully donwloaded'
-            });
             return subtitles;
         },
         async ADD_ORIGINAL_SUBTITLES_FILE ({ commit, dispatch }, event) {

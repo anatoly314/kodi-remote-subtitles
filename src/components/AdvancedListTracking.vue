@@ -11,20 +11,6 @@
             </template>
         </ListView>
         <div class="buttons-container">
-            <div style="display: flex; justify-content: center">
-                <h2 class="text-center">
-                    {{currentPlayingTimeHumanReadable}}
-                </h2>
-                <div>
-                    <v-text-field
-                            v-model="subtitlesDeltaMs"
-                            class="ml-2"
-                            label="Subtitles Timing Delta MS"
-                            placeholder="Delta MS"
-                    ></v-text-field>
-                </div>
-            </div>
-
             <div class="row-buttons">
                 <v-badge
                         bordered
@@ -35,14 +21,14 @@
                         offset-x="40"
                 >
                     <v-btn class="mx-2"
-                           dark large color="primary"
+                           dark color="primary"
                            title
                            @click="CHANGE_TO_DELTA_SECONDS(-15)">
                         <v-icon>fa-backward</v-icon>
                     </v-btn>
                 </v-badge>
 
-                <v-btn class="mx-2" dark large
+                <v-btn class="mx-2" dark
                        @click="TOGGLE_PLAY_PAUSE"
                        :color="isPlaying ? 'red' : 'green'">
                     <v-icon v-if="!isPlaying">fa-play</v-icon>
@@ -56,21 +42,21 @@
                         offset-x="40"
                         content="15 sec"
                 >
-                    <v-btn class="mx-2" dark large color="primary"
+                    <v-btn class="mx-2" dark color="primary"
                            @click="CHANGE_TO_DELTA_SECONDS(15)">
                         <v-icon>fa-forward</v-icon>
                     </v-btn>
                 </v-badge>
             </div>
             <div class="row-buttons">
-                <v-btn class="mx-2" dark large color="primary" @click="TOGGLE_SUBTITLES">
+                <v-btn class="mx-2" dark color="primary" @click="TOGGLE_SUBTITLES">
                     <v-icon>fa-closed-captioning</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="scrollToActiveRow">
+                <v-btn class="mx-2" style="margin: auto" dark color="primary" @click="scrollToActiveRow">
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" style="margin: auto" dark large color="primary" @click="pauseAndScrollToActiveRow">
+                <v-btn class="mx-2" style="margin: auto" dark color="primary" @click="pauseAndScrollToActiveRow">
                     <v-icon>fa-pause</v-icon>
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
@@ -80,13 +66,19 @@
                 <v-switch v-model="gui.displaySubtitlesTime" :label="`Display time`"></v-switch>
                 <v-switch class="ml-4" v-model="gui.scrollToActiveRow" :label="`Scroll To Active Row`"></v-switch>
             </div>
-            <div class="row-buttons">
-                <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
-                    <v-btn color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
-                    <input v-show="false" ref="inputUpload" type="file" @change="ADD_ORIGINAL_SUBTITLES_FILE">
+            <div style="display: flex; justify-content: center">
+                <h2 class="text-center">
+                    {{currentPlayingTimeHumanReadable}}
+                </h2>
+                <div>
+                    <v-text-field
+                            v-model="subtitlesDeltaMs"
+                            class="ml-2"
+                            label="Subtitles Timing Delta MS"
+                            placeholder="Delta MS"
+                    ></v-text-field>
                 </div>
             </div>
-
         </div>
 
     </div>
@@ -192,6 +184,9 @@
     }
 </script>
 <style scoped>
+    .v-icon{
+        font-size: large !important;
+    }
     .subtitles-list{
         height: 50vh;
     }
@@ -202,7 +197,7 @@
         padding-top: 20px;
     }
     .row-buttons{
-        margin-top: 20px;
+        margin-top: 15px;
         display: flex;
         justify-content: center;
     }

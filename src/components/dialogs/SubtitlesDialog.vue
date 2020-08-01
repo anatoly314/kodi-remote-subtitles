@@ -27,17 +27,22 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
+          <v-btn small color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
+          <input v-show="false" ref="inputUpload" type="file" @change="uploadSubtitles">
+        </div>
         <v-spacer></v-spacer>
-        <v-btn class="mx-2" dark color="primary"
+        <v-btn class="mx-2" dark color="primary" small
                @click="fillWithCurrentMovieDetails">
           <v-icon>fa-info</v-icon>
           <v-icon class="ml-2">fa-video</v-icon>
         </v-btn>
-        <v-btn class="mx-2" dark color="primary"
+        <v-btn class="mx-2" dark color="primary" small
                @click="searchSubtitles">
           <v-icon>fa-search</v-icon>
         </v-btn>
-        <v-btn class="mx-2" dark color="error" @click="dialog = false">
+        <v-btn class="mx-2" dark color="error" small
+               @click="dialog = false">
           <v-icon>fa-times</v-icon>
         </v-btn>
       </v-card-actions>
@@ -50,6 +55,7 @@
   import ListView from "../partial-components/ListView";
   import OpenSubtitlesRow from "../partial-components/OpenSubtitlesRow";
   import { mapActions, mapMutations } from 'vuex';
+
   export default {
     data() {
       return {
@@ -69,11 +75,20 @@
       ...mapActions('subtitles', [
         'GET_SUBTITLES_LIST_BY_QUERY',
         'DOWNLOAD_SUBTITLES_BY_ID',
-        'ADD_ORIGINAL_SUBTITLES_API'
+        'ADD_ORIGINAL_SUBTITLES_API',
+        'ADD_ORIGINAL_SUBTITLES_FILE'
       ]),
       ...mapMutations('subtitles', [
               'SET_ORIGINAL_SUBTITLES'
       ]),
+      uploadSubtitles (file) {
+        this.ADD_ORIGINAL_SUBTITLES_FILE(file);
+        this.$bus.$emit('show-notification', {
+          type: 'info',
+          text: 'Subtitles successfully uploaded'
+        });
+        this.close();
+      },
       async fillWithCurrentMovieDetails() {
         const movieDetails = await this.REQUEST_CURRENT_MOVIE_DETAILS();
         this.subtitlesSearchQuery = movieDetails.title;
@@ -86,9 +101,17 @@
         const subtitleId = subtitleToDownload.id;
         const subtitles = await this.DOWNLOAD_SUBTITLES_BY_ID(subtitleId);
         this.ADD_ORIGINAL_SUBTITLES_API(subtitles);
+        this.$bus.$emit('show-notification', {
+          type: 'info',
+          text: 'Subtitles successfully downloaded'
+        });
+        this.close();
       },
       open () {
         this.dialog = true;
+      },
+      close () {
+        this.dialog = false;
       }
     },
     mounted () {
@@ -106,6 +129,9 @@
 </script>
 
 <style scoped>
+  .v-icon{
+    font-size: medium !important;
+  }
   .search-query-container {
     height: 10vh;
     display: flex;

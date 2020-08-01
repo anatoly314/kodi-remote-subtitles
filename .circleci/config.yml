@@ -38,7 +38,8 @@ jobs:
 
     steps:
       - restore_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
 
       - add_ssh_keys:
           fingerprints:

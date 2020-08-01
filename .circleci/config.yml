@@ -27,8 +27,8 @@ jobs:
       - run: yarn build
   deploy:
     working_directory: ~/repo
-      steps:
-          - run:
-            name: Deploy Over SSH
-            command: |
-              scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
+    steps:
+        - run:
+          name: Deploy Over SSH
+          command: |
+            scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html

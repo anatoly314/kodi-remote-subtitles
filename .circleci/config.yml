@@ -1,5 +1,10 @@
 version: 2.1
 
+master_only: &master_only
+  filters:
+    branches:
+      only: master
+
 executors:
   my-executor:
     docker:
@@ -45,7 +50,9 @@ workflows:
 
   build-deploy:
     jobs:
-      - build
+      - build:
+        <<: *master_only
       - deploy:
+          <<: *master_only
           requires:
             - build

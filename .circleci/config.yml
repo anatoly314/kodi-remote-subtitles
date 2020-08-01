@@ -32,6 +32,9 @@ jobs:
           fingerprints:
             - "b3:88:6d:5a:46:55:5a:26:8f:8f:5f:55:dd:38:0c:7f"
       - run:
+          name: Add to known hosts
+          command: ssh-keyscan -H $SERVER_IP >> ~/.ssh/known_hosts
+      - run:
           name: Deploy Over SSH
           command: |
             ls -all

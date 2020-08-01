@@ -30,10 +30,7 @@ jobs:
       - run: yarn build
 
   deploy:
-    working_directory: ~/repo
-
-    docker:
-        - image: circleci/node:12.9.1-browsers
+    executor: my-executor
 
     steps:
       - run:

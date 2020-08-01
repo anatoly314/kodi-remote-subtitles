@@ -12,7 +12,7 @@ module.exports = {
             new VuetifyLoaderPlugin(),
             new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
             new DuplicatePackageCheckerPlugin(),
-            new StatsPlugin('stats.json')
+            new StatsPlugin("stats.json")
         ]
     },
     pluginOptions: {

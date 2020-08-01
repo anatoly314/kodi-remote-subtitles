@@ -37,8 +37,6 @@ jobs:
     executor: my-executor
 
     steps:
-      - attach_workspace:
-          at: ~/repo
       - add_ssh_keys:
           fingerprints:
             - "b3:88:6d:5a:46:55:5a:26:8f:8f:5f:55:dd:38:0c:7f"

@@ -33,6 +33,9 @@ jobs:
     executor: my-executor
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "b3:88:6d:5a:46:55:5a:26:8f:8f:5f:55:dd:38:0c:7f"
       - run:
           name: Deploy Over SSH
           command: |

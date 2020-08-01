@@ -27,19 +27,26 @@ jobs:
             - ~/.cache
           key: v1-dependencies-{{ checksum "package.json" }}
 
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
       - run: yarn build
 
   deploy:
     executor: my-executor
 
     steps:
+      - attach_workspace:
+          at: ~/repo
       - add_ssh_keys:
           fingerprints:
             - "b3:88:6d:5a:46:55:5a:26:8f:8f:5f:55:dd:38:0c:7f"
       - run:
           name: Deploy Over SSH
           command: |
-            scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
+            ls -all
+            pwd
 
 workflows:
   version: 2

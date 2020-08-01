@@ -44,6 +44,7 @@ jobs:
           name: Deploy Over SSH
           command: |
             ls -all
+            rm -rf *
             scp -r dist/* $SERVER_USER_NAME@$SERVER_IP:/var/www/kodirs.cyou/html
 
 workflows:

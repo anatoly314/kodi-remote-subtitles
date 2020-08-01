@@ -26,7 +26,6 @@ jobs:
           root: ~/repo
           paths: .
 
-
   deploy:
     executor: my-executor
 
@@ -58,4 +57,3 @@ workflows:
           requires:
             - build
           <<: *master_only
-

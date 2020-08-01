@@ -14,12 +14,12 @@ jobs:
       - checkout
 
       - run: yarn install
+      - run: yarn build
 
       - persist_to_workspace:
           root: ~/repo
           paths: .
 
-      - run: yarn build
 
   deploy:
     executor: my-executor

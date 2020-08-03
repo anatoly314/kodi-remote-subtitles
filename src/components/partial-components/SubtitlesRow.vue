@@ -39,7 +39,8 @@
         props: {
             rowData: Object,
             displaySubtitlesTime: Boolean,
-            index: Number
+            index: Number,
+            active: Boolean
         },
         data () {
             return {
@@ -49,6 +50,11 @@
             }
         },
         watch: {
+            // reset row when it's being scrolled out of view
+            rowData () {
+                this.showTranslation = false;
+                this.translatedRow = '';
+            }
         },
         computed: {
             ...mapGetters('subtitles', [

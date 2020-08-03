@@ -14,6 +14,7 @@
                     class="message"
             >
                     <slot v-bind:item="item"
+                          v-bind:active="active"
                           v-bind:index="index">
                     </slot>
             </DynamicScrollerItem>
@@ -31,10 +32,6 @@
         data () {
             return {
             }
-        },
-        watch: {
-        },
-        computed: {
         },
         methods: {
             scrollToRow(rowIndex) {

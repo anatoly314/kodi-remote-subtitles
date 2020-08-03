@@ -3,8 +3,9 @@
         <ListView ref="listview"
                   class="subtitles-list"
                   :items="originalSubtitles">
-            <template v-slot:default="{ item, index }">
+            <template v-slot:default="{ item, index, active }">
                 <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
+                              :active="active"
                               :rowData="item"
                               :index="index">
                 </SubtitlesRow>

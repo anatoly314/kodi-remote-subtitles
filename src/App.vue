@@ -12,7 +12,9 @@
     </v-main>
 
     <v-footer app>
-      (c) Anatoly Tarnavsky
+      <div style="text-align: center; width: 100%;">
+        (c) 2020 Anatoly Tarnavsky
+      </div>
     </v-footer>
   </v-app>
 </template>

@@ -37,8 +37,18 @@
                     :disabled="!subtitlesLanguageField"
                     class="search-query-field"
                     v-model="subtitlesSearchQuery"
-                    label="Subtitles Search Query"
-            ></v-text-field>
+                    append-icon="fa-search"
+                    @click:append="searchSubtitles"
+                    label="Subtitles Search Query">
+              <template v-slot:prepend>
+                <v-btn class="mx-2"
+                       dark color="primary" small
+                       @click="fillWithCurrentMovieDetails">
+                  <v-icon>fa-info</v-icon>
+                  <v-icon class="ml-2">fa-video</v-icon>
+                </v-btn>
+              </template>
+            </v-text-field>
           </div>
           <div class="subtitles-list-container">
 
@@ -55,21 +65,11 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-spacer></v-spacer>
         <div style="margin-top: auto; margin-bottom: auto; margin-left: 10px;"> <!-- https://stackoverflow.com/a/54677618/947111 -->
           <v-btn small color="success" @click="$refs.inputUpload.click()">Upload Subtitles</v-btn>
           <input v-show="false" ref="inputUpload" type="file" @change="uploadSubtitles">
         </div>
-        <v-spacer></v-spacer>
-        <v-btn class="mx-2" dark color="primary" small
-               @click="fillWithCurrentMovieDetails">
-          <v-icon>fa-info</v-icon>
-          <v-icon class="ml-2">fa-video</v-icon>
-        </v-btn>
-        <v-btn class="mx-2" color="primary" small
-               :disabled="!subtitlesLanguageField"
-               @click="searchSubtitles">
-          <v-icon>fa-search</v-icon>
-        </v-btn>
         <v-btn class="mx-2" dark color="error" small
                @click="dialog = false">
           <v-icon>fa-times</v-icon>

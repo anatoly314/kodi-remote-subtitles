@@ -61,14 +61,14 @@
               drawer: null,
               items: [
                   {
-                      title: 'Basic View',
-                      icon: 'fa-tv',
+                      title: 'Remote with Subtitles',
+                      icon: 'fa-closed-captioning',
                       to: '/'
                   },
                   {
-                      title: 'Advanced View Tracking',
-                      icon: 'fa-closed-captioning',
-                      to: '/advanced'
+                      title: 'Remote Only',
+                      icon: 'fa-tv',
+                      to: '/remoteonly'
                   }
               ]
           }

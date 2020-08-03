@@ -5,6 +5,11 @@
         <div class="time-container" v-if="displaySubtitlesTime">
             <div>{{toSrtTime(rowData.start)}}</div>
             <div>{{toSrtTime(rowData.end)}}</div>
+
+            <div @click.stop>
+                <SwitchCustom @change="translateText(rowData.text)" v-model="showTranslation"/>
+            </div>
+
             <v-btn class="mx-2"
                    @click.stop="copyToClipboard(rowData.text)"
                    icon x-small color="primary">
@@ -12,7 +17,14 @@
             </v-btn>
         </div>
         <div class="text-container">
-            <span v-html="rowData.text"></span>
+            <span v-if="!showTranslation" v-html="rowData.text"></span>
+            <span v-if="showTranslation">
+                <span v-if="translating">
+                    <i class="fa fa-spinner fa-spin fa-fw"></i>
+                    Translating...
+                </span>
+                {{translatedRow}}
+            </span>
         </div>
     </div>
 </template>
@@ -20,6 +32,9 @@
 <script>
     import { toSrtTime } from 'subtitle';
     import { mapActions, mapGetters } from 'vuex';
+
+    import SwitchCustom from "../SwitchCustom";
+
     export default {
         props: {
             rowData: Object,
@@ -28,19 +43,39 @@
         },
         data () {
             return {
+                showTranslation: false,
+                translating: false,
+                translatedRow: ''
             }
         },
         watch: {
         },
         computed: {
             ...mapGetters('subtitles', [
-                'activeRow'
+                'activeRow',
+                'subtitlesLanguage',
+                'subtitlesTranslationLanguage'
             ]),
         },
         methods: {
             ...mapActions('kodi',[
                 'MOVE_TO_SPECIFIC_TIME'
             ]),
+            ...mapActions('subtitles',[
+                'TRANSLATE_SUBTITLES_ROW'
+            ]),
+            async translateText (text) {
+                if (this.translatedRow.length === 0) {
+                    this.translating = true;
+                    const translation = await this.TRANSLATE_SUBTITLES_ROW({
+                        subtitlesRow: text,
+                        subtitlesLanguage: this.subtitlesLanguage,
+                        subtitlesTranslationLanguage: this.subtitlesTranslationLanguage
+                    });
+                    this.translatedRow = translation.sentences[0].trans;
+                    this.translating = false;
+                }
+            },
             copyToClipboard (text) {
                 const self = this;
                 function fallbackCopyTextToClipboard(text) {
@@ -90,6 +125,7 @@
             toSrtTime: toSrtTime
         },
         components: {
+            SwitchCustom
         }
     }
 </script>

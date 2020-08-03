@@ -1,13 +1,41 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px" fullscreen>
     <v-card>
-      <v-card-title>
-        <span class="headline">Subtitles</span>
+      <v-card-title class="title-container">
+          <span class="headline">Subtitles</span>
+
+          <v-select class="language-selector"
+                    v-model="subtitlesLanguageField"
+                    :items="openSubtitlesLangugages"
+                    item-text="LanguageName"
+                    menu-props="auto"
+                    return-object
+                    label="Pick subtitles language"
+                    persistent-hint
+                    single-line
+                    hint="Pick subtitles language">
+          </v-select>
+
+        <v-select class="language-selector"
+                  v-model="translationLanguageField"
+                  :items="openSubtitlesLangugages"
+                  item-text="LanguageName"
+                  menu-props="auto"
+                  return-object
+                  label="Pick translation language"
+                  persistent-hint
+                  single-line
+                  hint="Pick translation language">
+        </v-select>
+
       </v-card-title>
+
       <v-card-text class="v-card-text">
         <v-container>
           <div class="search-query-container">
             <v-text-field
+                    :disabled="!subtitlesLanguageField"
+                    class="search-query-field"
                     v-model="subtitlesSearchQuery"
                     label="Subtitles Search Query"
             ></v-text-field>
@@ -37,7 +65,8 @@
           <v-icon>fa-info</v-icon>
           <v-icon class="ml-2">fa-video</v-icon>
         </v-btn>
-        <v-btn class="mx-2" dark color="primary" small
+        <v-btn class="mx-2" color="primary" small
+               :disabled="!subtitlesLanguageField"
                @click="searchSubtitles">
           <v-icon>fa-search</v-icon>
         </v-btn>
@@ -54,7 +83,7 @@
 <script>
   import ListView from "../partial-components/ListView";
   import OpenSubtitlesRow from "../partial-components/OpenSubtitlesRow";
-  import { mapActions, mapMutations } from 'vuex';
+  import { mapActions, mapMutations, mapGetters } from 'vuex';
 
   export default {
     data() {
@@ -65,7 +94,27 @@
       }
     },
     computed: {
-
+      ...mapGetters('subtitles', [
+              'subtitlesLanguage',
+              'openSubtitlesLangugages',
+              'subtitlesTranslationLanguage'
+      ]),
+      subtitlesLanguageField: {
+        get() {
+          return this.subtitlesLanguage;
+        },
+        set(value) {
+          this.SET_SUBTITLES_LANGUAGE(value);
+        }
+      },
+      translationLanguageField: {
+        get() {
+          return this.subtitlesTranslationLanguage;
+        },
+        set(value) {
+          this.SET_SUBTITLES_TRANSLATION_LANGUAGE(value);
+        }
+      }
     },
     methods: {
       ...mapActions('kodi', [
@@ -79,7 +128,9 @@
         'ADD_ORIGINAL_SUBTITLES_FILE'
       ]),
       ...mapMutations('subtitles', [
-              'SET_ORIGINAL_SUBTITLES'
+          'SET_ORIGINAL_SUBTITLES',
+          'SET_SUBTITLES_LANGUAGE',
+          'SET_SUBTITLES_TRANSLATION_LANGUAGE'
       ]),
       uploadSubtitles (file) {
         this.ADD_ORIGINAL_SUBTITLES_FILE(file);
@@ -94,8 +145,11 @@
         this.subtitlesSearchQuery = movieDetails.title;
       },
       async searchSubtitles() {
-        const subtitlesList = await this.GET_SUBTITLES_LIST_BY_QUERY(this.subtitlesSearchQuery);
-        this.subtitlesList = subtitlesList['en'] || [];
+        const subtitlesList = await this.GET_SUBTITLES_LIST_BY_QUERY({
+          query: this.subtitlesSearchQuery,
+          language: this.subtitlesLanguage.IdSubLanguage
+        });
+        this.subtitlesList = subtitlesList;
       },
       async downloadCurrentSubtitle(subtitleToDownload) {
         const subtitleId = subtitleToDownload.id;
@@ -129,6 +183,16 @@
 </script>
 
 <style scoped>
+  .title-container{
+    display: flex;
+    padding-top: 0px !important;
+  }
+
+  .language-selector{
+    padding-left: 20px;
+    width: 20%;
+  }
+
   .v-icon{
     font-size: medium !important;
   }
@@ -138,6 +202,15 @@
     display: flex;
     flex-direction: column;
   }
+
+  .container{
+    padding-top: 0px !important;
+  }
+
+  .search-query-field{
+    padding-top: 0px !important;
+  }
+
 
   .subtitles-list-container{
     height: 70vh;

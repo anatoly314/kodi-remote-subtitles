@@ -15,10 +15,10 @@ async function login() {
     }
 }
 
-export async function getSubtitlesListByQuery(query) {
+export async function getSubtitlesListByQuery(query, language) {
     await login();
     const response = await OpenSubtitles.search({
-        sublanguageid: 'eng',
+        sublanguageid: language,
         extensions: ['srt'],
         limit: 'all',
         query: query,

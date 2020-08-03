@@ -1,0 +1,277 @@
+[
+  {
+    "IdSubLanguage": "alb",
+    "ISO639": "sq",
+    "LanguageName": "Albanian"
+  },
+  {
+    "IdSubLanguage": "ara",
+    "ISO639": "ar",
+    "LanguageName": "Arabic"
+  },
+  {
+    "IdSubLanguage": "arg",
+    "ISO639": "an",
+    "LanguageName": "Aragonese"
+  },
+  {
+    "IdSubLanguage": "arm",
+    "ISO639": "hy",
+    "LanguageName": "Armenian"
+  },
+  {
+    "IdSubLanguage": "ast",
+    "ISO639": "at",
+    "LanguageName": "Asturian"
+  },
+  {
+    "IdSubLanguage": "baq",
+    "ISO639": "eu",
+    "LanguageName": "Basque"
+  },
+  {
+    "IdSubLanguage": "bre",
+    "ISO639": "br",
+    "LanguageName": "Breton"
+  },
+  {
+    "IdSubLanguage": "bul",
+    "ISO639": "bg",
+    "LanguageName": "Bulgarian"
+  },
+  {
+    "IdSubLanguage": "cat",
+    "ISO639": "ca",
+    "LanguageName": "Catalan"
+  },
+  {
+    "IdSubLanguage": "chi",
+    "ISO639": "zh",
+    "LanguageName": "Chinese (simplified)"
+  },
+  {
+    "IdSubLanguage": "cze",
+    "ISO639": "cs",
+    "LanguageName": "Czech"
+  },
+  {
+    "IdSubLanguage": "dan",
+    "ISO639": "da",
+    "LanguageName": "Danish"
+  },
+  {
+    "IdSubLanguage": "dut",
+    "ISO639": "nl",
+    "LanguageName": "Dutch"
+  },
+  {
+    "IdSubLanguage": "eng",
+    "ISO639": "en",
+    "LanguageName": "English"
+  },
+  {
+    "IdSubLanguage": "epo",
+    "ISO639": "eo",
+    "LanguageName": "Esperanto"
+  },
+  {
+    "IdSubLanguage": "est",
+    "ISO639": "et",
+    "LanguageName": "Estonian"
+  },
+  {
+    "IdSubLanguage": "fin",
+    "ISO639": "fi",
+    "LanguageName": "Finnish"
+  },
+  {
+    "IdSubLanguage": "fre",
+    "ISO639": "fr",
+    "LanguageName": "French"
+  },
+  {
+    "IdSubLanguage": "geo",
+    "ISO639": "ka",
+    "LanguageName": "Georgian"
+  },
+  {
+    "IdSubLanguage": "ger",
+    "ISO639": "de",
+    "LanguageName": "German"
+  },
+  {
+    "IdSubLanguage": "glg",
+    "ISO639": "gl",
+    "LanguageName": "Galician"
+  },
+  {
+    "IdSubLanguage": "ell",
+    "ISO639": "el",
+    "LanguageName": "Greek"
+  },
+  {
+    "IdSubLanguage": "heb",
+    "ISO639": "he",
+    "LanguageName": "Hebrew"
+  },
+  {
+    "IdSubLanguage": "hin",
+    "ISO639": "hi",
+    "LanguageName": "Hindi"
+  },
+  {
+    "IdSubLanguage": "hrv",
+    "ISO639": "hr",
+    "LanguageName": "Croatian"
+  },
+  {
+    "IdSubLanguage": "hun",
+    "ISO639": "hu",
+    "LanguageName": "Hungarian"
+  },
+  {
+    "IdSubLanguage": "ice",
+    "ISO639": "is",
+    "LanguageName": "Icelandic"
+  },
+  {
+    "IdSubLanguage": "ind",
+    "ISO639": "id",
+    "LanguageName": "Indonesian"
+  },
+  {
+    "IdSubLanguage": "ita",
+    "ISO639": "it",
+    "LanguageName": "Italian"
+  },
+  {
+    "IdSubLanguage": "jpn",
+    "ISO639": "ja",
+    "LanguageName": "Japanese"
+  },
+  {
+    "IdSubLanguage": "khm",
+    "ISO639": "km",
+    "LanguageName": "Khmer"
+  },
+  {
+    "IdSubLanguage": "kor",
+    "ISO639": "ko",
+    "LanguageName": "Korean"
+  },
+  {
+    "IdSubLanguage": "mac",
+    "ISO639": "mk",
+    "LanguageName": "Macedonian"
+  },
+  {
+    "IdSubLanguage": "may",
+    "ISO639": "ms",
+    "LanguageName": "Malay"
+  },
+  {
+    "IdSubLanguage": "nor",
+    "ISO639": "no",
+    "LanguageName": "Norwegian"
+  },
+  {
+    "IdSubLanguage": "oci",
+    "ISO639": "oc",
+    "LanguageName": "Occitan"
+  },
+  {
+    "IdSubLanguage": "per",
+    "ISO639": "fa",
+    "LanguageName": "Persian"
+  },
+  {
+    "IdSubLanguage": "pol",
+    "ISO639": "pl",
+    "LanguageName": "Polish"
+  },
+  {
+    "IdSubLanguage": "por",
+    "ISO639": "pt",
+    "LanguageName": "Portuguese"
+  },
+  {
+    "IdSubLanguage": "rus",
+    "ISO639": "ru",
+    "LanguageName": "Russian"
+  },
+  {
+    "IdSubLanguage": "scc",
+    "ISO639": "sr",
+    "LanguageName": "Serbian"
+  },
+  {
+    "IdSubLanguage": "sin",
+    "ISO639": "si",
+    "LanguageName": "Sinhalese"
+  },
+  {
+    "IdSubLanguage": "slo",
+    "ISO639": "sk",
+    "LanguageName": "Slovak"
+  },
+  {
+    "IdSubLanguage": "slv",
+    "ISO639": "sl",
+    "LanguageName": "Slovenian"
+  },
+  {
+    "IdSubLanguage": "spa",
+    "ISO639": "es",
+    "LanguageName": "Spanish"
+  },
+  {
+    "IdSubLanguage": "swe",
+    "ISO639": "sv",
+    "LanguageName": "Swedish"
+  },
+  {
+    "IdSubLanguage": "tat",
+    "ISO639": "tt",
+    "LanguageName": "Tatar"
+  },
+  {
+    "IdSubLanguage": "tgl",
+    "ISO639": "tl",
+    "LanguageName": "Tagalog"
+  },
+  {
+    "IdSubLanguage": "tha",
+    "ISO639": "th",
+    "LanguageName": "Thai"
+  },
+  {
+    "IdSubLanguage": "tur",
+    "ISO639": "tr",
+    "LanguageName": "Turkish"
+  },
+  {
+    "IdSubLanguage": "ukr",
+    "ISO639": "uk",
+    "LanguageName": "Ukrainian"
+  },
+  {
+    "IdSubLanguage": "vie",
+    "ISO639": "vi",
+    "LanguageName": "Vietnamese"
+  },
+  {
+    "IdSubLanguage": "rum",
+    "ISO639": "ro",
+    "LanguageName": "Romanian"
+  },
+  {
+    "IdSubLanguage": "pob",
+    "ISO639": "pb",
+    "LanguageName": "Portuguese (BR)"
+  },
+  {
+    "IdSubLanguage": "zht",
+    "ISO639": "zt",
+    "LanguageName": "Chinese (traditional)"
+  }
+]

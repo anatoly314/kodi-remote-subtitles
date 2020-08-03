@@ -1,5 +1,7 @@
 import { parse } from "subtitle";
 import {download, getSubtitlesListByQuery} from "../utils/opensubtitles";
+import {translate} from "../utils/google-translate";
+import openSubtitlesLangugages from "../utils/opensubtitles-languages.json";
 
 const calculateHash = function(string) {
     let hash = 0, i, chr;
@@ -27,11 +29,18 @@ export default {
     namespaced: true,
     state: {
         originalSubtitles: [],
-        subtitlesTimingDeltaMs: 0
+        subtitlesTimingDeltaMs: 0,
+        subtitlesLanguage: undefined,
+        subtitlesTranslationLanguage: undefined
     },
     getters: {
         subtitlesTimingDeltaMs: state => state.subtitlesTimingDeltaMs,
         originalSubtitles: state => state.originalSubtitles,
+        subtitlesLanguage: state => state.subtitlesLanguage,
+        subtitlesTranslationLanguage: state => state.subtitlesTranslationLanguage,
+        openSubtitlesLangugages: () => {
+            return openSubtitlesLangugages;
+        },
         activeRow: (state, getters, rootState, rootGetters) => {
             // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
             const originalSubtitles = state.originalSubtitles;
@@ -53,9 +62,11 @@ export default {
         }
     },
     actions: {
-        async GET_SUBTITLES_LIST_BY_QUERY(state, query) {
-            const subtitlesList = await getSubtitlesListByQuery(query);
-            return subtitlesList;
+        async GET_SUBTITLES_LIST_BY_QUERY(state, { query, language }) {
+            const subtitlesList = await getSubtitlesListByQuery(query, language);
+            const languageKey = Object.keys(subtitlesList)[0];
+            const subtitlesByLanguage = languageKey ? subtitlesList[languageKey] : [];
+            return subtitlesByLanguage;
         },
         async DOWNLOAD_SUBTITLES_BY_ID (state, id) {
             const subtitles = await download(id);
@@ -95,6 +106,12 @@ export default {
 
                 reader.readAsDataURL(file);
             })
+        },
+        async TRANSLATE_SUBTITLES_ROW(state, { subtitlesRow, subtitlesLanguage, subtitlesTranslationLanguage }) {
+            const sourceLanguage = subtitlesLanguage.ISO639;
+            const translationLanguage = subtitlesTranslationLanguage.ISO639;
+            const subtitlesList = await translate(subtitlesRow, sourceLanguage, translationLanguage);
+            return subtitlesList;
         }
     },
     mutations:{
@@ -105,6 +122,12 @@ export default {
             let deltaMs = Number.parseInt(event);
             deltaMs = isNaN(deltaMs) ? 0 : deltaMs;
             state.subtitlesTimingDeltaMs = deltaMs;
+        },
+        SET_SUBTITLES_LANGUAGE: (state, event) => {
+            state.subtitlesLanguage = event;
+        },
+        SET_SUBTITLES_TRANSLATION_LANGUAGE: (state, event) => {
+            state.subtitlesTranslationLanguage = event;
         }
     }
 }

@@ -62,11 +62,7 @@
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
                 </v-btn>
             </div>
-            <div class="row-buttons">
-                <v-switch v-model="gui.displaySubtitlesTime" :label="`Display time`"></v-switch>
-                <v-switch class="ml-4" v-model="gui.scrollToActiveRow" :label="`Scroll To Active Row`"></v-switch>
-            </div>
-            <div style="display: flex; justify-content: center">
+            <div style="display: flex; justify-content: center; padding-top: 10px;">
                 <h2 class="text-center">
                     {{currentPlayingTimeHumanReadable}}
                 </h2>
@@ -95,6 +91,7 @@
         data() {
             return {
                 gui : {
+                    scrollToActiveRow: true,
                     displaySubtitlesTime: true
                 }
             }

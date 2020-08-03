@@ -1,14 +1,14 @@
-import AdvancedListTracking from "./components/AdvancedListTracking";
-import Basic from "./components/Basic";
+import RemoteAndSubtitlesView from "./components/RemoteAndSubtitlesView";
+import RemoteOnlyView from "./components/RemoteOnlyView";
 
 export const routes = [
     {
         path: '/',
-        component: Basic
+        component: RemoteAndSubtitlesView
     },
     {
-        path: '/advanced',
-        component: AdvancedListTracking
+        path: '/remoteonly',
+        component: RemoteOnlyView
     }
 
 ];

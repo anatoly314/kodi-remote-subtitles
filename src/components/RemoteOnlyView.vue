@@ -14,20 +14,22 @@
                             content="-15 sec"
                             offset-x="40"
                     >
-                        <v-btn class="mx-2"
+                        <async-button class="mx-2"
                                dark large color="primary"
                                title
                                @click="CHANGE_TO_DELTA_SECONDS(-15)">
                             <v-icon>fa-backward</v-icon>
-                        </v-btn>
+                            <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                        </async-button>
                     </v-badge>
 
-                    <v-btn class="mx-2" dark large
+                    <async-button class="mx-2" dark large
                            @click="TOGGLE_PLAY_PAUSE"
                            :color="isPlaying ? 'red' : 'green'">
                         <v-icon v-if="!isPlaying">fa-play</v-icon>
                         <v-icon v-if="isPlaying">fa-pause</v-icon>
-                    </v-btn>
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
 
                     <v-badge
                             bordered
@@ -36,10 +38,11 @@
                             offset-x="40"
                             content="15 sec"
                     >
-                        <v-btn class="mx-2" dark large color="primary"
+                        <async-button class="mx-2" dark large color="primary"
                                @click="CHANGE_TO_DELTA_SECONDS(15)">
                             <v-icon>fa-forward</v-icon>
-                        </v-btn>
+                            <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                        </async-button>
                     </v-badge>
                 </v-row>
                 <v-row
@@ -47,12 +50,14 @@
                         :align="'start'"
                         :justify="'center'"
                 >
-                    <v-btn class="mx-2" dark large color="primary" @click="INPUT_BACK">
+                    <async-button class="mx-2" dark large color="primary" @click="INPUT_BACK">
                         <v-icon>fa-undo</v-icon>
-                    </v-btn>
-                    <v-btn class="mx-2" dark large color="primary" @click="TOGGLE_SUBTITLES">
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
+                    <async-button class="mx-2" dark large color="primary" @click="TOGGLE_SUBTITLES">
                         <v-icon>fa-closed-captioning</v-icon>
-                    </v-btn>
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
                 </v-row>
                 <v-divider class="mt-5"/>
                 <v-row
@@ -60,10 +65,11 @@
                         :align="'start'"
                         :justify="'center'"
                 >
-                    <v-btn class="mx-2" dark large color="primary" @click="MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES(15)">
+                    <async-button class="mx-2" dark large color="primary" @click="MOVE_BACKWARD_TO_SECONDS_AND_TURN_ON_SUBTITLES(15)">
                         <v-icon>fa-backward</v-icon>
                         <v-icon class="ml-2">fa-closed-captioning</v-icon>
-                    </v-btn>
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
                 </v-row>
             </v-col>
         </v-row>
@@ -74,6 +80,8 @@
 <script>
 
     import { mapActions, mapGetters } from 'vuex';
+
+    import AsyncButton from './partial-components/async-button';
 
     export default {
         name: 'App',
@@ -103,6 +111,7 @@
             ])
         },
         components: {
+            AsyncButton
         }
     }
 </script>

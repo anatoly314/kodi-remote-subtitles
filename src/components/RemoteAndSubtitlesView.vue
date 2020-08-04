@@ -21,20 +21,20 @@
                         content="-15 sec"
                         offset-x="40"
                 >
-                    <v-btn class="mx-2"
+                    <async-button class="mx-2"
                            dark color="primary"
                            title
                            @click="CHANGE_TO_DELTA_SECONDS(-15)">
                         <v-icon>fa-backward</v-icon>
-                    </v-btn>
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
                 </v-badge>
 
-                <v-btn class="mx-2" dark
-                       @click="TOGGLE_PLAY_PAUSE"
-                       :color="isPlaying ? 'red' : 'green'">
+                <async-button @click="TOGGLE_PLAY_PAUSE" dark :color="isPlaying ? 'red' : 'green'">
                     <v-icon v-if="!isPlaying">fa-play</v-icon>
                     <v-icon v-if="isPlaying">fa-pause</v-icon>
-                </v-btn>
+                    <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
 
                 <v-badge
                         bordered
@@ -43,25 +43,28 @@
                         offset-x="40"
                         content="15 sec"
                 >
-                    <v-btn class="mx-2" dark color="primary"
+                    <async-button class="mx-2" dark color="primary"
                            @click="CHANGE_TO_DELTA_SECONDS(15)">
                         <v-icon>fa-forward</v-icon>
-                    </v-btn>
+                        <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                    </async-button>
                 </v-badge>
             </div>
             <div class="row-buttons">
-                <v-btn class="mx-2" dark color="primary" @click="TOGGLE_SUBTITLES">
+                <async-button class="mx-2" dark color="primary" @click="TOGGLE_SUBTITLES">
                     <v-icon>fa-closed-captioning</v-icon>
-                </v-btn>
+                    <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
                 <v-btn class="mx-2" style="margin: auto" dark color="primary" @click="scrollToActiveRow">
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
                 </v-btn>
-                <v-btn class="mx-2" style="margin: auto" dark color="primary" @click="pauseAndScrollToActiveRow">
+                <async-button class="mx-2" style="margin: auto" dark color="primary" @click="pauseAndScrollToActiveRow">
                     <v-icon>fa-pause</v-icon>
                     <v-icon class="ml-2">fa-fast-forward</v-icon>
                     <v-icon class="ml-2">fa-closed-captioning</v-icon>
-                </v-btn>
+                    <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
             </div>
             <div style="display: flex; justify-content: center; padding-top: 10px;">
                 <h2 class="text-center">
@@ -86,6 +89,7 @@
     import { mapActions, mapGetters, mapMutations } from 'vuex';
     import ListView from "./partial-components/ListView";
     import SubtitlesRow from "./partial-components/SubtitlesRow";
+    import AsyncButton from './partial-components/async-button';
 
     export default {
         name: 'App',
@@ -177,7 +181,8 @@
         },
         components: {
             ListView,
-            SubtitlesRow
+            SubtitlesRow,
+            AsyncButton
         }
     }
 </script>

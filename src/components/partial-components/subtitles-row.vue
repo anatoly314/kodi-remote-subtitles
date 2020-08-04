@@ -78,7 +78,12 @@
                         subtitlesLanguage: this.subtitlesLanguage,
                         subtitlesTranslationLanguage: this.subtitlesTranslationLanguage
                     });
-                    this.translatedRow = translation.sentences[0].trans;
+                    this.translatedRow = translation.sentences.reduce((allSentences, sentence) => {
+                      if (sentence.trans) {
+                        allSentences += sentence.trans;
+                      }
+                      return allSentences;
+                    }, '');
                     this.translating = false;
                 }
             },

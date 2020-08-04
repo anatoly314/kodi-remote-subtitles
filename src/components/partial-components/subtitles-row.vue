@@ -33,7 +33,7 @@
     import { toSrtTime } from 'subtitle';
     import { mapActions, mapGetters } from 'vuex';
 
-    import SwitchCustom from "../SwitchCustom";
+    import SwitchCustom from "./switch-custom";
 
     export default {
         props: {

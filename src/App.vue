@@ -20,10 +20,10 @@
 </template>
 
 <script>
-import NavBar from "./components/partial-components/NavBar";
-import SettingsDialog from "./components/dialogs/SettingsDialog";
-import Notifications from "./components/Notifications";
-import SubtitlesDialog from "./components/dialogs/SubtitlesDialog";
+import NavBar from "./components/partial-components/nav-bar";
+import SettingsDialog from "./components/dialogs/settings-dialog";
+import Notifications from "./components/notifications";
+import SubtitlesDialog from "./components/dialogs/subtitles-dialog";
 export default {
   name: 'App',
   components: {

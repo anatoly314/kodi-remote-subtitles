@@ -87,8 +87,8 @@
 <script>
 
     import { mapActions, mapGetters, mapMutations } from 'vuex';
-    import ListView from "./partial-components/ListView";
-    import SubtitlesRow from "./partial-components/SubtitlesRow";
+    import ListView from "./partial-components/list-view";
+    import SubtitlesRow from "./partial-components/subtitles-row";
     import AsyncButton from './partial-components/async-button';
 
     export default {

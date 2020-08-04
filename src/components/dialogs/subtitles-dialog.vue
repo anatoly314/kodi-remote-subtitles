@@ -81,8 +81,8 @@
 </template>
 
 <script>
-  import ListView from "../partial-components/ListView";
-  import OpenSubtitlesRow from "../partial-components/OpenSubtitlesRow";
+  import ListView from "../partial-components/list-view";
+  import OpenSubtitlesRow from "../partial-components/open-subtitles-row";
   import { mapActions, mapMutations, mapGetters } from 'vuex';
 
   export default {

@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import Vuex from 'vuex';
+import VueShepherd from 'vue-shepherd';
+
 
 import { routes } from './routes';
 import store from './store'
@@ -10,6 +12,7 @@ import vuetify from './vuetify';
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(VueShepherd);
 
 Vue.use({
   install: (Vue) => {

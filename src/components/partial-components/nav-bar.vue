@@ -10,13 +10,13 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-            <v-btn icon @click="openSubtitles">
+            <v-btn id="open-subtitles-modal-button" icon @click="openSubtitles">
                 <v-icon :color="isConnected ? 'primary' : 'red'">fa-closed-captioning</v-icon>
             </v-btn>
-            <v-btn icon @click="CONNECT" v-if="!isConnected">
+            <v-btn id="reconnect-button" icon @click="CONNECT" v-if="!isConnected">
                 <v-icon color="red">fa-link</v-icon>
             </v-btn>
-            <v-btn icon @click="openSettings">
+            <v-btn id="open-settings-modal-button" icon @click="openSettings">
                 <v-icon :color="isConnected ? 'primary' : 'red'">fa-cog</v-icon>
             </v-btn>
         </v-app-bar>
@@ -92,7 +92,10 @@
                 this.$bus.$emit('subtitles-modal:open');
             }
         },
-        components: {
+        mounted() {
+          console.log(this.$refs);
+        },
+      components: {
         }
     }
 </script>

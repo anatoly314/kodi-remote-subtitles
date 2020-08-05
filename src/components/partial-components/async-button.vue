@@ -4,7 +4,7 @@
     <v-btn
         v-if="!noButton"
         class="button"
-        x-small="x-small"
+        :x-small="xSmall"
         :dark="dark"
         :color="color"
         :small="small"
@@ -36,7 +36,10 @@
               type: Boolean,
               default: false
             },
-            ['x-small']: Boolean,
+            xSmall: {
+              type: Boolean,
+              default: false
+            },
             dark: Boolean,
             small: Boolean,
             color: String,

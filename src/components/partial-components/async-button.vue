@@ -1,14 +1,28 @@
 <template>
+  <div>
+
     <v-btn
-            class="button"
-            :dark="dark"
-            :color="color"
-            v-on="listeners"
+        v-if="!noButton"
+        class="button"
+        x-small="x-small"
+        :dark="dark"
+        :color="color"
+        :small="small"
+        v-on="listeners"
     >
-        <slot name="loading" v-if="loadingState">Loading...</slot>
-        <slot name="error" v-else-if="hasError">Errored</slot>
-        <slot v-else />
+      <slot name="loading" v-if="loadingState">Loading...</slot>
+      <slot name="error" v-else-if="hasError">Errored</slot>
+      <slot v-else />
     </v-btn>
+
+    <div v-if="noButton" v-on="listeners">
+      <slot name="loading" v-if="loadingState">Loading...</slot>
+      <slot name="error" v-else-if="hasError">Errored</slot>
+      <slot v-else />
+    </div>
+
+  </div>
+
 </template>
 <script>
     export default {
@@ -18,7 +32,13 @@
             hasError: false
         }),
         props: {
+            noButton: {
+              type: Boolean,
+              default: false
+            },
+            ['x-small']: Boolean,
             dark: Boolean,
+            small: Boolean,
             color: String,
             /**
              * How much time should the error or success state stay visible

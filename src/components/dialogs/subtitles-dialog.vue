@@ -37,16 +37,22 @@
                     :disabled="!subtitlesLanguageField"
                     class="search-query-field"
                     v-model="subtitlesSearchQuery"
-                    append-icon="fa-search"
-                    @click:append="searchSubtitles"
                     label="Subtitles Search Query">
               <template v-slot:prepend>
-                <v-btn class="mx-2"
+                <async-button class="mx-2"
                        dark color="primary" small
                        @click="fillWithCurrentMovieDetails">
                   <v-icon>fa-info</v-icon>
                   <v-icon class="ml-2">fa-video</v-icon>
-                </v-btn>
+                  <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
+              </template>
+              <template v-slot:append>
+                <async-button no-button
+                              @click="searchSubtitles">
+                  <v-icon class="ml-2">fa-search</v-icon>
+                  <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
               </template>
             </v-text-field>
           </div>
@@ -84,6 +90,7 @@
   import ListView from "../partial-components/list-view";
   import OpenSubtitlesRow from "../partial-components/open-subtitles-row";
   import { mapActions, mapMutations, mapGetters } from 'vuex';
+  import AsyncButton from '../partial-components/async-button';
 
   export default {
     data() {
@@ -177,7 +184,8 @@
     },
     components: {
       ListView,
-      OpenSubtitlesRow
+      OpenSubtitlesRow,
+      AsyncButton
     }
   }
 </script>

@@ -2,11 +2,12 @@
     <div class="row-container">
         <div class="subtitles-details">
             <div class="subtitles-button-title">
-                <v-btn class="mx-2"
-                       @click="$emit('click', rowData)"
+                <async-button class="mx-2"
+                       v-on="listeners"
                        icon x-small color="primary">
                     <v-icon>fa-download</v-icon>
-                </v-btn>
+                  <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+                </async-button>
                 <div>
                     {{rowData.filename}}
                 </div>
@@ -22,6 +23,7 @@
 </template>
 
 <script>
+    import AsyncButton from './async-button';
     export default {
         props: {
             rowData: Object,
@@ -34,10 +36,21 @@
         watch: {
         },
         computed: {
+          listeners() {
+            // spread the listeners passed from the parent, but override the click one
+            return {
+              ...this.$listeners,
+              click: this.handleClick
+            };
+          }
         },
         methods: {
+          async handleClick(e) {
+            await this.$listeners.click(e);
+          },
         },
         components: {
+          AsyncButton
         }
     }
 </script>

@@ -18,7 +18,7 @@ const addIdToSubtitles = function(subtitles) {
         return {
             start: row.start,
             end: row.end,
-            text: row.text.trim(),
+            text: row.text ? row.text.trim() : '',
             id: calculateHash(`${row.start}-${row.end}-${row.text}`)
         }
     })

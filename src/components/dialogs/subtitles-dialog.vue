@@ -62,7 +62,7 @@
                       class="subtitles-list"
                       :items="subtitlesList">
               <template v-slot:default="{ item }">
-                <OpenSubtitlesRow @click="downloadCurrentSubtitle" :row-data="item"></OpenSubtitlesRow>
+                <OpenSubtitlesRow @click="downloadCurrentSubtitle(item)" :row-data="item"></OpenSubtitlesRow>
               </template>
 
             </ListView>

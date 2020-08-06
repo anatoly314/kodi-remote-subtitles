@@ -5,6 +5,7 @@
         v-if="!noButton"
         class="button"
         :x-small="xSmall"
+        :icon="icon"
         :dark="dark"
         :color="color"
         :small="small"
@@ -32,6 +33,7 @@
             hasError: false
         }),
         props: {
+            icon: Boolean,
             noButton: {
               type: Boolean,
               default: false

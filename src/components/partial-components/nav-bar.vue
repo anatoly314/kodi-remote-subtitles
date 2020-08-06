@@ -13,9 +13,10 @@
             <v-btn icon @click="openSubtitles">
                 <v-icon :color="isConnected ? 'primary' : 'red'">fa-closed-captioning</v-icon>
             </v-btn>
-            <v-btn icon @click="CONNECT" v-if="!isConnected">
+            <async-button icon @click="CONNECT" v-if="!isConnected">
                 <v-icon color="red">fa-link</v-icon>
-            </v-btn>
+                <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
+            </async-button>
             <v-btn icon @click="openSettings">
                 <v-icon :color="isConnected ? 'primary' : 'red'">fa-cog</v-icon>
             </v-btn>
@@ -53,6 +54,9 @@
     import { ENV_CHECKER } from "../../mixins/helpers";
     import SOCKET_STATES from "../../enums/socket.states";
     import { mapGetters, mapActions } from 'vuex';
+
+    import AsyncButton from './async-button';
+
     export default {
         name: 'NavBar',
         mixins: [ ENV_CHECKER ],
@@ -93,6 +97,7 @@
             }
         },
         components: {
+          AsyncButton
         }
     }
 </script>

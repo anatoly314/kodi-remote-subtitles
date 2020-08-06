@@ -12,13 +12,13 @@
         v-on="listeners"
     >
       <slot name="loading" v-if="loadingState">Loading...</slot>
-      <slot name="error" v-else-if="hasError">Errored</slot>
+      <slot name="error" v-else-if="hasError">Error</slot>
       <slot v-else />
     </v-btn>
 
     <div v-if="noButton" v-on="listeners">
       <slot name="loading" v-if="loadingState">Loading...</slot>
-      <slot name="error" v-else-if="hasError">Errored</slot>
+      <slot name="error" v-else-if="hasError">Error</slot>
       <slot v-else />
     </div>
 

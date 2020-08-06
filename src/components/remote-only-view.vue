@@ -98,7 +98,6 @@
             ])
         },
         mounted() {
-            this.CONNECT();
         },
         methods: {
             ...mapActions('kodi', [

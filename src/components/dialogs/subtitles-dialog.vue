@@ -176,7 +176,6 @@
       }
     },
     mounted () {
-      this.CONNECT();
       this.$bus.$on('subtitles-modal:open', this.open);
     },
     beforeDestroy () {

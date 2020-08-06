@@ -8,13 +8,18 @@ let delayedResponseBag = {};
 let socket;
 let kodiMessageCallback;
 let kodiConnectionStateCallback;
+let isConnecting = false;
+let connectionPromise = {
+    resolve: null,
+    reject: null
+};
 
 function _delayedResponseBagTimeoutMonitor() {
     const keys = Object.keys(delayedResponseBag);
     keys.forEach(key => {
         const now = performance.now();
-        const strated = delayedResponseBag[key].started;
-        if (now - strated > RESPONSE_TIMEOUT) {
+        const started = delayedResponseBag[key].started;
+        if (now - started > RESPONSE_TIMEOUT) {
             const reject = delayedResponseBag[key].reject;
             const error = Error(`Timeout of ${RESPONSE_TIMEOUT}ms for request ${key} expired`);
             console.error(error);
@@ -29,6 +34,16 @@ function _initListeners () {
         const currentReadyState = socket.STATES[socket.readyState];
         if (kodiConnectionStateCallback) {
             kodiConnectionStateCallback(currentReadyState);
+        }
+        console.log(currentReadyState);
+        if (isConnecting && currentReadyState === 'CLOSED') {
+            connectionPromise.reject('Connection error');
+            isConnecting = false;
+        } else if (isConnecting) {
+            connectionPromise.resolve();
+            isConnecting = false;
+        } else if (currentReadyState === 'CONNECTING') {
+            isConnecting = true;
         }
     }
 
@@ -51,14 +66,18 @@ export function send(message) {
 }
 
 export function connect(url, messageCallback, connectionStateCallback) {
-    kodiMessageCallback = messageCallback;
-    kodiConnectionStateCallback = connectionStateCallback;
-    if (socket) {
-        disconnect();
-    }
-    socket = new WebSocketExtended(url);
-    _initListeners();
-    timeoutIntervalId = setInterval(_delayedResponseBagTimeoutMonitor, RESPONSE_TIMEOUT);
+    return new Promise((resolve, reject) => {
+        connectionPromise.resolve = resolve;
+        connectionPromise.reject = reject;
+        kodiMessageCallback = messageCallback;
+        kodiConnectionStateCallback = connectionStateCallback;
+        if (socket) {
+            disconnect();
+        }
+        socket = new WebSocketExtended(url);
+        _initListeners();
+        timeoutIntervalId = setInterval(_delayedResponseBagTimeoutMonitor, RESPONSE_TIMEOUT);
+    })
 }
 
 export function disconnect() {

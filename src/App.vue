@@ -20,12 +20,22 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 import NavBar from "./components/partial-components/nav-bar";
 import SettingsDialog from "./components/dialogs/settings-dialog";
 import Notifications from "./components/notifications";
 import SubtitlesDialog from "./components/dialogs/subtitles-dialog";
 export default {
   name: 'App',
+  mounted() {
+    this.CONNECT();
+  },
+  methods: {
+    ...mapActions('kodi', [
+        'CONNECT'
+    ])
+  },
   components: {
     NavBar,
     SettingsDialog,

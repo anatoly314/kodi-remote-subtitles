@@ -12,7 +12,13 @@
                         </v-col>
                         <v-col cols="12">
                             <v-text-field label="Kodi address ip:port" required v-model="kodiIpPort"></v-text-field>
-                            <v-btn small color="primary" dark @click="CONNECT">Connect and Save</v-btn>
+                            <async-button small color="primary" dark @click="CONNECT">
+                              Connect and Save
+                              <span slot="loading">
+                                  Connecting
+                                  <v-icon>fa fa-spinner fa-spin fa-fw</v-icon>
+                              </span>
+                            </async-button>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -28,6 +34,7 @@
 
 <script>
     import { mapMutations, mapGetters, mapActions } from 'vuex';
+    import AsyncButton from "../partial-components/async-button";
     export default {
         data() {
             return {
@@ -61,6 +68,7 @@
             }
         },
         components: {
+          AsyncButton
 
         },
         mounted () {

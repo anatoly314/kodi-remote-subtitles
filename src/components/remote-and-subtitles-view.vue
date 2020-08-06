@@ -51,7 +51,8 @@
                 </v-badge>
             </div>
             <div class="row-buttons">
-                <async-button class="mx-2" dark color="primary" @click="TOGGLE_SUBTITLES">
+                <async-button class="mx-2" dark color="primary"
+                              @click="TOGGLE_SUBTITLES">
                     <v-icon>fa-closed-captioning</v-icon>
                     <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
                 </async-button>
@@ -138,7 +139,6 @@
             }
         },
         mounted() {
-            this.CONNECT();
         },
         methods: {
             ...mapActions('subtitles', [

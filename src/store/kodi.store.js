@@ -44,11 +44,11 @@ export default {
         /**
          * BASIC KODI ACTIONS
          */
-        CONNECT ({ state, dispatch }) {
+        async CONNECT ({ state, dispatch }) {
             const url = `ws://${state.kodiIpPort}/jsonrpc`;
             const onMessage = dispatch.bind(null, 'ON_MESSAGE');
             const onConnectionChange = dispatch.bind(null, 'ON_CONNECTION_STATE_CHANGES');
-            connect(url, onMessage, onConnectionChange);
+            await connect(url, onMessage, onConnectionChange);
         },
         DISCONNECT () {
             disconnect();

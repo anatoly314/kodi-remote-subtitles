@@ -132,6 +132,7 @@
         'GET_SUBTITLES_LIST_BY_QUERY',
         'DOWNLOAD_SUBTITLES_BY_ID',
         'ADD_ORIGINAL_SUBTITLES_API',
+        'ADD_TRANSLATION_SUBTITLES_API',
         'ADD_ORIGINAL_SUBTITLES_FILE'
       ]),
       ...mapMutations('subtitles', [
@@ -154,19 +155,27 @@
       async searchSubtitles() {
         const subtitlesList = await this.GET_SUBTITLES_LIST_BY_QUERY({
           query: this.subtitlesSearchQuery,
-          language: this.subtitlesLanguage.IdSubLanguage
+          language: this.subtitlesLanguage.IdSubLanguage,
+          translationLanguage: this.subtitlesTranslationLanguage.IdSubLanguage
         });
         this.subtitlesList = subtitlesList;
       },
       async downloadCurrentSubtitle(subtitleToDownload) {
         const subtitleId = subtitleToDownload.id;
+        const langcode = subtitleToDownload.langcode;
         const subtitles = await this.DOWNLOAD_SUBTITLES_BY_ID(subtitleId);
-        this.ADD_ORIGINAL_SUBTITLES_API(subtitles);
+
+        if (langcode === this.subtitlesLanguage.ISO639) {
+          this.ADD_ORIGINAL_SUBTITLES_API(subtitles);
+        } else if (langcode === this.subtitlesTranslationLanguage.ISO639) {
+          this.ADD_TRANSLATION_SUBTITLES_API(subtitles);
+        }
+
         this.$bus.$emit('show-notification', {
           type: 'info',
           text: 'Subtitles successfully downloaded'
         });
-        this.close();
+
       },
       open () {
         this.dialog = true;

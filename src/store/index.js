@@ -11,6 +11,7 @@ const dataState = new createPersistedState({
     paths: [
         'kodi.kodiIpPort',
         'subtitles.originalSubtitles',
+        'subtitles.translationSubtitles',
         'subtitles.subtitlesLanguage',
         'subtitles.subtitlesTranslationLanguage'
     ]

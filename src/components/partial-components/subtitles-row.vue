@@ -3,10 +3,11 @@
          :style="activeRow === index ? 'background-color: lightgrey;' : ''"
          @click="MOVE_TO_SPECIFIC_TIME(rowData.start)">
         <div class="time-container" v-if="displaySubtitlesTime">
+
             <div>{{toSrtTime(rowData.start)}}</div>
             <div>{{toSrtTime(rowData.end)}}</div>
 
-            <div @click.stop>
+            <div @click.stop v-if="translate">
                 <SwitchCustom @change="translateText(rowData.text)" v-model="showTranslation"/>
             </div>
 
@@ -40,7 +41,9 @@
             rowData: Object,
             displaySubtitlesTime: Boolean,
             index: Number,
-            active: Boolean
+            active: Boolean,
+            activeRow: Number,
+            translate: Boolean
         },
         data () {
             return {
@@ -58,7 +61,6 @@
         },
         computed: {
             ...mapGetters('subtitles', [
-                'activeRow',
                 'subtitlesLanguage',
                 'subtitlesTranslationLanguage'
             ]),

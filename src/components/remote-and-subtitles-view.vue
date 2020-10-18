@@ -1,16 +1,56 @@
 <template>
     <div class="component-container">
-        <ListView ref="listview"
-                  class="subtitles-list"
-                  :items="originalSubtitles">
+      <v-tabs
+          height="35"
+          grow
+          v-model="gui.activeTab"
+      >
+        <v-tab @click="scrollToRowWithDelay">
+          Original
+        </v-tab>
+        <v-tab @click="scrollToRowWithDelay">
+          Translation
+        </v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="gui.activeTab">
+
+        <!-- ORIGINAL -->
+        <v-tab-item eager >
+          <ListView ref="listview"
+                    class="subtitles-list"
+                    :items="originalSubtitles">
             <template v-slot:default="{ item, index, active }">
-                <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
-                              :active="active"
-                              :rowData="item"
-                              :index="index">
-                </SubtitlesRow>
+              <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
+                            :active-row="activeRow"
+                            :active="active"
+                            :translate="true"
+                            :rowData="item"
+                            :index="index">
+              </SubtitlesRow>
             </template>
-        </ListView>
+          </ListView>
+        </v-tab-item>
+
+        <!-- TRANSLATION -->
+        <v-tab-item eager>
+          <ListView ref="listview_translation"
+                    class="subtitles-list"
+                    :items="translationSubtitles">
+            <template v-slot:default="{ item, index, active }">
+              <SubtitlesRow :display-subtitles-time="gui.displaySubtitlesTime"
+                            :active="active"
+                            :translate="false"
+                            :active-row="activeRowTranslation"
+                            :rowData="item"
+                            :index="index">
+              </SubtitlesRow>
+            </template>
+          </ListView>
+        </v-tab-item>
+
+      </v-tabs-items>
+
         <div class="buttons-container">
             <div class="row-buttons">
                 <v-badge
@@ -81,7 +121,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -98,7 +137,8 @@
             return {
                 gui : {
                     scrollToActiveRow: true,
-                    displaySubtitlesTime: true
+                    displaySubtitlesTime: true,
+                    activeTab: ''
                 }
             }
         },
@@ -111,15 +151,22 @@
                 }
             },
             activeRow () {
-                if (this.gui.scrollToActiveRow) {
-                    this.scrollToActiveRow();
+                if (this.gui.scrollToActiveRow && this.gui.activeTab === 0) {
+                  this.scrollToActiveRow();
                 }
+            },
+            activeRowTranslation () {
+              if (this.gui.scrollToActiveRow && this.gui.activeTab === 1) {
+                this.scrollToActiveRowTranslation();
+              }
             }
         },
         computed: {
             ...mapGetters('subtitles', [
                 'originalSubtitles',
+                'translationSubtitles',
                 'activeRow',
+                'activeRowTranslation',
                 'subtitlesTimingDeltaMs'
             ]),
             ...mapGetters('kodi', [
@@ -165,12 +212,28 @@
                 }
                 await this.scrollToActiveRow();
             },
-            async scrollToActiveRow () {
-                let activeRow = this.activeRow;
-                if (activeRow > -1) {
-                    activeRow = activeRow > 3 ? activeRow - 3 : activeRow; //keep it in the middle of the list
-                    this.$refs.listview.scrollToRow(activeRow);
+            scrollToRowWithDelay () {
+              setTimeout(() => {
+                if (this.gui.activeTab === 0) {
+                  this.scrollToActiveRow();
+                } else {
+                  this.scrollToActiveRowTranslation();
                 }
+              }, 50);
+            },
+            async scrollToActiveRow () {
+              let activeRow = this.activeRow;
+              if (activeRow > -1) {
+                  activeRow = activeRow > 2 ? activeRow - 2 : activeRow; //keep it in the middle of the list
+                  this.$refs.listview.scrollToRow(activeRow);
+              }
+            },
+            async scrollToActiveRowTranslation () {
+              let activeRowTranslation = this.activeRowTranslation;
+              if (activeRowTranslation > -1 && this.$refs.listview_translation) {
+                activeRowTranslation = activeRowTranslation > 2 ? activeRowTranslation - 2 : activeRowTranslation; //keep it in the middle of the list
+                this.$refs.listview_translation.scrollToRow(activeRowTranslation);
+              }
             },
             startCalculateTime () {
                 this.START_CALCULATE_TIME();

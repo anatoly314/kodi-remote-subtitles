@@ -35,7 +35,7 @@
         },
         methods: {
             scrollToRow(rowIndex) {
-                this.$refs.scroller.scrollToItem(rowIndex);
+              this.$refs.scroller.scrollToItem(rowIndex);
             }
         },
         components: {

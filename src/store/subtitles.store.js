@@ -29,6 +29,7 @@ export default {
     namespaced: true,
     state: {
         originalSubtitles: [],
+        translationSubtitles: [],
         subtitlesTimingDeltaMs: 0,
         subtitlesLanguage: undefined,
         subtitlesTranslationLanguage: undefined
@@ -36,6 +37,7 @@ export default {
     getters: {
         subtitlesTimingDeltaMs: state => state.subtitlesTimingDeltaMs,
         originalSubtitles: state => state.originalSubtitles,
+        translationSubtitles: state => state.translationSubtitles,
         subtitlesLanguage: state => state.subtitlesLanguage,
         subtitlesTranslationLanguage: state => state.subtitlesTranslationLanguage,
         openSubtitlesLangugages: () => {
@@ -59,13 +61,35 @@ export default {
                 }
             }
             return activeRow;
+        },
+        activeRowTranslation: (state, getters, rootState, rootGetters) => {
+            // https://github.com/vuejs/vue/issues/6660#issuecomment-331417140
+            const translationSubtitles = state.translationSubtitles;
+            const subtitlesTimingDeltaMs = state.subtitlesTimingDeltaMs;
+            let currentPlayingTimeMs = rootGetters['kodi/currentCalculatedPlayTimeMs'];
+            let currentPlayingTimeWithDeltaMs = currentPlayingTimeMs + subtitlesTimingDeltaMs;
+            let activeRowTranslation = -1;
+            for (let i = 0; i < translationSubtitles.length; i++){
+                const row = translationSubtitles[i];
+                const followingRow = translationSubtitles[i + 1];
+                const start = row.start;
+                const followingStart = followingRow ? followingRow.start : start + 1;
+                if (currentPlayingTimeWithDeltaMs >= start && currentPlayingTimeWithDeltaMs < followingStart) {
+                    activeRowTranslation = i;
+                    break;
+                }
+            }
+            return activeRowTranslation;
         }
     },
     actions: {
-        async GET_SUBTITLES_LIST_BY_QUERY(state, { query, language }) {
-            const subtitlesList = await getSubtitlesListByQuery(query, language);
-            const languageKey = Object.keys(subtitlesList)[0];
-            const subtitlesByLanguage = languageKey ? subtitlesList[languageKey] : [];
+        async GET_SUBTITLES_LIST_BY_QUERY(state, { query, language, translationLanguage }) {
+            const subtitlesList = await getSubtitlesListByQuery(query, language, translationLanguage);
+            let subtitlesByLanguage = [];
+            for (const currentLanguageKey of Object.keys(subtitlesList)){
+                const subtitlesByCurrentLanguage = currentLanguageKey ? subtitlesList[currentLanguageKey] : [];
+                subtitlesByLanguage = subtitlesByLanguage.concat(subtitlesByCurrentLanguage);
+            }
             return subtitlesByLanguage;
         },
         async DOWNLOAD_SUBTITLES_BY_ID (state, id) {
@@ -77,11 +101,15 @@ export default {
             subtitles = addIdToSubtitles(subtitles);
             commit('SET_ORIGINAL_SUBTITLES', subtitles);
         },
-        // eslint-disable-next-line no-unused-vars
-        async ADD_ORIGINAL_SUBTITLES_API ({ commit, dispatch }, subtitlesString) {
+        async ADD_ORIGINAL_SUBTITLES_API ({ commit }, subtitlesString) {
             let subtitles = parse(subtitlesString);
             subtitles = addIdToSubtitles(subtitles);
             commit('SET_ORIGINAL_SUBTITLES', subtitles);
+        },
+        async ADD_TRANSLATION_SUBTITLES_API ({ commit }, subtitlesString) {
+            let subtitles = parse(subtitlesString);
+            subtitles = addIdToSubtitles(subtitles);
+            commit('SET_TRANSLATION_SUBTITLES', subtitles);
         },
         async UPLOAD_FILE (state, event) {
             return new Promise((resolve, reject) => {
@@ -117,6 +145,9 @@ export default {
     mutations:{
         SET_ORIGINAL_SUBTITLES: (state, event) => {
             state.originalSubtitles = event;
+        },
+        SET_TRANSLATION_SUBTITLES: (state, event) => {
+            state.translationSubtitles = event;
         },
         SET_SUBTITLES_TIMING_DELTA_MS: (state, event) => {
             let deltaMs = Number.parseInt(event);

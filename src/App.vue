@@ -1,7 +1,6 @@
 <template>
   <v-app id="app">
     <NavBar/>
-    <SettingsDialog/>
     <Notifications/>
     <SubtitlesDialog/>
 
@@ -11,11 +10,11 @@
       </v-container>
     </v-main>
 
-    <v-footer app>
-      <div style="text-align: center; width: 100%;">
-        (c) 2020 Anatoly Tarnavsky
-      </div>
-    </v-footer>
+<!--    <v-footer app>-->
+<!--      <div style="text-align: center; width: 100%;">-->
+<!--        (c) 2020 Anatoly Tarnavsky-->
+<!--      </div>-->
+<!--    </v-footer>-->
   </v-app>
 </template>
 
@@ -23,7 +22,6 @@
 import { mapActions } from 'vuex';
 
 import NavBar from "./components/partial-components/nav-bar";
-import SettingsDialog from "./components/dialogs/settings-dialog";
 import Notifications from "./components/notifications";
 import SubtitlesDialog from "./components/dialogs/subtitles-dialog";
 export default {
@@ -38,7 +36,6 @@ export default {
   },
   components: {
     NavBar,
-    SettingsDialog,
     Notifications,
     SubtitlesDialog
   }

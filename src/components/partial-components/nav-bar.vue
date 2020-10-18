@@ -6,7 +6,7 @@
             </v-btn>
 
             <v-toolbar-title>
-                Kodi Remote Subtitles
+              Kodi Remote Subtitles
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -17,9 +17,6 @@
                 <v-icon color="red">fa-link</v-icon>
                 <v-icon slot="loading">fa fa-spinner fa-spin fa-fw</v-icon>
             </async-button>
-            <v-btn icon @click="openSettings">
-                <v-icon :color="isConnected ? 'primary' : 'red'">fa-cog</v-icon>
-            </v-btn>
         </v-app-bar>
 
         <v-navigation-drawer app
@@ -73,6 +70,11 @@
                       title: 'Remote Only',
                       icon: 'fa-tv',
                       to: '/remoteonly'
+                  },
+                  {
+                    title: 'Settings',
+                    icon: 'fa-tv',
+                    to: '/settings'
                   }
               ]
           }
@@ -89,9 +91,6 @@
             ...mapActions('kodi', [
                 'CONNECT'
             ]),
-            openSettings () {
-                this.$bus.$emit('settings-modal:open');
-            },
             openSubtitles () {
                 this.$bus.$emit('subtitles-modal:open');
             }
